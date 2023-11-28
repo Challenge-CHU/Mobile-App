@@ -5,6 +5,8 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
+  NativeEventEmitter,
+  NativeModules,
 } from "react-native";
 import PlateformSafeView from "./components/PlateformSafeView";
 import { useEffect, useState } from "react";
@@ -12,58 +14,14 @@ import AppleHealthKit, { HealthKitPermission } from "react-native-health";
 import ProgressCircle from "./components/ProgressCircle";
 import AnimatedSquare from "./components/AnimatedSquare";
 import { Colors } from "./styles";
-
-const permissions = {
-  permissions: {
-    read: [
-      AppleHealthKit.Constants.Permissions.Steps,
-      AppleHealthKit.Constants.Permissions.StepCount,
-    ],
-    write: [],
-  },
-};
+import useHealthData from "./hooks/useHealthData";
 
 export default function App() {
-  const halfWindowsHeigth = Dimensions.get("window").height / 2;
-  const [hasPermissions, setHasPermissions] = useState(false);
-  const [steps, setSteps] = useState(0);
+  const halfWindowsHeigth = Dimensions.get("window").height / 2; //50 VH
+  const STEP_GOAL = 10000;
 
-  useEffect(() => {
-    AppleHealthKit.initHealthKit(permissions, (err) => {
-      if (err) {
-        console.log("Error getting permissions: ", err);
-        return;
-      }
-
-      setHasPermissions(true);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (!hasPermissions) {
-      return;
-    }
-
-    const options = {
-      date: new Date().toISOString(),
-      includeManuallyAdded: false,
-    };
-
-    AppleHealthKit.getStepCount(options, (err, results) => {
-      if (err) {
-        console.log("Error get step count: ", err);
-        return;
-      }
-      console.log("le results: ", results.value);
-      setSteps(results.value);
-    });
-  }, [hasPermissions]);
-
-  const [progressValue, setProgressValue] = useState(1000);
-
-  useEffect(() => {
-    console.log("la progression dans app: ", progressValue);
-  }, [progressValue]);
+  //Hook pour récupérer la données depuis health au format: new Date(YYYY-MM-DD)
+  const { steps } = useHealthData(new Date());
 
   const handlePress = () => {
     if (progressValue >= 10000 || progressValue === undefined) {
@@ -88,7 +46,8 @@ export default function App() {
             zIndex: 1,
           }}
         >
-          <ProgressCircle objectif={10000} progression={progressValue} />
+          {/* <ProgressCircle objectif={10000} progression={progressValue} /> */}
+          <ProgressCircle objectif={STEP_GOAL} progression={steps} />
         </View>
         <View
           style={{

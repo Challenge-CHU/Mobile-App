@@ -46,7 +46,8 @@ const ProgressCircle = ({ objectif, progression }) => {
       >
         <Text
           style={{
-            fontFamilly: Typography.fonts.numbers,
+            // fontFamilly: "Alegreya Sans SC",
+            // fontFamilly: Typography.fonts.numbers.fontFamilly,
             fontSize: Typography.fontSizes.xl,
             fontWeight: 700,
             color: Colors.colors.darkblue,
