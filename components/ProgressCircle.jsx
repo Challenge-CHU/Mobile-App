@@ -1,7 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Animated, Easing, View, Text, StyleSheet, Image } from "react-native";
+import {
+  Animated,
+  Easing,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  useWindowDimensions,
+  Dimensions,
+  PixelRatio,
+} from "react-native";
 import LottieView from "lottie-react-native";
 import { Typography, Spacing, Colors, Buttons } from "../styles";
+import aspectRatio from "../tools/AspectRatio";
 const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
 
 const ProgressCircle = ({ objectif, progression }) => {
@@ -27,17 +38,30 @@ const ProgressCircle = ({ objectif, progression }) => {
       <AnimatedLottieView
         source={require("../assets/grph2.json")}
         progress={animationProgress}
-        style={{ width: 281, height: 400 }}
+        style={{ width: "100%", height: "80%" }}
+        // style={{ width: 281, height: 400 }}
       />
-      <Image
-        source={require("../assets/walkyy.png")}
+      <View
         style={{
-          width: 90,
-          height: 138,
+          flex: 1,
+          width: "20%",
+          height: "45%",
+
+          // width: 90,
+          // height: 138,
           position: "absolute",
           bottom: "25%",
         }}
-      />
+      >
+        <Image
+          source={require("../assets/walkyy.png")}
+          style={{
+            width: "100%",
+            height: "100%", // Set height to 'auto' to maintain aspect ratio
+            resizeMode: "contain", // Scale image to fit while maintaining aspect ratio
+          }}
+        />
+      </View>
       <View
         style={{
           position: "absolute",
@@ -48,7 +72,7 @@ const ProgressCircle = ({ objectif, progression }) => {
           style={{
             // fontFamilly: "Alegreya Sans SC",
             // fontFamilly: Typography.fonts.numbers.fontFamilly,
-            fontSize: Typography.fontSizes.xl,
+            fontSize: aspectRatio(Typography.fontSizes.xl),
             fontWeight: 700,
             color: Colors.colors.darkblue,
           }}
@@ -68,8 +92,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    // backgroundColor: "yellow",
-    maxHeight: 300,
+    height: "auto",
   },
 });
 

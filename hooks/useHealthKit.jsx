@@ -1,31 +1,26 @@
 import { useEffect, useState } from "react";
 import AppleHealthKit, { HealthKitPermission } from "react-native-health";
 
-const useHealthData = (date) => {
-  const permissions = {
-    permissions: {
-      read: [
-        AppleHealthKit.Constants.Permissions.Steps,
-        AppleHealthKit.Constants.Permissions.StepCount,
-        AppleHealthKit.Constants.Observers.Walking,
-      ],
-      write: [],
-    },
-  };
-
+const permissions = {
+  permissions: {
+    read: [
+      AppleHealthKit.Constants.Permissions.Steps,
+      AppleHealthKit.Constants.Permissions.StepCount,
+      AppleHealthKit.Constants.Observers.Walking,
+    ],
+    write: [],
+  },
+};
+export const useHealthKit = (date) => {
   const [hasPermissions, setHasPermissions] = useState(false);
   const [steps, setSteps] = useState(0);
 
   const handleGetCountStep = (options) => {
-    console.log("[Trigger step count] ");
-
     AppleHealthKit.getStepCount(options, (err, results) => {
       if (err) {
         console.log("Error get step count: ", err);
         return;
       }
-
-      console.log("step: ", results.value);
       setSteps(results.value);
     });
   };
@@ -45,7 +40,6 @@ const useHealthData = (date) => {
     if (!hasPermissions) {
       return;
     }
-
     const options = {
       date: date.toISOString(),
       includeManuallyAdded: false,
@@ -58,11 +52,8 @@ const useHealthData = (date) => {
     };
   }, [hasPermissions]);
 
-  // const [progressValue, setProgressValue] = useState(1000);
-
   return {
     steps,
+    hasPermissions,
   };
 };
-
-export default useHealthData;

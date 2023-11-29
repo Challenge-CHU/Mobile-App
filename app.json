@@ -21,11 +21,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.jordanbtrs.Walky"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["react-native-health"]
+    "plugins": ["react-native-health"],
+    "extra": {
+      "eas": {
+        "projectId": "e8a2af14-eb6e-4620-b32a-4f9606d3558f"
+      }
+    }
   }
 }
