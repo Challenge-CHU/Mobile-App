@@ -15,7 +15,10 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.jordanbtrs.Walky"
+      "bundleIdentifier": "com.jordanbtrs.Walky",
+      "infoPlist": {
+        "UIBackgroundModes": ["fetch"]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -31,6 +34,12 @@
     "extra": {
       "eas": {
         "projectId": "e8a2af14-eb6e-4620-b32a-4f9606d3558f"
+      },
+      "backgroundFetch": {
+        "minimumInterval": 15,
+        "forceAlarmManager": true,
+        "stopOnTerminate": false,
+        "startOnBoot": true
       }
     }
   }

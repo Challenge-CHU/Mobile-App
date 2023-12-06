@@ -32,4 +32,5 @@ export const navigationColors = {
   current: {
     opacity: 0.2,
   },
+  rgba: "rgba(0, 180, 236, 0.2)",
 };

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import AppleHealthKit, { HealthKitPermission } from "react-native-health";
+import { NativeEventEmitter, NativeModules } from "react-native";
 
 const permissions = {
   permissions: {
@@ -12,6 +13,8 @@ const permissions = {
   },
 };
 export const useHealthKit = (date) => {
+  console.log("utilise healthkit hook");
+
   const [hasPermissions, setHasPermissions] = useState(false);
   const [steps, setSteps] = useState(0);
 
@@ -24,6 +27,16 @@ export const useHealthKit = (date) => {
       setSteps(results.value);
     });
   };
+  //A tester
+
+  // useEffect(() => {
+  //   new NativeEventEmitter(NativeModules.AppleHealthKit).addListener(
+  //     'healthKit:Steps:new',
+  //     async () => {
+  //       console.log('--> observer triggered');
+  //     },
+  //   );
+  // });
 
   useEffect(() => {
     AppleHealthKit.initHealthKit(permissions, (err) => {

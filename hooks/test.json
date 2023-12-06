@@ -1,0 +1,20 @@
+{
+  "rawSteps": [
+    {
+      "appName": "Services Google Play",
+      "appPackageName": "com.google.android.gms",
+      "dataSourceId": "derived:com.google.step_count.delta:com.google.android.gms:aggregated",
+      "dataTypeName": "com.google.step_count.delta",
+      "deviceManufacturer": "samsung",
+      "deviceModel": "SM-J510FN",
+      "deviceType": "phone",
+      "deviceUid": "b877c310",
+      "endDate": 1701697722442,
+      "originDataSourceId": "derived:com.google.step_count.cumulative:com.google.android.gms:samsung:SM-J510FN:b877c310:soft_step_counter",
+      "startDate": 1701693688747,
+      "steps": 154
+    }
+  ],
+  "source": "com.google.android.gms:estimated_steps",
+  "steps": [{ "date": "2023-12-04", "value": 154 }]
+}
