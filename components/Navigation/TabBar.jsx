@@ -21,7 +21,6 @@ function TabBar({ state, descriptors, navigation, route }) {
       style={{
         flexDirection: "row",
         height: aspectRatio(58),
-        // backgroundColor: "none",
         backgroundColor:
           focusedRoute === "Home"
             ? blueTheme.background
@@ -29,7 +28,6 @@ function TabBar({ state, descriptors, navigation, route }) {
       }}
     >
       {state.routes.map((route, index) => {
-        console.log("les routes params 22: ", route);
         const { options } = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined

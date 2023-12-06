@@ -67,7 +67,7 @@ export default function App() {
       <NavigationContainer>
         <MyTabs />
       </NavigationContainer>
-      {/* <StatusBar style="auto" /> */}
+      <StatusBar style="auto" />
     </>
   );
 }

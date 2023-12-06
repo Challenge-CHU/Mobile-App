@@ -119,7 +119,7 @@ export const useGoogleFit = () => {
 
     handleGetDailySteps();
 
-    recordStep();
+    // recordStep();
   }, [hasPermissions]);
 
   return {
