@@ -4,15 +4,10 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
-  NativeEventEmitter,
-  NativeModules,
 } from "react-native";
 import React from "react";
 import PlateformSafeView from "../components/PlateformSafeView";
-import { useEffect, useState } from "react";
-import AppleHealthKit, { HealthKitPermission } from "react-native-health";
 import ProgressCircle from "../components/ProgressCircle";
-import AnimatedSquare from "../components/AnimatedSquare";
 import { Colors, Spacing, Typography } from "../styles";
 import LottieView from "lottie-react-native";
 import aspectRatio from "../tools/AspectRatio";
@@ -34,7 +29,7 @@ const Home = () => {
   };
 
   return (
-    <PlateformSafeView>
+    <PlateformSafeView styles={{ backgroundColor: "white" }}>
       <View
         style={{
           height: halfWindowsHeigth,

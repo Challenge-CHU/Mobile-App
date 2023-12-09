@@ -5,9 +5,14 @@ import * as BackgroundFetch from "expo-background-fetch";
 import * as TaskManager from "expo-task-manager";
 
 const Social = () => {
+
+  const handleGetDate = () => {
+    console.log(new Date().toISOString().split("T")[0]);
+  };
   return (
     <View>
       <Text>Social</Text>
+      <Button title="kilou" onPress={handleGetDate} />
     </View>
   );
 };

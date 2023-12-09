@@ -1,37 +1,21 @@
 import { useEffect, useState } from "react";
 import GoogleFit, { Scopes } from "react-native-google-fit";
 import { useStepCountStore } from "../store/useStepCountStore";
-import * as BackgroundFetch from "expo-background-fetch";
-import { AsyncStorage } from "react-native"; // ou toute autre méthode de stockage que vous utilisez
-import * as TaskManager from "expo-task-manager";
 
 const permissions = {
   scopes: [
     Scopes.FITNESS_ACTIVITY_READ,
     Scopes.FITNESS_BODY_READ,
     Scopes.FITNESS_ACTIVITY_WRITE,
-    // Ajoutez d'autres scopes au besoin
   ],
 };
 
 export const useGoogleFit = () => {
-  console.log("Utilise le hook Google Fit");
-  const BACKGROUND_FETCH_TASK = "backgroundFetchTask";
   const [hasPermissions, setHasPermissions] = useState(false);
   const [steps, setSteps] = useState(0);
-  const stepCountStore = useStepCountStore();
+  // const stepCountStore = useStepCountStore();
 
-  // let task = TaskManager.getRegisteredTasksAsync();
-
-  // console.log("tasks: ", task);
-
-  const backgroundFetchTask = async (taskId) => {
-    console.log("Tâche en arrière-plan exécutée.");
-    await handleGetDailySteps();
-    BackgroundFetch.finish(taskId);
-  };
-
-  //Enregistre les pas
+  //Observateur pour les pas en temps réel (Pas fiable donc DEPRECATED)
   const recordStep = () => {
     GoogleFit.startRecording((res) => {
       console.log(res, "res1");
@@ -45,27 +29,24 @@ export const useGoogleFit = () => {
     });
   };
 
+  //Demande d'authorisation API Google
   const hanldeGetAuth = () => {
-    // Authentication if already not authorized for a particular device
     GoogleFit.authorize(permissions)
       .then((authResult) => {
         if (authResult.success) {
-          console.log("[Permission Accordé]");
           setHasPermissions(true);
-          // if successfully authorized, fetch data
+          console.log("[Permission Accordé]");
         } else {
           console.log("Permission Réfuser]");
         }
       })
       .catch(() => {
-        console.log("OOOOOOOOO:");
         dispatch("AUTH_ERROR");
       });
   };
 
+  //Les pas de la semaine
   const handleGetDailySteps = async () => {
-    console.log("tu passe par ou ?");
-
     try {
       let today = new Date();
       let lastWeekDate = new Date(
@@ -73,29 +54,37 @@ export const useGoogleFit = () => {
         today.getMonth(),
         today.getDate() - 8
       );
-      const options2 = {
+
+      const options = {
         startDate: lastWeekDate.toISOString(),
         endDate: today.toISOString(),
       };
-      const dailySteps = await GoogleFit.getDailyStepCountSamples(options2);
 
+      //Retourne les pas de toutes les sources (Xiaomi, samsung, google, etc)
+      const dailySteps = await GoogleFit.getDailyStepCountSamples(options);
       console.log("Daily Steps:", dailySteps);
+
+      //Filtre pour récupèrer que la source de l'api Google
       const googleFitData = dailySteps.find(
         (entry) => entry.source === "com.google.android.gms:estimated_steps"
       );
-      console.log("trier entry: ", googleFitData);
 
-      if (googleFitData.steps[0].value) {
-        setSteps(googleFitData.steps[0].value);
+      let todayDate = googleFitData.steps.find((item) => {
+        return item.date === new Date().toISOString().split("T")[0];
+      });
+
+      if (todayDate != undefined && todayDate.value) {
+        setSteps(todayDate.value);
+      } else {
+        setSteps(0);
       }
     } catch (error) {
       console.error("Erreur lors de la récupération des pas:", error);
     }
   };
 
-  //Au Lancement, récupérer les authorisation
+  //Au Lancement, Vérifie les authorisations
   useEffect(() => {
-    console.log("gang");
     GoogleFit.checkIsAuthorized().then(() => {
       var authorized = GoogleFit.isAuthorized;
 
@@ -110,8 +99,6 @@ export const useGoogleFit = () => {
         hanldeGetAuth();
       }
     });
-
-    test = true;
   }, []);
 
   useEffect(() => {
@@ -128,5 +115,3 @@ export const useGoogleFit = () => {
     recordStep,
   };
 };
-
-
