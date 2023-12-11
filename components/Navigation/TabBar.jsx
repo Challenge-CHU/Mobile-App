@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, Text } from "react-native";
+import { View, TouchableOpacity, Text, Platform } from "react-native";
 import aspectRatio from "../../tools/AspectRatio";
 import { Colors } from "../../styles";
 import { useEffect, useState } from "react";
@@ -20,7 +20,9 @@ function TabBar({ state, descriptors, navigation, route }) {
     <View
       style={{
         flexDirection: "row",
-        height: aspectRatio(58),
+        height: "auto",
+        // height: aspectRatio(64),
+        backgroundColor: "red",
         backgroundColor:
           focusedRoute === "Home"
             ? blueTheme.background
@@ -68,7 +70,10 @@ function TabBar({ state, descriptors, navigation, route }) {
               flex: 1,
               justifyContent: "center",
               alignItems: "center",
-              opacity: isFocused ? 0.5 : 1,
+              opacity: isFocused ? 0.55 : 1,
+              marginBottom:
+                Platform.OS === "ios" ? aspectRatio(24) : aspectRatio(8),
+              gap: aspectRatio(4),
             }}
             key={index}
           >
@@ -76,10 +81,24 @@ function TabBar({ state, descriptors, navigation, route }) {
               style={{
                 color:
                   focusedRoute === "Home" ? blueTheme.text : whiteTheme.text,
+                fontSize:
+                  Platform.OS === "ios" ? aspectRatio(24) : aspectRatio(20),
+                fontWeight: "700",
               }}
             >
               {label}
             </Text>
+
+            <View
+              style={{
+                width: focusedRoute === label ? "50%" : 0,
+                height: 2,
+                borderRadius: 24,
+                backgroundColor:
+                  focusedRoute === "Home" ? blueTheme.text : whiteTheme.text,
+                alignSelf: "center",
+              }}
+            ></View>
           </TouchableOpacity>
         );
       })}

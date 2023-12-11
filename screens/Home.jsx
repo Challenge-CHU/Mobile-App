@@ -4,22 +4,28 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
+  FlatList,
+  ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useState, useRef } from "react";
 import PlateformSafeView from "../components/PlateformSafeView";
 import ProgressCircle from "../components/ProgressCircle";
 import { Colors, Spacing, Typography } from "../styles";
 import LottieView from "lottie-react-native";
 import aspectRatio from "../tools/AspectRatio";
 import useStepCount from "../hooks/useStepCount";
+import ScrollTabView from "../components/ScrollTabView";
 
 const Home = () => {
+  const [visibleChild, setVisibleChild] = useState(1);
+
   const halfWindowsHeigth = Dimensions.get("window").height / 2; //50 VH
   const STEP_GOAL = 10000;
 
   //Hook pour récupérer la données depuis health au format: new Date(YYYY-MM-DD)
   const { steps } = useStepCount(new Date());
 
+  //OLD: fonction pour changer le graph dynamiquement depuis un bouton
   const handlePress = () => {
     if (progressValue >= 10000 || progressValue === undefined) {
       setProgressValue(1000);
@@ -28,8 +34,12 @@ const Home = () => {
     }
   };
 
+  const handleOnVisible = (visibleInt) => {
+    setVisibleChild(visibleInt);
+  };
+
   return (
-    <PlateformSafeView styles={{ backgroundColor: "white" }}>
+    <PlateformSafeView styles={{ backgroundColor: "#ffffff" }}>
       <View
         style={{
           height: halfWindowsHeigth,
@@ -42,6 +52,7 @@ const Home = () => {
           zIndex: 1,
         }}
       >
+        {/* View lottie fire + chrono */}
         <View
           style={{
             paddingHorizontal: Spacing.padding.sm,
@@ -80,8 +91,57 @@ const Home = () => {
             </Text>
           </View>
         </View>
-        <ProgressCircle objectif={STEP_GOAL} progression={steps} />
+        {/* selector tab perso && global */}
+
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 8,
+          }}
+        >
+          <Text
+            style={{
+              color: "#000000",
+              color: "#000000",
+              opacity: visibleChild === 1 ? 1 : 0.25,
+            }}
+          >
+            Goodbye
+          </Text>
+          <View
+            style={{
+              width: 2,
+              height: 24,
+              backgroundColor: "black",
+            }}
+          ></View>
+          <Text
+            style={{
+              color: "#000000",
+              color: "#000000",
+              opacity: visibleChild === 2 ? 1 : 0.25,
+            }}
+          >
+            Goodbye
+          </Text>
+        </View>
+
+        <ScrollTabView onVisible={handleOnVisible}>
+          <ProgressCircle objectif={STEP_GOAL} progression={steps} />
+          <View>
+            <Text>Global 1</Text>
+            <Text>Global 1</Text>
+            <Text>Global 1</Text>
+            <Text>Global 1</Text>
+            <Text>Global 1</Text>
+          </View>
+        </ScrollTabView>
+
+        {/* <ProgressCircle objectif={STEP_GOAL} progression={steps} /> */}
       </View>
+      {/* FIn header blanc */}
       <View
         style={{
           backgroundColor: Colors.colors.blue,

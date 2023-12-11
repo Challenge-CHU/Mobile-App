@@ -38,19 +38,6 @@ function MyTabs() {
           alignItems: "center",
           justifyContent: "center",
         },
-        //   tabBarItemStyle: {
-        //     shadowOffset: 0,
-        //     alignItems: "center",
-        //     justifyContent: "center",
-        //   },
-        //   // tabBarInactiveBackgroundColor: true,
-        //   tabBarLabelStyle: {
-        //     color: "#ffffff",
-        //     fontSize: aspectRatio(Typography.fontSizes.md),
-        //     fontWeight: "700",
-        //   },
-        //   tabBarActiveTintColor: "#FFFF00",
-        //   tabBarIconStyle: { display: "none" },
       }}
       initialRouteName="Home"
     >
@@ -67,6 +54,7 @@ export default function App() {
       <NavigationContainer>
         <MyTabs />
       </NavigationContainer>
+
       <StatusBar style="auto" />
     </>
   );
