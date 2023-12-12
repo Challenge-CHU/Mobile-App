@@ -28,8 +28,8 @@ const ProgressCircle = ({ objectif, progression }) => {
       <AnimatedLottieView
         source={require("../assets/grph2.json")}
         progress={animationProgress}
-        style={{ width: "100%", height: "80%" }}
-        // style={{ width: 281, height: 400 }}
+        style={{ width: "100%", height: "90%" }}
+        // style={{ width: "100%", height: "90%" }} //Avant c'etait 80% height
       />
       <View
         style={{

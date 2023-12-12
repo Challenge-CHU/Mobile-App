@@ -18,6 +18,7 @@ import ScrollTabView from "../components/ScrollTabView";
 import GlobalStats from "../components/GlobalStats";
 import FireTag from "../components/FireTag";
 import TimerTag from "../components/TimerTag";
+import LittleWalkyMsg from "../components/LittleWalkyMsg";
 // import { useFonts } from "expo-font";
 // let customFonts = {
 //   // 'Poppins-Black': require('./assets/fonts/Poppins-Black.ttf')
@@ -82,6 +83,8 @@ const Home = () => {
           <ProgressCircle objectif={STEP_GOAL} progression={steps} />
           <GlobalStats />
         </ScrollTabView>
+
+        <LittleWalkyMsg />
 
         {/* Test fontFamily */}
         {/* <Text

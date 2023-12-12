@@ -43,7 +43,7 @@ const TimerTag = ({ datetime }) => {
           width: 26,
           height: 32,
           zIndex: 2,
-          transform: "translateY(-4pxpx)",
+          transform: "translateY(-4px)",
         }}
       />
     </View>
