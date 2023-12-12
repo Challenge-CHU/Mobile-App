@@ -1,19 +1,28 @@
-import React from "react";
-import BackgroundFetchScreen from "../tools/BackgroundTask";
-import { StyleSheet, Text, View, Button } from "react-native";
-import * as BackgroundFetch from "expo-background-fetch";
-import * as TaskManager from "expo-task-manager";
+import React, { useState, useEffect, useRef } from "react";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import PlateformSafeView from "../components/PlateformSafeView";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  Easing,
+  withSpring,
+} from "react-native-reanimated";
+import ManualCounter from "../components/ManualCounter";
 
 const Social = () => {
-
-  const handleGetDate = () => {
-    console.log(new Date().toISOString().split("T")[0]);
-  };
   return (
-    <View>
-      <Text>Social</Text>
-      <Button title="kilou" onPress={handleGetDate} />
-    </View>
+    <PlateformSafeView styles={{ backgroundColor: "#ffffff" }}>
+      {/* <View
+        style={{
+          height: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <ManualCounter int={123} />
+      </View> */}
+    </PlateformSafeView>
   );
 };
 

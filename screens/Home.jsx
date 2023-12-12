@@ -6,18 +6,30 @@ import {
   Dimensions,
   FlatList,
   ScrollView,
+  Image,
 } from "react-native";
 import React, { useState, useRef } from "react";
 import PlateformSafeView from "../components/PlateformSafeView";
 import ProgressCircle from "../components/ProgressCircle";
 import { Colors, Spacing, Typography } from "../styles";
-import LottieView from "lottie-react-native";
 import aspectRatio from "../tools/AspectRatio";
 import useStepCount from "../hooks/useStepCount";
 import ScrollTabView from "../components/ScrollTabView";
+import GlobalStats from "../components/GlobalStats";
+import FireTag from "../components/FireTag";
+import TimerTag from "../components/TimerTag";
+// import { useFonts } from "expo-font";
+// let customFonts = {
+//   // 'Poppins-Black': require('./assets/fonts/Poppins-Black.ttf')
+//   "Inter-Black": require("../assets/fonts/Inter-Black.ttf"),
+//   "Inter-Regular": require("../assets/fonts/Inter-Regular.ttf"),
+//   "AlegreyaSansSC-Bold": require("../assets/fonts/AlegreyaSansSC-Bold.ttf"),
+// };
 
 const Home = () => {
+  // const [isLoaded] = useFonts(customFonts);
   const [visibleChild, setVisibleChild] = useState(1);
+  const scrollViewRef = useRef(null);
 
   const halfWindowsHeigth = Dimensions.get("window").height / 2; //50 VH
   const STEP_GOAL = 10000;
@@ -50,96 +62,40 @@ const Home = () => {
           overflow: "hidden",
           backgroundColor: "#ffffff",
           zIndex: 1,
+          paddingTop: aspectRatio(10),
         }}
       >
         {/* View lottie fire + chrono */}
         <View
           style={{
-            paddingHorizontal: Spacing.padding.sm,
             flexDirection: "row",
+            justifyContent: "space-between",
             alignItems: "center",
-            gap: 0,
-            position: "relative",
-            overflow: "visible",
           }}
         >
-          <LottieView
-            source={require("../assets/fire.json")}
-            style={{ width: 50, height: 50, zIndex: 2 }}
-            loop
-            autoPlay
-          />
-          <View
-            style={{
-              backgroundColor: Colors.colors.blue,
-              paddingHorizontal: Spacing.padding.md,
-              paddingVertical: aspectRatio(4),
-              borderBottomRightRadius: 16,
-              borderTopRightRadius: 16,
-              transform: "translate(-20px, 10px)",
-              zIndex: 1,
-            }}
-          >
-            <Text
-              style={{
-                color: Colors.colors.white,
-                fontWeight: "700",
-                fontSize: aspectRatio(Typography.fontSizes.sm),
-              }}
-            >
-              3 jours
-            </Text>
-          </View>
+          <FireTag />
+          <TimerTag />
         </View>
         {/* selector tab perso && global */}
 
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 8,
-          }}
-        >
-          <Text
-            style={{
-              color: "#000000",
-              color: "#000000",
-              opacity: visibleChild === 1 ? 1 : 0.25,
-            }}
-          >
-            Goodbye
-          </Text>
-          <View
-            style={{
-              width: 2,
-              height: 24,
-              backgroundColor: "black",
-            }}
-          ></View>
-          <Text
-            style={{
-              color: "#000000",
-              color: "#000000",
-              opacity: visibleChild === 2 ? 1 : 0.25,
-            }}
-          >
-            Goodbye
-          </Text>
-        </View>
-
-        <ScrollTabView onVisible={handleOnVisible}>
+        <ScrollTabView>
           <ProgressCircle objectif={STEP_GOAL} progression={steps} />
-          <View>
-            <Text>Global 1</Text>
-            <Text>Global 1</Text>
-            <Text>Global 1</Text>
-            <Text>Global 1</Text>
-            <Text>Global 1</Text>
-          </View>
+          <GlobalStats />
         </ScrollTabView>
 
-        {/* <ProgressCircle objectif={STEP_GOAL} progression={steps} /> */}
+        {/* Test fontFamily */}
+        {/* <Text
+          style={{
+            color: "#000000",
+            opacity: 1,
+            fontSize: 32,
+            textAlign: "center",
+            fontWeight: "700",
+            fontFamily: "Inter-Bold",
+          }}
+        >
+          187 000
+        </Text> */}
       </View>
       {/* FIn header blanc */}
       <View
@@ -151,13 +107,7 @@ const Home = () => {
           zIndex: 0,
           paddingTop: 40,
         }}
-      >
-        <Text>Steps</Text>
-        <Text>{steps}</Text>
-        <TouchableOpacity onPress={handlePress}>
-          <Text>Cliquez ici pour changer la valeur</Text>
-        </TouchableOpacity>
-      </View>
+      ></View>
     </PlateformSafeView>
   );
 };

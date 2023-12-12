@@ -1,17 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Animated,
-  Easing,
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  useWindowDimensions,
-  Dimensions,
-  PixelRatio,
-} from "react-native";
+import { Animated, Easing, View, Text, StyleSheet, Image } from "react-native";
 import LottieView from "lottie-react-native";
-import { Typography, Spacing, Colors, Buttons } from "../styles";
+import { Typography, Colors, Buttons } from "../styles";
 import aspectRatio from "../tools/AspectRatio";
 const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
 
@@ -46,9 +36,6 @@ const ProgressCircle = ({ objectif, progression }) => {
           flex: 1,
           width: "20%",
           height: "45%",
-
-          // width: 90,
-          // height: 138,
           position: "absolute",
           bottom: "25%",
         }}
@@ -70,8 +57,6 @@ const ProgressCircle = ({ objectif, progression }) => {
       >
         <Text
           style={{
-            // fontFamilly: "Alegreya Sans SC",
-            // fontFamilly: Typography.fonts.numbers.fontFamilly,
             fontSize: aspectRatio(Typography.fontSizes.xl),
             fontWeight: 700,
             color: Colors.colors.darkblue,
@@ -93,6 +78,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     height: "auto",
+    flex: 1,
   },
 });
 

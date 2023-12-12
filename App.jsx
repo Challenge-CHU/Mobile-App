@@ -18,7 +18,34 @@ import aspectRatio from "./tools/AspectRatio";
 import TabBar from "./components/Navigation/TabBar";
 import Social from "./screens/Social";
 
+// import useFonts from "./hooks/useFonts";
+import { useFonts } from "expo-font";
+
 const Tab = createBottomTabNavigator();
+let customFonts = {
+  // 'Poppins-Black': require('./assets/fonts/Poppins-Black.ttf')
+  "Inter-Black": require("./assets/fonts/Inter-Black.ttf"),
+  "Inter-Bold": require("./assets/fonts/Inter-Bold.ttf"),
+  "Inter-Regular": require("./assets/fonts/Inter-Regular.ttf"),
+  "Inter-Medium": require("./assets/fonts/Inter-Medium.ttf"),
+  "AlegreyaSansSC-Black": require("./assets/fonts/AlegreyaSansSC-Black.ttf"),
+  "AlegreyaSansSC-Bold": require("./assets/fonts/AlegreyaSansSC-Bold.ttf"),
+  "AlegreyaSansSC-Medium": require("./assets/fonts/AlegreyaSansSC-Medium.ttf"),
+  "AlegreyaSansSC-Regular": require("./assets/fonts/AlegreyaSansSC-Regular.ttf"),
+};
+
+export default function App() {
+  const [isLoaded] = useFonts(customFonts);
+
+  return (
+    <>
+      <NavigationContainer>
+        <MyTabs />
+      </NavigationContainer>
+      <StatusBar style="auto" />
+    </>
+  );
+}
 
 function MyTabs() {
   return (
@@ -45,18 +72,6 @@ function MyTabs() {
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Profil" component={Profil} />
     </Tab.Navigator>
-  );
-}
-
-export default function App() {
-  return (
-    <>
-      <NavigationContainer>
-        <MyTabs />
-      </NavigationContainer>
-
-      <StatusBar style="auto" />
-    </>
   );
 }
 
