@@ -19,6 +19,8 @@ import GlobalStats from "../components/GlobalStats";
 import FireTag from "../components/FireTag";
 import TimerTag from "../components/TimerTag";
 import LittleWalkyMsg from "../components/LittleWalkyMsg";
+import Card from "../components/Card";
+import Graph from "../components/Graph";
 // import { useFonts } from "expo-font";
 // let customFonts = {
 //   // 'Poppins-Black': require('./assets/fonts/Poppins-Black.ttf')
@@ -55,7 +57,8 @@ const Home = () => {
     <PlateformSafeView styles={{ backgroundColor: "#ffffff" }}>
       <View
         style={{
-          height: halfWindowsHeigth,
+          height: halfWindowsHeigth - aspectRatio(12),
+          // height: halfWindowsHeigth,
           borderWidth: 1,
           borderColor: "transparent",
           borderBottomLeftRadius: 32,
@@ -85,32 +88,85 @@ const Home = () => {
         </ScrollTabView>
 
         <LittleWalkyMsg />
-
-        {/* Test fontFamily */}
-        {/* <Text
-          style={{
-            color: "#000000",
-            opacity: 1,
-            fontSize: 32,
-            textAlign: "center",
-            fontWeight: "700",
-            fontFamily: "Inter-Bold",
-          }}
-        >
-          187 000
-        </Text> */}
       </View>
+
       {/* FIn header blanc */}
       <View
         style={{
           backgroundColor: Colors.colors.blue,
           flexGrow: 1,
-          height: "100%",
           transform: "translateY(-30px)",
           zIndex: 0,
           paddingTop: 40,
+          paddingHorizontal: 24,
+          flexDirection: "column",
+          gap: 24,
         }}
-      ></View>
+      >
+        {/* Card Statistique */}
+        <Card
+          style={{
+            width: "100%",
+            height: Dimensions.get("screen").height / 2 / 2 - aspectRatio(64),
+            // paddingVertical: 8,
+          }}
+        >
+          <Text style={{ fontSize: aspectRatio(16), fontWeight: "700" }}>
+            Historique & statistiques
+          </Text>
+
+          <Graph />
+        </Card>
+
+        <View
+          style={{
+            width: "100%",
+            height: Dimensions.get("screen").height / 2 / 2 - aspectRatio(64),
+            paddingBottom: 24,
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 34,
+          }}
+        >
+          <Card
+            style={{
+              width: "55%",
+              height: "100%",
+              position: "relative",
+            }}
+          >
+            <Text>Titre du badge</Text>
+            <Image
+              source={require("../assets/Badge2.png")}
+              style={{
+                width: 109,
+                height: 75,
+                position: "absolute",
+                top: -12,
+                right: -36,
+              }}
+            />
+          </Card>
+          <Card
+            style={{
+              width: "auto",
+              flex: 1,
+              height: "100%",
+              position: "relative",
+              alignItems: "center",
+            }}
+          >
+            <Image
+              source={require("../assets/iconfriend.png")}
+              style={{
+                width: 49,
+                height: 60,
+                transform: "translateY(-24px)",
+              }}
+            />
+          </Card>
+        </View>
+      </View>
     </PlateformSafeView>
   );
 };

@@ -10,12 +10,8 @@ export const colors = {
 
 //Couleurs des barres pour graphBar
 export const barGraphColors = {
-  good: {
-    backgroundColor: colors.orange,
-  },
-  bad: {
-    backgroundColor: colors.gray,
-  },
+  good: colors.orange,
+  bad: colors.gray,
 };
 
 //Couleurs de la BottomNavbar

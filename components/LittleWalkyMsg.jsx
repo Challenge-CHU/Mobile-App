@@ -8,8 +8,9 @@ const LittleWalkyMsg = ({ message }) => {
       style={{
         flexDirection: "row",
         paddingHorizontal: 20,
-        marginBottom: 32,
+        marginBottom: 16,
         gap: 22,
+        alignItems: "center",
       }}
     >
       <Image
@@ -33,6 +34,7 @@ const LittleWalkyMsg = ({ message }) => {
           borderTopRightRadius: 12,
           alignItems: "flex-start",
           justifyContent: "center",
+          paddingVertical: 8,
           paddingHorizontal: 12,
           height: "auto",
         }}

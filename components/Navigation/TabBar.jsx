@@ -1,7 +1,7 @@
 import { View, TouchableOpacity, Text, Platform } from "react-native";
 import aspectRatio from "../../tools/AspectRatio";
 import { Colors } from "../../styles";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 function TabBar({ state, descriptors, navigation, route }) {
@@ -21,12 +21,12 @@ function TabBar({ state, descriptors, navigation, route }) {
       style={{
         flexDirection: "row",
         height: "auto",
-        // height: aspectRatio(64),
-        backgroundColor: "red",
+        height: aspectRatio(64),
         backgroundColor:
           focusedRoute === "Home"
             ? blueTheme.background
             : whiteTheme.background,
+        // backgroundColor: "red",
       }}
     >
       {state.routes.map((route, index) => {
@@ -68,11 +68,11 @@ function TabBar({ state, descriptors, navigation, route }) {
             onLongPress={onLongPress}
             style={{
               flex: 1,
-              justifyContent: "center",
+              justifyContent: "flex-start",
               alignItems: "center",
               opacity: isFocused ? 0.55 : 1,
-              marginBottom:
-                Platform.OS === "ios" ? aspectRatio(24) : aspectRatio(8),
+              // marginBottom:
+              //   Platform.OS === "ios" ? aspectRatio(24) : aspectRatio(8),
               gap: aspectRatio(4),
             }}
             key={index}
