@@ -4,6 +4,7 @@ import { create } from "zustand";
 export const useStepCountStore = create((set) => ({
   steps: 0,
   streak: 0,
+  goal: 10000,
   updateStreak: (newStreakValue) => set({ streak: newStreakValue }),
   // Ajoutez une nouvelle action pour mettre à jour les pas
   updateSteps: (newStepsValue) => set({ steps: newStepsValue }),

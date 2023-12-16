@@ -13,10 +13,9 @@ const permissions = {
   },
 };
 export const useHealthKit = (date) => {
-  console.log("utilise healthkit hook");
-
   const [hasPermissions, setHasPermissions] = useState(false);
   const [steps, setSteps] = useState(0);
+  const [weekSteps, setWeekSteps] = useState();
 
   const handleGetCountStep = (options) => {
     AppleHealthKit.getStepCount(options, (err, results) => {
@@ -27,16 +26,44 @@ export const useHealthKit = (date) => {
       setSteps(results.value);
     });
   };
-  //A tester
 
-  // useEffect(() => {
-  //   new NativeEventEmitter(NativeModules.AppleHealthKit).addListener(
-  //     'healthKit:Steps:new',
-  //     async () => {
-  //       console.log('--> observer triggered');
-  //     },
-  //   );
-  // });
+  const handleGetWeekSteps = async () => {
+    let day = date.getDay();
+    let daysBefore = 0;
+    if (day === 0) {
+      daysBefore = -6;
+    } else {
+      daysBefore = day - 1;
+    }
+
+    let today = new Date();
+    let lastWeekDate = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() - daysBefore
+    );
+
+    let optionDate = {
+      startDate: lastWeekDate.toISOString(),
+      endDate: today.toISOString(),
+      includeManuallyAdded: false,
+      period: 1440, //1440 minutes => 24 heures
+    };
+
+    AppleHealthKit.getDailyStepCountSamples(optionDate, (err, results) => {
+      if (err) {
+        console.log("Error get step week: ", err);
+        return;
+      }
+
+      // results.map((item, idx) => {
+      //   let date = new Date(item.endDate);
+      //   let day = date.getDay();
+      //   console.log(`${idx} DAY: ${day}, steps: ${item.value}`);
+      // });
+      setWeekSteps(results);
+    });
+  };
 
   useEffect(() => {
     AppleHealthKit.initHealthKit(permissions, (err) => {
@@ -60,6 +87,7 @@ export const useHealthKit = (date) => {
 
     handleGetCountStep(options);
     const interval = setInterval(() => handleGetCountStep(options), 300000);
+    handleGetWeekSteps();
     return () => {
       clearInterval(interval);
     };
@@ -68,5 +96,7 @@ export const useHealthKit = (date) => {
   return {
     steps,
     hasPermissions,
+    handleGetWeekSteps,
+    weekSteps,
   };
 };

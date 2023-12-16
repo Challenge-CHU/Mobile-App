@@ -7,9 +7,9 @@ import {
   FlatList,
   ScrollView,
 } from "react-native";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
-const ScrollTabView = ({ children }) => {
+const ScrollTabView = ({ children, onChange }) => {
   const scrollViewRef = useRef(null);
   const [visibleChild, setVisibleChild] = useState(1);
 
@@ -33,6 +33,13 @@ const ScrollTabView = ({ children }) => {
       setVisibleChild(1);
     }
   };
+
+  useEffect(() => {
+    if (onChange != undefined) {
+      onChange(visibleChild);
+    }
+  }, [visibleChild]);
+
   const handleScrollToTab = () => {
     if (scrollViewRef.current) {
       scrollViewRef.current.scrollTo({

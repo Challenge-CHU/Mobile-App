@@ -55,6 +55,9 @@ export const useGoogleFit = () => {
         today.getDate() - 8
       );
 
+      console.log("Semaine dernière: ", lastWeekDate);
+      console.log("Aujourd'hui: ", today);
+
       const options = {
         startDate: lastWeekDate.toISOString(),
         endDate: today.toISOString(),
