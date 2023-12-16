@@ -3,6 +3,8 @@ import { Animated, Easing, View, Text, StyleSheet, Image } from "react-native";
 import LottieView from "lottie-react-native";
 import { Typography, Colors, Buttons } from "../styles";
 import aspectRatio from "../tools/AspectRatio";
+import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
+import { PercentageOf } from "../tools/Percentage";
 const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
 
 const ProgressCircle = ({ objectif, progression }) => {
@@ -28,23 +30,35 @@ const ProgressCircle = ({ objectif, progression }) => {
       <AnimatedLottieView
         source={require("../assets/grph2.json")}
         progress={animationProgress}
-        style={{ width: "100%", height: "90%" }}
+        // style={{
+        //   width: ResponsiveWidth(62),
+        //   height: ResponsiveWidth(28.5),
+        //   backgroundColor: "yellow",
+        // }}
+        style={{ width: "100%", height: "100%" }}
         // style={{ width: "100%", height: "90%" }} //Avant c'etait 80% height
+        resizeMode="contain"
       />
       <View
         style={{
           flex: 1,
-          width: "20%",
-          height: "45%",
+          width: ResponsiveWidth(23),
+          height: ResponsiveHeight(16),
+          // width: "20%",
+          // height: "45%",
           position: "absolute",
-          bottom: "25%",
+          bottom: PercentageOf(ResponsiveHeight(16), 35),
+          // bottom: 32,
+          // bottom: "25%",
         }}
       >
         <Image
           source={require("../assets/walkyy.png")}
           style={{
-            width: "100%",
-            height: "100%", // Set height to 'auto' to maintain aspect ratio
+            width: ResponsiveWidth(23),
+            // width: "100%",
+            height: ResponsiveHeight(16), // Set height to 'auto' to maintain aspect ratio
+            // height: "100%", // Set height to 'auto' to maintain aspect ratio
             resizeMode: "contain", // Scale image to fit while maintaining aspect ratio
           }}
         />
@@ -52,17 +66,19 @@ const ProgressCircle = ({ objectif, progression }) => {
       <View
         style={{
           position: "absolute",
-          bottom: "10%",
+          bottom: 0,
+          // bottom: "10%",
         }}
       >
         <Text
           style={{
-            fontSize: aspectRatio(Typography.fontSizes.xl),
+            fontSize: ResponsiveHeight(3.5),
             fontWeight: 700,
             color: Colors.colors.darkblue,
           }}
         >
-          {progression}
+          20 000
+          {/* {progression} */}
         </Text>
       </View>
     </View>

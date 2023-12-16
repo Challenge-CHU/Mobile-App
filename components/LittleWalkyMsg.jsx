@@ -1,23 +1,26 @@
 import React from "react";
-import { View, StyleSheet, Image, Text } from "react-native";
+import { View, StyleSheet, Image, Text, Dimensions } from "react-native";
 import aspectRatio from "../tools/AspectRatio";
+import { PercentageOf } from "../tools/Percentage";
+import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 
 const LittleWalkyMsg = ({ message }) => {
   return (
     <View
       style={{
         flexDirection: "row",
-        paddingHorizontal: 20,
-        marginBottom: 16,
-        gap: 22,
+        paddingHorizontal: ResponsiveWidth(5.6),
+        paddingVertical: ResponsiveHeight(1.8),
+        // marginBottom: ResponsiveHeight(1.8),
+        gap: ResponsiveWidth(5),
         alignItems: "center",
+        justifyContent: "center",
       }}
     >
       <Image
         source={require("../assets/littlewalky.png")}
-        style={{ width: 29, height: 45 }}
-        // width="8px"
-        // height="8px"
+        style={{ width: ResponsiveWidth(7.4), height: ResponsiveHeight(5.32) }}
+        resizeMode="contain"
       />
       <View
         style={{
@@ -39,7 +42,13 @@ const LittleWalkyMsg = ({ message }) => {
           height: "auto",
         }}
       >
-        <Text style={{ color: "black" }}>
+        <Text
+          style={{
+            color: "black",
+            fontSize: aspectRatio(10),
+            // fontSize: `${PercentageOf(Dimensions.get("screen").height, 1.8)}px`,
+          }}
+        >
           {message ??
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. "}
         </Text>
@@ -47,7 +56,6 @@ const LittleWalkyMsg = ({ message }) => {
     </View>
   );
 };
-// 0px 3px 4px rgba(0, 0, 0, 0.15)
 
 const styles = StyleSheet.create({});
 

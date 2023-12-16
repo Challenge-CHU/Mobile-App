@@ -2,6 +2,8 @@ import React from "react";
 import { View, StyleSheet, Text, Image } from "react-native";
 import { Colors, Spacing, Typography } from "../styles";
 import aspectRatio from "../tools/AspectRatio";
+import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
+import { PercentageOf } from "../tools/Percentage";
 
 const TimerTag = ({ datetime }) => {
   //Gérer le temps restant ici
@@ -31,21 +33,27 @@ const TimerTag = ({ datetime }) => {
           style={{
             color: Colors.colors.blue,
             fontWeight: "700",
-            fontSize: aspectRatio(Typography.fontSizes.sm),
+            fontSize: ResponsiveHeight(1.4),
           }}
         >
           2 mois restants
         </Text>
       </View>
-      <Image
-        source={require("../assets/timer.png")}
+      <View
         style={{
-          width: 26,
-          height: 32,
+          transform: `translateY(-${PercentageOf(ResponsiveHeight(3.7), 4)}px)`,
           zIndex: 2,
-          transform: "translateY(-4px)",
         }}
-      />
+      >
+        <Image
+          source={require("../assets/timer.png")}
+          style={{
+            width: ResponsiveWidth(6.66),
+            height: ResponsiveHeight(3.7),
+          }}
+          resizeMode="contain"
+        />
+      </View>
     </View>
   );
 };

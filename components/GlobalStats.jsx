@@ -1,7 +1,9 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Dimensions } from "react-native";
 import { Colors } from "../styles";
 import aspectRatio from "../tools/AspectRatio";
+import { PercentageOf } from "../tools/Percentage";
+import { ResponsiveHeight } from "../tools/ResponsiveHeight";
 
 const fakeData = [
   { int: 187000, description: "Pas cumulés aujourd'hui" },
@@ -11,12 +13,16 @@ const fakeData = [
 ];
 
 const GlobalStats = () => {
+  let screenHeight = Dimensions.get("screen").height;
+
+  let tabtext = PercentageOf(screenHeight, 1.6);
+
   return (
     <View
       style={{
         justifyContent: "center",
         alignItems: "center",
-        gap: aspectRatio(16),
+        gap: ResponsiveHeight(1.4),
         // backgroundColor: "purple",
         flex: 2,
         marginHorizontal: "auto",
@@ -37,7 +43,7 @@ const Stats = ({ int, description }) => {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "flex-end",
-        gap: aspectRatio(16),
+        gap: ResponsiveHeight(1.4),
         height: "auto",
         width: "80%",
         marginHorizontal: "auto",
@@ -46,7 +52,7 @@ const Stats = ({ int, description }) => {
       <Text
         style={{
           color: Colors.colors.darkblue,
-          fontSize: aspectRatio(32),
+          fontSize: ResponsiveHeight(3.4),
           fontWeight: "700",
           width: "50%",
           textAlign: "right",
@@ -58,7 +64,7 @@ const Stats = ({ int, description }) => {
       <Text
         style={{
           fontWeight: "600",
-          fontSize: aspectRatio(16),
+          fontSize: ResponsiveHeight(1.4),
           width: "50%",
           textAlign: "left",
         }}

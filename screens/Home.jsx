@@ -21,6 +21,7 @@ import TimerTag from "../components/TimerTag";
 import LittleWalkyMsg from "../components/LittleWalkyMsg";
 import Card from "../components/Card";
 import Graph from "../components/Graph";
+import { ResponsiveHeight } from "../tools/ResponsiveHeight";
 // import { useFonts } from "expo-font";
 // let customFonts = {
 //   // 'Poppins-Black': require('./assets/fonts/Poppins-Black.ttf')
@@ -49,7 +50,7 @@ const Home = () => {
       <View style={{ backgroundColor: Colors.colors.blue }}>
         <View
           style={{
-            height: halfWindowsHeigth - aspectRatio(12),
+            height: halfWindowsHeigth - ResponsiveHeight(1.4),
             // height: halfWindowsHeigth,
             borderWidth: 1,
             borderColor: "transparent",
@@ -58,7 +59,7 @@ const Home = () => {
             overflow: "hidden",
             backgroundColor: "#ffffff",
             zIndex: 1,
-            paddingTop: aspectRatio(10),
+            paddingTop: ResponsiveHeight(1.18),
           }}
         >
           {/* View lottie fire + chrono */}
@@ -83,7 +84,7 @@ const Home = () => {
             message={
               visibleChild === 1
                 ? "Encore un petit effort, tu y es presque !"
-                : "Voici tout ce que nous avons \naccompli ensemble !"
+                : "Voici tout ce que nous avons accompli ensemble !"
             }
           />
         </View>

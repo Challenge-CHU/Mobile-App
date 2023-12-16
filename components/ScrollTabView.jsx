@@ -8,6 +8,9 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useState, useRef, useEffect } from "react";
+import aspectRatio from "../tools/AspectRatio";
+import { PercentageOf } from "../tools/Percentage";
+import { ResponsiveHeight } from "../tools/ResponsiveHeight";
 
 const ScrollTabView = ({ children, onChange }) => {
   const scrollViewRef = useRef(null);
@@ -65,18 +68,13 @@ const ScrollTabView = ({ children, onChange }) => {
           gap: 8,
         }}
       >
-        <TouchableOpacity onPress={handleScrollToPreviousTab}>
-          <Text
-            style={{
-              color: "#000000",
-              color: "#000000",
-              opacity: visibleChild === 1 ? 1 : 0.25,
-              fontFamily: "Inter-Regular",
-            }}
-          >
-            Perso
-          </Text>
-        </TouchableOpacity>
+        <TabText
+          name={"Perso"}
+          onPressEvent={handleScrollToPreviousTab}
+          visibleChild={visibleChild}
+          id={1}
+        />
+
         <View
           style={{
             width: 2,
@@ -86,18 +84,25 @@ const ScrollTabView = ({ children, onChange }) => {
             opacity: 0.25,
           }}
         />
-        <TouchableOpacity onPress={handleScrollToTab}>
+        <TabText
+          name={"Global"}
+          onPressEvent={handleScrollToTab}
+          visibleChild={visibleChild}
+          id={2}
+        />
+        {/* <TouchableOpacity onPress={handleScrollToTab}>
           <Text
             style={{
               color: "#000000",
               color: "#000000",
               opacity: visibleChild === 2 ? 1 : 0.25,
               fontFamily: "Inter-Regular",
+              fontSize: aspectRatio(16),
             }}
           >
             Global
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <ScrollView
         showsHorizontalScrollIndicator={false}
@@ -131,6 +136,29 @@ const ScrollTabView = ({ children, onChange }) => {
         })}
       </ScrollView>
     </>
+  );
+};
+
+const TabText = ({ name, onPressEvent, visibleChild, id }) => {
+  let screenHeight = Dimensions.get("screen").height;
+
+  let tabtext = PercentageOf(screenHeight, 1.6);
+
+  console.log("TABBBBBBBBBtxt: ", tabtext);
+  return (
+    <TouchableOpacity onPress={onPressEvent}>
+      <Text
+        style={{
+          color: "#000000",
+          color: "#000000",
+          opacity: visibleChild === id ? 1 : 0.25,
+          fontFamily: "Inter-Regular",
+          fontSize: ResponsiveHeight(1.6),
+        }}
+      >
+        {name}
+      </Text>
+    </TouchableOpacity>
   );
 };
 
