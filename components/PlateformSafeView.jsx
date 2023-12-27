@@ -8,7 +8,7 @@ const PlateformSafeView = ({ children, styles }) => {
       <View
         style={{
           color: Colors.colors.black,
-          paddingTop: 32,
+          // paddingTop: 32,
         }}
       >
         {children}

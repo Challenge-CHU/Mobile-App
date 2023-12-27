@@ -14,11 +14,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "./screens/Home";
 import Profil from "./screens/Profil";
 import { Colors, Typography } from "./styles";
-import aspectRatio from "./tools/AspectRatio";
 import TabBar from "./components/Navigation/TabBar";
 import Social from "./screens/Social";
 
-// import useFonts from "./hooks/useFonts";
 import { useFonts } from "expo-font";
 
 const Tab = createBottomTabNavigator();

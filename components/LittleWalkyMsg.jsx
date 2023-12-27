@@ -45,7 +45,8 @@ const LittleWalkyMsg = ({ message }) => {
         <Text
           style={{
             color: "black",
-            fontSize: aspectRatio(10),
+            fontSize: ResponsiveHeight(1.8),
+            // fontSize: aspectRatio(10),
             // fontSize: `${PercentageOf(Dimensions.get("screen").height, 1.8)}px`,
           }}
         >

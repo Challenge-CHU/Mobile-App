@@ -21,7 +21,8 @@ import TimerTag from "../components/TimerTag";
 import LittleWalkyMsg from "../components/LittleWalkyMsg";
 import Card from "../components/Card";
 import Graph from "../components/Graph";
-import { ResponsiveHeight } from "../tools/ResponsiveHeight";
+import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
+import { LayoutHome, LayoutHomeGlobal } from "../components/LayoutHome";
 // import { useFonts } from "expo-font";
 // let customFonts = {
 //   // 'Poppins-Black': require('./assets/fonts/Poppins-Black.ttf')
@@ -47,7 +48,7 @@ const Home = () => {
 
   return (
     <PlateformSafeView styles={{ backgroundColor: "#ffffff" }}>
-      <View style={{ backgroundColor: Colors.colors.blue }}>
+      <View style={{ backgroundColor: Colors.colors.blue, display: "flex" }}>
         <View
           style={{
             height: halfWindowsHeigth - ResponsiveHeight(1.4),
@@ -93,113 +94,17 @@ const Home = () => {
         <View
           style={{
             backgroundColor: Colors.colors.blue,
-            flexGrow: 1,
+            height: "100%",
             // transform: "translateY(-30px)",
             zIndex: 0,
+            // paddingVertical: ResponsiveWidth(1.5),
             paddingVertical: aspectRatio(12),
-            paddingHorizontal: 24,
+            paddingHorizontal: ResponsiveWidth(6.15),
             flexDirection: "column",
-            gap: 24,
+            gap: ResponsiveHeight(2.84),
           }}
         >
-          {visibleChild === 1 ? (
-            <>
-              {/* Card Statistique */}
-              <Card
-                style={{
-                  width: "100%",
-                  height:
-                    Dimensions.get("screen").height / 2 / 2 - aspectRatio(64),
-                }}
-              >
-                <Text style={{ fontSize: aspectRatio(16), fontWeight: "700" }}>
-                  Historique & statistiques
-                </Text>
-
-                <Graph />
-              </Card>
-
-              <View
-                style={{
-                  width: "100%",
-                  height:
-                    Dimensions.get("screen").height / 2 / 2 - aspectRatio(64),
-                  paddingBottom: 24,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 34,
-                }}
-              >
-                <Card
-                  style={{
-                    width: "55%",
-                    height: "100%",
-                    position: "relative",
-                  }}
-                >
-                  <Text>Titre du badge</Text>
-                  <Image
-                    source={require("../assets/Badge2.png")}
-                    style={{
-                      width: 109,
-                      height: 75,
-                      position: "absolute",
-                      top: -12,
-                      right: -36,
-                    }}
-                  />
-                  <View
-                    style={{
-                      flex: 1,
-                      justifyContent: "space-between",
-                      alignItems: "flex-end",
-                      flexDirection: "row",
-                    }}
-                  >
-                    <Text>1% Obtention</Text>
-                    <Text>0/100</Text>
-                  </View>
-                </Card>
-                <Card
-                  style={{
-                    width: "auto",
-                    flex: 1,
-                    height: "100%",
-                    position: "relative",
-                    alignItems: "center",
-                  }}
-                >
-                  <View
-                    style={{
-                      transform: "translateY(-24px)",
-                    }}
-                  >
-                    <Image
-                      source={require("../assets/iconfriend.png")}
-                      style={{
-                        width: 49,
-                        height: 60,
-                        // transform: "translateY(-24px)",
-                      }}
-                    />
-                  </View>
-                  <Text
-                    style={{
-                      textAlign: "center",
-                      fontSize: aspectRatio(16),
-                      fontWeight: "700",
-                    }}
-                  >
-                    Ajouter un Ami
-                  </Text>
-                </Card>
-              </View>
-            </>
-          ) : (
-            <View>
-              <Text>None</Text>
-            </View>
-          )}
+          {visibleChild === 1 ? <LayoutHome /> : <LayoutHomeGlobal />}
         </View>
       </View>
     </PlateformSafeView>

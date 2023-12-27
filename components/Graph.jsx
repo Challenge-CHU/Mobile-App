@@ -6,19 +6,28 @@ import Svg, { Line } from "react-native-svg";
 import Percentage, { PercentageOf } from "../tools/Percentage";
 import { useStepCountStore } from "../store/useStepCountStore";
 import useStepCount from "../hooks/useStepCount";
+import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 
 const MAX_GRAPH_VALUE = 15000; // La valeur maximum pour le graphique
 
 const Graph = () => {
   const { weekSteps } = useStepCount();
 
-  const [steps, setSteps] = useState([0, 0, 0, 0, 0, 0, 0]);
+  const [steps, setSteps] = useState([
+    1200, 5000, 200, 8000, 3400, 10000, 2000,
+  ]);
+  // const [steps, setSteps] = useState([0, 0, 0, 0, 0, 0, 0]);
   const [average, setAverage] = useState();
   const [percentAverage, setPercentAverage] = useState(1);
   const Days = ["L", "M", "M", "J", "V", "S", "D"];
 
   const handleGetCurrentWeekSteps = () => {
-    let initStepsValues = [0, 0, 0, 0, 0, 0, 0];
+    //TODO: fix calcul moyenn parce que la moyenne est calculer avec les zéros
+    //Ajouter ici
+    //Récupérer le jour, si c'est lundi alors la moyenne c'est la valeur de lundi
+    //SI c'est mardi alors calcul de moyenn avec Lundi + MArdi
+    // let initStepsValues = [0, 0, 0, 0, 0, 0, 0];
+    let initStepsValues = [1200, 5000, 200, 8000, 3400, 10000, 2000];
 
     let copy = initStepsValues.map((item, idx) => {
       return weekSteps[idx] !== undefined ? weekSteps[idx].value : item;
@@ -110,8 +119,12 @@ const GoalLine = () => {
 
   // percent 10k => 15k puis récup ce percent pour 75
   const percentGoal = Percentage(goal, MAX_GRAPH_VALUE);
-  const percent = PercentageOf(75, percentGoal);
-  return <View style={{ ...styles.goalline, bottom: percent }}></View>;
+  const percent = PercentageOf(ResponsiveHeight(8.89), percentGoal);
+  return (
+    <View
+      style={{ ...styles.goalline, bottom: percent, right: 0, left: 0 }}
+    ></View>
+  );
 };
 const AverageLine = ({ percent }) => {
   const [value, setValue] = useState(percent);
@@ -148,22 +161,23 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     alignItems: "center",
+    // backgroundColor: "purple",
   },
   wrapper: {
     width: "80%",
     flexDirection: "column",
     alignContent: "center",
     justifyContent: "flex-end",
-    gap: 8,
+    gap: ResponsiveHeight(0.95),
   },
   containerBars: {
     width: "100%",
-    height: 75,
+    height: ResponsiveHeight(8.89),
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "flex-end",
     position: "relative",
-    // backgroundColor: "orange",
+    // backgroundColor: "red",
   },
   containerDays: {
     width: "100%",
@@ -171,7 +185,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   bar: {
-    width: aspectRatio(25),
+    width: ResponsiveWidth(6.41),
     height: "100%",
     borderRadius: 4,
     backgroundColor: "green",
@@ -187,7 +201,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   text: {
-    fontSize: 12,
+    fontSize: ResponsiveHeight(1.4),
     fontWeight: "700",
     flex: 7,
     justifyContent: "center",

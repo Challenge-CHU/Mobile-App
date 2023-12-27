@@ -3,6 +3,10 @@ import aspectRatio from "../../tools/AspectRatio";
 import { Colors } from "../../styles";
 import { useEffect, useState, useRef } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  ResponsiveHeight,
+  ResponsiveWidth,
+} from "../../tools/ResponsiveHeight";
 
 function TabBar({ state, descriptors, navigation, route }) {
   const blueTheme = {
@@ -21,7 +25,7 @@ function TabBar({ state, descriptors, navigation, route }) {
       style={{
         flexDirection: "row",
         height: "auto",
-        height: aspectRatio(64),
+        height: ResponsiveHeight(7.58),
         backgroundColor:
           focusedRoute === "Home"
             ? blueTheme.background
@@ -71,9 +75,9 @@ function TabBar({ state, descriptors, navigation, route }) {
               justifyContent: "flex-start",
               alignItems: "center",
               opacity: isFocused ? 0.55 : 1,
-              // marginBottom:
-              //   Platform.OS === "ios" ? aspectRatio(24) : aspectRatio(8),
-              gap: aspectRatio(4),
+              marginBottom: ResponsiveHeight(2.84),
+              // Platform.OS === "ios" ? aspectRatio(24) : aspectRatio(8),
+              gap: ResponsiveWidth(1.03),
             }}
             key={index}
           >
@@ -81,8 +85,8 @@ function TabBar({ state, descriptors, navigation, route }) {
               style={{
                 color:
                   focusedRoute === "Home" ? blueTheme.text : whiteTheme.text,
-                fontSize:
-                  Platform.OS === "ios" ? aspectRatio(24) : aspectRatio(20),
+                fontSize: ResponsiveHeight(2.84),
+                // Platform.OS === "ios" ? aspectRatio(24) : aspectRatio(20),
                 fontWeight: "700",
               }}
             >

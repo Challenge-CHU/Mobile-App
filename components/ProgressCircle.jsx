@@ -77,8 +77,7 @@ const ProgressCircle = ({ objectif, progression }) => {
             color: Colors.colors.darkblue,
           }}
         >
-          20 000
-          {/* {progression} */}
+          {progression}
         </Text>
       </View>
     </View>
@@ -87,6 +86,7 @@ const ProgressCircle = ({ objectif, progression }) => {
 
 const styles = StyleSheet.create({
   container: {
+    width: "100%",
     position: "relative",
     alignItems: "center",
     justifyContent: "center",
