@@ -1,30 +1,45 @@
-import React from "react";
-import { View, StyleSheet, Text, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 import Card from "./Card";
 import Graph from "./Graph";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
+import { gap, padding } from "../styles/spacing";
+import { Colors } from "../styles";
+import { useNavigation } from "@react-navigation/native";
 
-export const LayoutHome = () => {
+export const LayoutHome = React.memo(({ value }) => {
+  if (value === 1) return <LayoutHomePerso />;
+  if (value === 2) return <LayoutHomeGlobal />;
+});
+
+export const LayoutHomePerso = React.memo(() => {
+  const navigation = useNavigation();
   return (
     <>
       {/* Card Statistique */}
-      <Card
-        style={{
-          width: "100%",
-          height: ResponsiveHeight(17.3),
-        }}
+      <TouchableOpacity
+        style={{ width: "100%", height: "auto" }}
+        onPress={() => navigation.navigate("Historical")}
       >
-        <Text
+        <Card
           style={{
-            fontSize: ResponsiveHeight(1.9),
-            fontWeight: "700",
+            width: "100%",
+            height: ResponsiveHeight(17.3),
+            position: "relative",
           }}
         >
-          Historique & statistiques
-        </Text>
+          <Text
+            style={{
+              fontSize: ResponsiveHeight(1.9),
+              fontWeight: "700",
+            }}
+          >
+            Historique & statistiques
+          </Text>
 
-        <Graph />
-      </Card>
+          <Graph />
+        </Card>
+      </TouchableOpacity>
 
       <View
         style={{
@@ -35,101 +50,165 @@ export const LayoutHome = () => {
           gap: ResponsiveWidth(8.72),
         }}
       >
-        <Card
-          style={{
-            width: "55%",
-            height: "100%",
-            position: "relative",
-            height: ResponsiveHeight(15.28),
-          }}
+        <TouchableOpacity
+          style={{ width: "55%", height: "100%" }}
+          onPress={() => navigation.navigate("Profil")}
         >
-          <Text
+          <Card
             style={{
-              fontSize: ResponsiveHeight(1.9),
-              fontWeight: "700",
-            }}
-          >
-            Titre du badge
-          </Text>
-          <Image
-            source={require("../assets/Badge2.png")}
-            style={{
-              width: ResponsiveWidth(27.95),
-              height: ResponsiveHeight(8.89),
-              position: "absolute",
-              top: -12,
-              right: -40,
-              objectFit: "contain",
-            }}
-          />
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "space-between",
-              alignItems: "flex-end",
-              flexDirection: "row",
-            }}
-          >
-            <Text style={{ fontSize: ResponsiveHeight(1.9) }}>
-              1% Obtention
-            </Text>
-            <Text style={{ fontSize: ResponsiveHeight(1.9) }}>0/100</Text>
-          </View>
-        </Card>
-        <Card
-          style={{
-            width: ResponsiveWidth(28.97),
-            height: ResponsiveHeight(15.28),
-            position: "relative",
-            alignItems: "center",
-          }}
-        >
-          <View
-            style={{
-              position: "absolute",
-              top: -ResponsiveHeight(1.42),
-            }}
-          >
-            <Image
-              source={require("../assets/iconfriend.png")}
-              style={{
-                width: ResponsiveWidth(12.56),
-                height: ResponsiveHeight(7.11),
-                objectFit: "contain",
-              }}
-            />
-          </View>
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
+              width: "100%",
               height: "100%",
-              marginTop: ResponsiveHeight(1.42),
+              position: "relative",
+              height: ResponsiveHeight(15.28),
             }}
           >
             <Text
               style={{
-                textAlign: "center",
                 fontSize: ResponsiveHeight(1.9),
                 fontWeight: "700",
               }}
             >
-              Ajouter un Ami
+              Titre du badge
             </Text>
-          </View>
-        </Card>
+            <Image
+              source={require("../assets/Badge2.png")}
+              style={{
+                width: ResponsiveWidth(27.95),
+                height: ResponsiveHeight(8.89),
+                position: "absolute",
+                top: -12,
+                right: -40,
+                objectFit: "contain",
+              }}
+            />
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "space-between",
+                alignItems: "flex-end",
+                flexDirection: "row",
+              }}
+            >
+              <Text style={{ fontSize: ResponsiveHeight(1.9) }}>
+                1% Obtention
+              </Text>
+              <Text style={{ fontSize: ResponsiveHeight(1.9) }}>0/100</Text>
+            </View>
+          </Card>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            width: ResponsiveWidth(28.97),
+            height: ResponsiveHeight(15.28),
+          }}
+          onPress={() => navigation.navigate("Social")}
+        >
+          <Card
+            style={{
+              width: "100%",
+              height: "100%",
+              position: "relative",
+              alignItems: "center",
+            }}
+          >
+            <View
+              style={{
+                position: "absolute",
+                top: -ResponsiveHeight(1.42),
+              }}
+            >
+              <Image
+                source={require("../assets/iconfriend.png")}
+                style={{
+                  width: ResponsiveWidth(12.56),
+                  height: ResponsiveHeight(7.11),
+                  objectFit: "contain",
+                }}
+              />
+            </View>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+                marginTop: ResponsiveHeight(1.42),
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: ResponsiveHeight(1.9),
+                  fontWeight: "700",
+                }}
+              >
+                Ajouter un Ami
+              </Text>
+            </View>
+          </Card>
+        </TouchableOpacity>
       </View>
     </>
   );
-};
+});
 
-export const LayoutHomeGlobal = () => {
+export const LayoutHomeGlobal = React.memo(() => {
   return (
     <View style={{ flexGrow: 1, gap: ResponsiveHeight(1.42) }}>
-      <Card style={{ height: ResponsiveHeight(6), width: "100%" }}></Card>
-      <Card style={{ height: ResponsiveHeight(6), width: "100%" }}></Card>
-      <Card style={{ height: ResponsiveHeight(6), width: "100%" }}></Card>
+      <GlobalStatsCard
+        stat="10"
+        text="Tour(s) de la Terre parcourus ensemble"
+        icon={require("../assets/earth.png")}
+      />
+      <GlobalStatsCard
+        stat="10"
+        text="Kg de CO² économisé"
+        icon={require("../assets/feuille.png")}
+      />
+      <GlobalStatsCard
+        stat="1,5Mi"
+        text="Km parcourus"
+        icon={require("../assets/green-character.png")}
+      />
     </View>
+  );
+});
+
+const GlobalStatsCard = ({ stat, text, icon }) => {
+  return (
+    <Card
+      style={{
+        height: "4%",
+        width: "100%",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingVertical: 0,
+        gap: ResponsiveWidth(6.1),
+      }}
+    >
+      <Text
+        style={{
+          fontSize: ResponsiveHeight(3.3),
+          margin: 0,
+          padding: 0,
+          fontWeight: "700",
+          color: Colors.colors.darkblue,
+        }}
+      >
+        {stat}
+      </Text>
+      <View style={{ flex: 1 }}>
+        <Text style={{ fontSize: ResponsiveHeight(1.6) }}>{text}</Text>
+      </View>
+      <Image
+        source={icon}
+        style={{
+          objectFit: "contain",
+          width: ResponsiveWidth(7.6),
+          height: ResponsiveHeight(3.5),
+        }}
+      />
+    </Card>
   );
 };
 

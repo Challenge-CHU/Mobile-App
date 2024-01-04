@@ -8,32 +8,24 @@ import { useStepCountStore } from "../store/useStepCountStore";
 import useStepCount from "../hooks/useStepCount";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 
+
 const MAX_GRAPH_VALUE = 15000; // La valeur maximum pour le graphique
 
 const Graph = () => {
-  const { weekSteps } = useStepCount();
+  const { weekSteps } = useStepCountStore();
 
-  const [steps, setSteps] = useState([
-    1200, 5000, 200, 8000, 3400, 10000, 2000,
-  ]);
-  // const [steps, setSteps] = useState([0, 0, 0, 0, 0, 0, 0]);
+  const [steps, setSteps] = useState([]);
+
   const [average, setAverage] = useState();
   const [percentAverage, setPercentAverage] = useState(1);
   const Days = ["L", "M", "M", "J", "V", "S", "D"];
 
   const handleGetCurrentWeekSteps = () => {
-    //TODO: fix calcul moyenn parce que la moyenne est calculer avec les zéros
-    //Ajouter ici
-    //Récupérer le jour, si c'est lundi alors la moyenne c'est la valeur de lundi
-    //SI c'est mardi alors calcul de moyenn avec Lundi + MArdi
-    // let initStepsValues = [0, 0, 0, 0, 0, 0, 0];
-    let initStepsValues = [1200, 5000, 200, 8000, 3400, 10000, 2000];
+    //FakeValues, uncomment for debug
+    // const tableauValeurs = [1000, 5000, 200, 8000, 3400, 25000, 2000];
 
-    let copy = initStepsValues.map((item, idx) => {
-      return weekSteps[idx] !== undefined ? weekSteps[idx].value : item;
-    });
-    // console.log("gaou: ", copy);
-    setSteps(copy);
+    const tableauValeurs = weekSteps.map((item) => item.value);
+    setSteps(tableauValeurs);
   };
 
   const handleComputeAverage = () => {
@@ -70,10 +62,13 @@ const Graph = () => {
         <View style={styles.containerBars}>
           <GoalLine />
           <AverageLine percent={percentAverage} />
-
-          {steps.map((step, idx) => {
-            return <Bar steps={step} key={idx} />;
-          })}
+          <Bar steps={steps[0] ?? 0} />
+          <Bar steps={steps[1] ?? 0} />
+          <Bar steps={steps[2] ?? 0} />
+          <Bar steps={steps[3] ?? 0} />
+          <Bar steps={steps[4] ?? 0} />
+          <Bar steps={steps[5] ?? 0} />
+          <Bar steps={steps[6] ?? 0} />
         </View>
         <View style={styles.textContainer}>
           {Days.map((day, idx) => {
@@ -85,21 +80,19 @@ const Graph = () => {
   );
 };
 
-const Bar = ({ text, steps }) => {
+const Bar = React.memo(({ steps }) => {
   const { goal } = useStepCountStore();
   const percent = (steps * 100) / MAX_GRAPH_VALUE;
-  const height = percent;
+  const height = percent > 100 ? 100 : percent;
 
   const colors = [Colors.barGraphColors.good, Colors.barGraphColors.bad];
-
-  //SI au dessus de 10 000 alors couleur good sinon couleur bad
 
   return (
     <View style={{ ...styles.barContainer }}>
       <View
         style={{
           ...styles.bar,
-          height: percent + "%" ?? "0%",
+          height: height + "%" ?? "0%",
           backgroundColor:
             steps >= goal
               ? Colors.barGraphColors.good
@@ -108,7 +101,7 @@ const Bar = ({ text, steps }) => {
       ></View>
     </View>
   );
-};
+});
 
 const Day = ({ text }) => {
   return <Text style={styles.text}>{text}</Text>;
@@ -117,7 +110,6 @@ const Day = ({ text }) => {
 const GoalLine = () => {
   const { goal } = useStepCountStore();
 
-  // percent 10k => 15k puis récup ce percent pour 75
   const percentGoal = Percentage(goal, MAX_GRAPH_VALUE);
   const percent = PercentageOf(ResponsiveHeight(8.89), percentGoal);
   return (
@@ -136,8 +128,9 @@ const AverageLine = ({ percent }) => {
     <View
       style={{
         ...styles.averageLine,
-        bottom: `${value}%`,
+        bottom: `${percent - 2}%`,
         left: 0,
+        right: 0,
       }}
     >
       <Svg height="2" width="100%">
@@ -159,7 +152,6 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     flex: 1,
-    justifyContent: "flex-end",
     alignItems: "center",
     // backgroundColor: "purple",
   },
@@ -167,8 +159,10 @@ const styles = StyleSheet.create({
     width: "80%",
     flexDirection: "column",
     alignContent: "center",
-    justifyContent: "flex-end",
+    justifyContent: "center",
     gap: ResponsiveHeight(0.95),
+    marginHorizontal: "auto",
+    // backgroundColor: "blue",
   },
   containerBars: {
     width: "100%",
@@ -209,14 +203,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   goalline: {
-    width: "110%",
+    width: "100%",
     height: 2,
     backgroundColor: Colors.colors.blue,
     position: "absolute",
     zIndex: 3,
   },
   averageLine: {
-    width: "110%",
+    width: "100%",
     position: "absolute",
     zIndex: 3,
   },

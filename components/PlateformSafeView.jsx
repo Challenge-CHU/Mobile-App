@@ -1,6 +1,7 @@
 import { View, Text, Platform, SafeAreaView } from "react-native";
 import { Typography, Spacing, Colors, Buttons } from "../styles";
 import React from "react";
+import { ResponsiveHeight } from "../tools/ResponsiveHeight";
 
 const PlateformSafeView = ({ children, styles }) => {
   if (Platform.OS === "android") {
@@ -8,7 +9,8 @@ const PlateformSafeView = ({ children, styles }) => {
       <View
         style={{
           color: Colors.colors.black,
-          // paddingTop: 32,
+          paddingTop: ResponsiveHeight(3.7),
+          ...styles,
         }}
       >
         {children}

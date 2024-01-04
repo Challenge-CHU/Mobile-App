@@ -1,11 +1,15 @@
 import { create } from "zustand";
 
-// Créez un store Zustand
+
 export const useStepCountStore = create((set) => ({
-  steps: 0,
+  startDateChallenge: null,
+  endDateChallenge: null,
+  dailySteps: 0,
+  weekSteps: [],
+  allStep: [],
   streak: 0,
   goal: 10000,
   updateStreak: (newStreakValue) => set({ streak: newStreakValue }),
-  // Ajoutez une nouvelle action pour mettre à jour les pas
-  updateSteps: (newStepsValue) => set({ steps: newStepsValue }),
+  updateSteps: (newStepsValue) => set({ dailySteps: newStepsValue }),
+  updateWeekSteps: (newStepsValue) => set({ weekSteps: newStepsValue }),
 }));

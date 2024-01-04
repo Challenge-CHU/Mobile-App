@@ -19,12 +19,6 @@ export default function BackgroundFetchScreen() {
 
     const formattedTime = `${hours}h${minutes < 10 ? "0" : ""}${minutes}`;
 
-    console.log(`Got background fetch call at date: ${formattedTime}`);
-
-    // console.log(
-    //   `Got background fetch call at date: ${new Date(now).toISOString()}`
-    // );
-
     // Be sure to return the successful result type!
     return BackgroundFetch.BackgroundFetchResult.NewData;
   });

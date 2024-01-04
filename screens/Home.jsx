@@ -8,7 +8,7 @@ import {
   ScrollView,
   Image,
 } from "react-native";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import PlateformSafeView from "../components/PlateformSafeView";
 import ProgressCircle from "../components/ProgressCircle";
 import { Colors, Spacing, Typography } from "../styles";
@@ -23,6 +23,7 @@ import Card from "../components/Card";
 import Graph from "../components/Graph";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 import { LayoutHome, LayoutHomeGlobal } from "../components/LayoutHome";
+import { useStepCountStore } from "../store/useStepCountStore";
 // import { useFonts } from "expo-font";
 // let customFonts = {
 //   // 'Poppins-Black': require('./assets/fonts/Poppins-Black.ttf')
@@ -33,6 +34,9 @@ import { LayoutHome, LayoutHomeGlobal } from "../components/LayoutHome";
 
 const Home = () => {
   //Child fais référence a une tab View (le grpah ou les stats globals)
+  const { dailySteps } = useStepCountStore();
+  const [steps, setSteps] = useState(dailySteps);
+
   const [visibleChild, setVisibleChild] = useState(1);
   const scrollViewRef = useRef(null);
 
@@ -40,11 +44,16 @@ const Home = () => {
   const STEP_GOAL = 10000;
 
   //Hook pour récupérer la données depuis health au format: new Date(YYYY-MM-DD)
-  const { steps } = useStepCount();
+  // const { steps } = useStepCount();
 
-  const handleOnVisibleChildChange = (visibleInt) => {
+  const handleOnVisibleChildChange = useCallback((visibleInt) => {
     setVisibleChild(visibleInt);
-  };
+  });
+
+  useEffect(() => {
+    console.log(dailySteps, " daily daily");
+    setSteps(dailySteps);
+  }, [dailySteps]);
 
   return (
     <PlateformSafeView styles={{ backgroundColor: "#ffffff" }}>
@@ -52,7 +61,6 @@ const Home = () => {
         <View
           style={{
             height: halfWindowsHeigth - ResponsiveHeight(1.4),
-            // height: halfWindowsHeigth,
             borderWidth: 1,
             borderColor: "transparent",
             borderBottomLeftRadius: 32,
@@ -77,7 +85,7 @@ const Home = () => {
           {/* selector tab perso && global */}
 
           <ScrollTabView onChange={handleOnVisibleChildChange}>
-            <ProgressCircle objectif={STEP_GOAL} progression={steps} />
+            <ProgressCircle objectif={STEP_GOAL} progression={dailySteps} />
             <GlobalStats />
           </ScrollTabView>
 
@@ -95,16 +103,14 @@ const Home = () => {
           style={{
             backgroundColor: Colors.colors.blue,
             height: "100%",
-            // transform: "translateY(-30px)",
             zIndex: 0,
-            // paddingVertical: ResponsiveWidth(1.5),
             paddingVertical: aspectRatio(12),
             paddingHorizontal: ResponsiveWidth(6.15),
             flexDirection: "column",
             gap: ResponsiveHeight(2.84),
           }}
         >
-          {visibleChild === 1 ? <LayoutHome /> : <LayoutHomeGlobal />}
+          <LayoutHome value={visibleChild} />
         </View>
       </View>
     </PlateformSafeView>

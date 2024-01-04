@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import AppleHealthKit, { HealthKitPermission } from "react-native-health";
-import { NativeEventEmitter, NativeModules } from "react-native";
 
 const permissions = {
   permissions: {
@@ -12,10 +11,15 @@ const permissions = {
     write: [],
   },
 };
+
 export const useHealthKit = (date) => {
   const [hasPermissions, setHasPermissions] = useState(false);
   const [steps, setSteps] = useState(0);
   const [weekSteps, setWeekSteps] = useState();
+
+  const handleGetAllChallengeSteps = useMemo(() => {
+    //Todo: Récupérer la date de début de challenge qui doit etre un param et la date d'aujoud'hui ou la date de fin en param
+  });
 
   const handleGetCountStep = (options) => {
     AppleHealthKit.getStepCount(options, (err, results) => {

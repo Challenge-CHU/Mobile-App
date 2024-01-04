@@ -19,6 +19,10 @@ function TabBar({ state, descriptors, navigation, route }) {
   };
 
   const focusedRoute = state.routes[state.index].name;
+  // Les routes que l'on ne veut pas montrer dans la Navbar
+  const hiddenRoutes = ["Splash", "Historical"];
+
+  if (focusedRoute === "Splash") return null;
 
   return (
     <View
@@ -61,50 +65,48 @@ function TabBar({ state, descriptors, navigation, route }) {
             target: route.key,
           });
         };
-
-        return (
-          <TouchableOpacity
-            accessibilityRole="button"
-            accessibilityState={isFocused ? { selected: true } : {}}
-            accessibilityLabel={options.tabBarAccessibilityLabel}
-            testID={options.tabBarTestID}
-            onPress={onPress}
-            onLongPress={onLongPress}
-            style={{
-              flex: 1,
-              justifyContent: "flex-start",
-              alignItems: "center",
-              opacity: isFocused ? 0.55 : 1,
-              marginBottom: ResponsiveHeight(2.84),
-              // Platform.OS === "ios" ? aspectRatio(24) : aspectRatio(8),
-              gap: ResponsiveWidth(1.03),
-            }}
-            key={index}
-          >
-            <Text
+        if (!hiddenRoutes.includes(route.name)) {
+          return (
+            <TouchableOpacity
+              accessibilityRole="button"
+              accessibilityState={isFocused ? { selected: true } : {}}
+              accessibilityLabel={options.tabBarAccessibilityLabel}
+              testID={options.tabBarTestID}
+              onPress={onPress}
+              onLongPress={onLongPress}
               style={{
-                color:
-                  focusedRoute === "Home" ? blueTheme.text : whiteTheme.text,
-                fontSize: ResponsiveHeight(2.84),
-                // Platform.OS === "ios" ? aspectRatio(24) : aspectRatio(20),
-                fontWeight: "700",
+                flex: 1,
+                justifyContent: "flex-start",
+                alignItems: "center",
+                opacity: isFocused ? 0.55 : 1,
+                gap: ResponsiveWidth(1.03),
               }}
+              key={index}
             >
-              {label}
-            </Text>
+              <Text
+                style={{
+                  color:
+                    focusedRoute === "Home" ? blueTheme.text : whiteTheme.text,
+                  fontSize: ResponsiveHeight(2.84),
+                  fontWeight: "700",
+                }}
+              >
+                {label}
+              </Text>
 
-            <View
-              style={{
-                width: focusedRoute === label ? "50%" : 0,
-                height: 2,
-                borderRadius: 24,
-                backgroundColor:
-                  focusedRoute === "Home" ? blueTheme.text : whiteTheme.text,
-                alignSelf: "center",
-              }}
-            ></View>
-          </TouchableOpacity>
-        );
+              <View
+                style={{
+                  width: focusedRoute === label ? "50%" : 0,
+                  height: 2,
+                  borderRadius: 24,
+                  backgroundColor:
+                    focusedRoute === "Home" ? blueTheme.text : whiteTheme.text,
+                  alignSelf: "center",
+                }}
+              ></View>
+            </TouchableOpacity>
+          );
+        }
       })}
     </View>
   );

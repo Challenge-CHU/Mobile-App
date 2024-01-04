@@ -16,8 +16,10 @@ import Profil from "./screens/Profil";
 import { Colors, Typography } from "./styles";
 import TabBar from "./components/Navigation/TabBar";
 import Social from "./screens/Social";
-
+import useStepCount from "./hooks/useStepCount";
 import { useFonts } from "expo-font";
+import SplashScreen from "./components/SplashScreen";
+import Historical from "./screens/Historical";
 
 const Tab = createBottomTabNavigator();
 let customFonts = {
@@ -34,6 +36,7 @@ let customFonts = {
 
 export default function App() {
   const [isLoaded] = useFonts(customFonts);
+  useStepCount();
 
   return (
     <>
@@ -64,11 +67,13 @@ function MyTabs() {
           justifyContent: "center",
         },
       }}
-      initialRouteName="Home"
+      initialRouteName="Splash"
     >
       <Tab.Screen name="Social" component={Social} />
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Profil" component={Profil} />
+      <Tab.Screen name="Splash" component={SplashScreen} />
+      <Tab.Screen name="Historical" component={Historical} />
     </Tab.Navigator>
   );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import GoogleFit, { Scopes } from "react-native-google-fit";
 import { useStepCountStore } from "../store/useStepCountStore";
 
@@ -15,7 +15,11 @@ export const useGoogleFit = () => {
   const [steps, setSteps] = useState(0);
   // const stepCountStore = useStepCountStore();
 
-  //Observateur pour les pas en temps réel (Pas fiable donc DEPRECATED)
+  const handleGetAllChallengeSteps = useMemo(() => {
+    //Todo: Récupérer la date de début de challenge qui doit etre un param et la date d'aujoud'hui ou la date de fin en param
+  });
+
+  // Observateur pour les pas en temps réel (Pas fiable donc DEPRECATED)
   const recordStep = () => {
     GoogleFit.startRecording((res) => {
       console.log(res, "res1");
