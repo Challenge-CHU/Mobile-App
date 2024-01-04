@@ -1,7 +1,8 @@
 export const colors = {
   blue: "#00b4ec", //background light Blue
   darkblue: "#317dba",
-  white: "#f5f5f5",
+  white: "#ffffff",
+  // white: "#f5f5f5",
   orange: "#e1822f",
   black: "#000000",
   green: "#E2812B",

@@ -14,13 +14,6 @@ const Social = () => {
         }}
       >
         <Text>Hello</Text>
-        <Rive
-          url="https://hajimejudobucket.s3.eu-west-3.amazonaws.com/idle_walky.riv"
-          // resourceName="idle-walky"
-          // artboardName="walky"
-          stateMachineName="State Machine 1"
-          style={{ width: 400, height: 400 }}
-        />
       </View>
     </PlateformSafeView>
   );
