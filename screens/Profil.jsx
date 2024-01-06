@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
-import { View, StyleSheet, Text, Image } from "react-native";
+import { View, StyleSheet, Text, Image, ScrollView } from "react-native";
 import PlateformSafeView from "../components/PlateformSafeView";
 import { Colors } from "../styles";
 import BottomSheet from "../components/BottomSheet";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
+import BadgeList from "../components/BadgeList";
+import Divider from "../components/Divider";
 
 const Profil = () => {
   return (
@@ -18,12 +20,14 @@ const Profil = () => {
         <View
           style={{
             backgroundColor: Colors.colors.blue,
-            height: ResponsiveHeight(17),
+            height: ResponsiveHeight(13),
+            // height: ResponsiveHeight(17),
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
             paddingHorizontal: ResponsiveWidth(8.2),
             gap: ResponsiveHeight(2.84),
+            // backgroundColor: "red",
           }}
         >
           <Image
@@ -55,7 +59,8 @@ const Profil = () => {
           />
         </View>
       </PlateformSafeView>
-      <BottomSheet styles={{ height: ResponsiveHeight(72), padding: 0 }}>
+      <BottomSheet styles={{ height: ResponsiveHeight(75), padding: 0 }}>
+        {/* <BottomSheet styles={{ height: ResponsiveHeight(72), padding: 0 }}> */}
         <View
           style={{
             paddingHorizontal: ResponsiveHeight(2.8),
@@ -92,6 +97,14 @@ const Profil = () => {
               resizeMode="contain"
             />
           </View>
+          <ScrollView
+            style={{ marginTop: ResponsiveHeight(2.8) }}
+            showsVerticalScrollIndicator={false}
+          >
+            <BadgeList titre="Badges" />
+            <Divider />
+            <BadgeList titre="Badges collectifs" />
+          </ScrollView>
           <View></View>
         </View>
       </BottomSheet>

@@ -30,13 +30,14 @@ function TabBar({ state, descriptors, navigation, route }) {
     <View
       style={{
         flexDirection: "row",
-        height: "auto",
+        justifyContent: "center",
+        alignItems: "center",
         height: ResponsiveHeight(7.58),
         backgroundColor:
           focusedRoute === "Home"
             ? blueTheme.background
             : whiteTheme.background,
-        // backgroundColor: "red",
+        gap: ResponsiveWidth(10.2),
       }}
     >
       {state.routes.map((route, index) => {
@@ -77,7 +78,6 @@ function TabBar({ state, descriptors, navigation, route }) {
               onPress={onPress}
               onLongPress={onLongPress}
               style={{
-                flex: 1,
                 justifyContent: "flex-start",
                 alignItems: "center",
                 opacity: isFocused ? 0.55 : 1,
@@ -89,7 +89,7 @@ function TabBar({ state, descriptors, navigation, route }) {
                 style={{
                   color:
                     focusedRoute === "Home" ? blueTheme.text : whiteTheme.text,
-                  fontSize: ResponsiveHeight(2.84),
+                  fontSize: ResponsiveHeight(2.3),
                   fontWeight: "700",
                 }}
               >
@@ -98,7 +98,7 @@ function TabBar({ state, descriptors, navigation, route }) {
 
               <View
                 style={{
-                  width: focusedRoute === label ? "50%" : 0,
+                  width: focusedRoute === label ? "100%" : 0,
                   height: 2,
                   borderRadius: 24,
                   backgroundColor:

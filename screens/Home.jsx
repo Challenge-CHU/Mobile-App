@@ -43,9 +43,6 @@ const Home = () => {
   const halfWindowsHeigth = Dimensions.get("window").height / 2; //50 VH
   const STEP_GOAL = 10000;
 
-  //Hook pour récupérer la données depuis health au format: new Date(YYYY-MM-DD)
-  // const { steps } = useStepCount();
-
   const handleOnVisibleChildChange = useCallback((visibleInt) => {
     setVisibleChild(visibleInt);
   });
