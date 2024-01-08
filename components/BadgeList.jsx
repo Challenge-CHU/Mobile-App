@@ -1,6 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Text, Image, FlatList } from "react-native";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
+import aspectRatio from "../tools/AspectRatio";
 
 //En param un titre nullable + une liste de badge
 
@@ -18,6 +19,8 @@ let Unlockbadges = [
   { id: 2, name: "Badge streaker", level: 1, unlock: true },
   { id: 3, name: "Badge beau gosse", level: 3, unlock: true },
   { id: 4, name: "Badge Globe Trotteur", level: 1, unlock: false },
+  { id: 5, name: "Badge Globe Trotteur", level: 1, unlock: false },
+  { id: 6, name: "Badge Globe Trotteur", level: 1, unlock: false },
 ];
 
 Unlockbadges.sort((a, b) => {
@@ -32,13 +35,20 @@ let Allbadges = [
   { id: 1, name: "Badge streaker", level: 1, unlock: true },
   { id: 1, name: "Badge beau gosse", level: 3, unlock: true },
   { id: 0, name: "Badge Globe Trotteur", level: 1, unlock: false },
+  { id: 0, name: "Badge Globe Trotteur", level: 1, unlock: false },
+  { id: 0, name: "Badge Globe Trotteur", level: 1, unlock: false },
 ];
 
 const BadgeList = ({ titre }) => {
   return (
-    <View style={{ gap: 32 }}>
+    <View style={{ gap: ResponsiveHeight(3.7) }}>
       {titre && (
-        <Text style={{ fontSize: ResponsiveHeight(2.3), fontWeight: "700" }}>
+        <Text
+          style={{
+            fontSize: aspectRatio(ResponsiveHeight(2.3)),
+            fontWeight: "700",
+          }}
+        >
           {titre}
         </Text>
       )}
@@ -53,6 +63,8 @@ const BadgeList = ({ titre }) => {
         style={{
           flexDirection: "row",
           flexWrap: "wrap",
+          alignItems: "flex-start",
+          justifyContent: "space-around",
           rowGap: ResponsiveHeight(4),
         }}
       >
@@ -77,7 +89,7 @@ const Badges = ({ badge }) => {
         source={levels[badge.level]}
         style={{
           width: ResponsiveWidth(27.9),
-          height: ResponsiveHeight(8.88),
+          height: ResponsiveHeight(8.8),
           objectFit: "contain",
           opacity: badge.unlock ? 1 : 0.25,
         }}

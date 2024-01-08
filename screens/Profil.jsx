@@ -1,27 +1,122 @@
 import React, { useEffect } from "react";
-import { View, StyleSheet, Text, Image, ScrollView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import PlateformSafeView from "../components/PlateformSafeView";
 import { Colors } from "../styles";
 import BottomSheet from "../components/BottomSheet";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 import BadgeList from "../components/BadgeList";
 import Divider from "../components/Divider";
+import aspectRatio from "../tools/AspectRatio";
+import ProfilHome from "./Profil/ProfilHome";
+import { createStackNavigator } from "@react-navigation/stack";
+import {
+  NavigationContainer,
+  useNavigation,
+  useNavigationContext,
+} from "@react-navigation/native";
+import Settings from "./Profil/Settings";
+import ProfilNavigationHeader from "../components/Navigation/ProfilNavigationHeader";
+
+const ProfilStack = createStackNavigator();
+
+const ProfilStackNavigator = () => (
+  <ProfilStack.Navigator
+    screenOptions={{
+      header: ({ navigation, route, options, back }) => {
+        // header: (props) => {
+        // const { options } = scene;
+        // const title =
+        //   options.headerTitle !== undefined
+        //     ? options.headerTitle
+        //     : options.title !== undefined
+        //     ? options.title
+        //     : scene.route.name;
+        // Utilisez votre composant de header personnalisé
+        return (
+          <ProfilNavigationHeader
+            navigation={navigation}
+            route={route}
+            options={options}
+            back={back}
+          />
+        );
+      },
+      cardOverlayEnabled: true,
+      // animationEnabled: true,
+      animationEnabled: false,
+      // animationTypeForReplace: "pop",
+      // cardOverlay: () => (
+      //   <View
+      //     style={{
+      //       backgroundColor: "transparent",
+      //       overflow: "visible",
+      //     }}
+      //   />
+      // ),
+    }}
+  >
+    <ProfilStack.Screen
+      name="ProfilHome"
+      component={ProfilHome}
+      options={{
+        cardStyle: {
+          overflow: "visible",
+          backgroundColor: "#ffffff",
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
+          borderTopLeftRadius: 32,
+          borderTopRightRadius: 32,
+        },
+      }}
+    />
+    <ProfilStack.Screen
+      name="Settings"
+      component={Settings}
+      options={{
+        cardStyle: {
+          overflow: "visible",
+          backgroundColor: "#ffffff",
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
+          borderTopLeftRadius: 32,
+          borderTopRightRadius: 32,
+        },
+      }}
+    />
+  </ProfilStack.Navigator>
+);
 
 const Profil = () => {
+  const navigation = useNavigation();
+  // const navigationContext = useNavigationContext();
+  const changeContent = () => {
+    navigation.navigate("Settings");
+  };
+
+  useEffect(() => {
+    navigation.navigate("ProfilHome");
+  }, []);
+
   return (
     <>
       <PlateformSafeView
         styles={{
           backgroundColor: Colors.colors.blue,
           height: "100%",
-          marginBottom: 12,
+          marginBottom: ResponsiveHeight(1.4),
         }}
       >
         <View
           style={{
             backgroundColor: Colors.colors.blue,
             height: ResponsiveHeight(13),
-            // height: ResponsiveHeight(17),
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
@@ -49,64 +144,26 @@ const Profil = () => {
           >
             Pseudo
           </Text>
-          <Image
-            source={require("../assets/setting-wheel.png")}
-            style={{
-              width: ResponsiveWidth(5.8),
-              height: ResponsiveHeight(2.8),
-            }}
-            resizeMode="contain"
-          />
-        </View>
-      </PlateformSafeView>
-      <BottomSheet styles={{ height: ResponsiveHeight(75), padding: 0 }}>
-        {/* <BottomSheet styles={{ height: ResponsiveHeight(72), padding: 0 }}> */}
-        <View
-          style={{
-            paddingHorizontal: ResponsiveHeight(2.8),
-            paddingVertical: ResponsiveHeight(3.79),
-            position: "relative",
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Text
-              style={{ fontSize: ResponsiveHeight(2.8), fontWeight: "700" }}
-            >
-              Badges Années
-            </Text>
-          </View>
-          <View
-            style={{
-              position: "absolute",
-              top: -ResponsiveHeight(1.89),
-              right: ResponsiveHeight(3.79),
-            }}
-          >
+          <TouchableOpacity onPress={changeContent}>
             <Image
-              source={require("../assets/walkyy.png")}
+              source={require("../assets/setting-wheel.png")}
               style={{
-                width: ResponsiveWidth(18),
-                height: ResponsiveHeight(12),
+                width: ResponsiveWidth(5.8),
+                height: ResponsiveHeight(2.8),
               }}
               resizeMode="contain"
             />
-          </View>
-          <ScrollView
-            style={{ marginTop: ResponsiveHeight(2.8) }}
-            showsVerticalScrollIndicator={false}
-          >
-            <BadgeList titre="Badges" />
-            <Divider />
-            <BadgeList titre="Badges collectifs" />
-          </ScrollView>
-          <View></View>
+          </TouchableOpacity>
         </View>
+      </PlateformSafeView>
+      <BottomSheet
+        styles={{
+          height: ResponsiveHeight(75),
+          padding: 0,
+        }}
+      >
+        {/* <BottomSheetNavigator /> */}
+        <ProfilStackNavigator />
       </BottomSheet>
     </>
   );

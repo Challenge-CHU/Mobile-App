@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     width: "95%",
     borderBlockColor: "#000000",
     borderWidth: 1,
-    marginVertical: ResponsiveHeight(3.7),
+    marginVertical: ResponsiveHeight(3),
     marginHorizontal: "auto",
     alignSelf: "center",
   },

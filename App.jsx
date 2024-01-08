@@ -8,8 +8,6 @@ import {
   NativeEventEmitter,
   NativeModules,
 } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "./screens/Home";
@@ -21,8 +19,14 @@ import useStepCount from "./hooks/useStepCount";
 import { useFonts } from "expo-font";
 import SplashScreen from "./components/SplashScreen";
 import Historical from "./screens/Historical";
+import { createStackNavigator } from "@react-navigation/stack";
+import Settings from "./screens/Profil/Settings";
+import ProfilHome from "./screens/Profil/ProfilHome";
+import { colors } from "./styles/colors";
 
 const Tab = createBottomTabNavigator();
+const ProfilStack = createStackNavigator();
+
 let customFonts = {
   // 'Poppins-Black': require('./assets/fonts/Poppins-Black.ttf')
   "Inter-Black": require("./assets/fonts/Inter-Black.ttf"),
@@ -41,7 +45,13 @@ export default function App() {
 
   return (
     <>
-      <NavigationContainer>
+      <NavigationContainer
+        theme={{
+          colors: {
+            background: Colors.colors.blue,
+          },
+        }}
+      >
         <MyTabs />
       </NavigationContainer>
       <StatusBar style="auto" />
@@ -78,6 +88,8 @@ function MyTabs() {
     </Tab.Navigator>
   );
 }
+
+
 
 const styles = StyleSheet.create({
   container: {

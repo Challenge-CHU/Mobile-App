@@ -25,7 +25,6 @@ const BottomSheet = ({ styles, children }) => {
             <Text>Close BottomSheet</Text>
           </TouchableOpacity> */}
           {children}
-          {/* Your BottomSheet content goes here */}
         </View>
       )}
     </View>
