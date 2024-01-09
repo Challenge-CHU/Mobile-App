@@ -30,14 +30,13 @@ function TabBar({ state, descriptors, navigation, route }) {
     <View
       style={{
         flexDirection: "row",
-        justifyContent: "center",
+        justifyContent: "space-around",
         alignItems: "center",
         height: ResponsiveHeight(7.58),
         backgroundColor:
           focusedRoute === "Home"
             ? blueTheme.background
             : whiteTheme.background,
-        gap: ResponsiveWidth(10.2),
       }}
     >
       {state.routes.map((route, index) => {

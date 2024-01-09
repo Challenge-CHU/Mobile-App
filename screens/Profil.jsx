@@ -11,9 +11,6 @@ import PlateformSafeView from "../components/PlateformSafeView";
 import { Colors } from "../styles";
 import BottomSheet from "../components/BottomSheet";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
-import BadgeList from "../components/BadgeList";
-import Divider from "../components/Divider";
-import aspectRatio from "../tools/AspectRatio";
 import ProfilHome from "./Profil/ProfilHome";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
@@ -29,37 +26,13 @@ const ProfilStack = createStackNavigator();
 const ProfilStackNavigator = () => (
   <ProfilStack.Navigator
     screenOptions={{
-      header: ({ navigation, route, options, back }) => {
-        // header: (props) => {
-        // const { options } = scene;
-        // const title =
-        //   options.headerTitle !== undefined
-        //     ? options.headerTitle
-        //     : options.title !== undefined
-        //     ? options.title
-        //     : scene.route.name;
-        // Utilisez votre composant de header personnalisé
-        return (
-          <ProfilNavigationHeader
-            navigation={navigation}
-            route={route}
-            options={options}
-            back={back}
-          />
-        );
+      header: (props) => {
+        return <ProfilNavigationHeader {...props} />;
       },
       cardOverlayEnabled: true,
       // animationEnabled: true,
       animationEnabled: false,
-      // animationTypeForReplace: "pop",
-      // cardOverlay: () => (
-      //   <View
-      //     style={{
-      //       backgroundColor: "transparent",
-      //       overflow: "visible",
-      //     }}
-      //   />
-      // ),
+      headerMode: "float",
     }}
   >
     <ProfilStack.Screen
@@ -69,11 +42,9 @@ const ProfilStackNavigator = () => (
         cardStyle: {
           overflow: "visible",
           backgroundColor: "#ffffff",
-          borderTopLeftRadius: 10,
-          borderTopRightRadius: 10,
-          borderTopLeftRadius: 32,
-          borderTopRightRadius: 32,
         },
+        presentation: "card",
+        animationEnabled: false,
       }}
     />
     <ProfilStack.Screen
@@ -83,10 +54,16 @@ const ProfilStackNavigator = () => (
         cardStyle: {
           overflow: "visible",
           backgroundColor: "#ffffff",
-          borderTopLeftRadius: 10,
-          borderTopRightRadius: 10,
-          borderTopLeftRadius: 32,
-          borderTopRightRadius: 32,
+        },
+      }}
+    />
+    <ProfilStack.Screen
+      name="Badges/:id"
+      component={Settings}
+      options={{
+        cardStyle: {
+          overflow: "visible",
+          backgroundColor: "#ffffff",
         },
       }}
     />

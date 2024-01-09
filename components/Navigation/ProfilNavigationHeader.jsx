@@ -7,26 +7,46 @@ import {
 import aspectRatio from "../../tools/AspectRatio";
 
 const ProfilNavigationHeader = ({ back, options, route, navigation }) => {
-  // const ProfilNavigationHeader = ({ title, navigation }) => {
   const { name } = route;
+
   const getBack = () => {
-    console.log("hey: ", name);
     navigation.goBack();
   };
+
   return (
     <View
       style={{
         paddingHorizontal: ResponsiveHeight(2.8),
         paddingVertical: ResponsiveHeight(3.5),
         position: "relative",
-        // backgroundColor: "green",
+        backgroundColor: "#ffffff",
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 32,
+        borderTopRightRadius: 32,
+        overflow: "visible",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        columnGap: 12,
       }}
     >
-      {name != "ProfilHome" ? (
+      {name != "ProfilHome" && (
         <TouchableOpacity onPress={getBack}>
-          <Text>Heyho</Text>
+          <Image
+            source={require("../../assets/backarrow.png")}
+            resizeMode="contain"
+            style={{
+              width: ResponsiveHeight(4),
+              height: ResponsiveHeight(4),
+              objectFit: "contain",
+              // backgroundColor: "red",
+            }}
+          />
         </TouchableOpacity>
-      ) : (
+      )}
+
+      {name === "ProfilHome" && (
         <View
           style={{
             flexDirection: "row",
@@ -41,6 +61,24 @@ const ProfilNavigationHeader = ({ back, options, route, navigation }) => {
             }}
           >
             Badges Années
+          </Text>
+        </View>
+      )}
+      {name === "Settings" && (
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: aspectRatio(ResponsiveHeight(2.8)),
+              fontWeight: "700",
+            }}
+          >
+            Paramètres
           </Text>
         </View>
       )}

@@ -47,11 +47,9 @@ const styled = StyleSheet.create({
     // backgroundColor: "red",
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    // paddingHorizontal: ResponsiveHeight(2.8),
-    // paddingVertical: ResponsiveHeight(3.79),
-    elevation: 5,
     borderTopLeftRadius: 32,
     borderTopRightRadius: 32,
+    elevation: 5,
   },
 });
 
