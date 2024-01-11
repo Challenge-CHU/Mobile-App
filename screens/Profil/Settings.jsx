@@ -33,12 +33,13 @@ const Settings = ({ navigation }) => {
       }}
     >
       <CustomModal
-        text="Veuillez entrer le pseudo de votre ami que vous souhaitez ajouter"
+        text="Veuillez entrer votre nouveau pseudo."
+        // text="Veuillez entrer le pseudo de votre ami que vous souhaitez ajouter"
         placeholder="Pseudo"
         onPress={() => setModalVisible((prev) => !prev)}
         modalVisible={modalVisible}
         onChangeText={onChangeText}
-        BtnLabel="Changer de pseudo"
+        BtnLabel="Changer"
       />
 
       <View
@@ -99,70 +100,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: ResponsiveHeight(1.42),
     paddingVertical: ResponsiveHeight(1),
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    // marginTop: 22,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    // opacity: 0.5,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    // backgroundColor: "red",
-    borderRadius: 20,
-    // padding: 35,
-    paddingHorizontal: ResponsiveWidth(8.2),
-    paddingVertical: ResponsiveHeight(2.8),
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-    gap: ResponsiveHeight(1.42),
-  },
-  button2: {
-    borderRadius: ResponsiveHeight(1.42),
-    padding: ResponsiveHeight(1.1),
-    elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  modalText: {
-    // marginBottom: 15,
-    textAlign: "center",
-    fontSize: ResponsiveHeight(1.89),
-  },
-  input: {
-    borderRadius: ResponsiveHeight(1.42),
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    // borderBlockColor: Colors.colors.blue,
-    width: ResponsiveWidth(47.9),
-    // width: "100%",
-    borderColor: Colors.colors.blue,
-    borderWidth: 2,
-    // flexGrow: 0,
-    fontSize: 20,
-  },
-  inputContainer: {
-    width: "100%",
-    // backgroundColor: "green",
   },
 });
 

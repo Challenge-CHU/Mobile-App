@@ -5,27 +5,10 @@ import { ResponsiveHeight } from "../tools/ResponsiveHeight";
 const BottomSheet = ({ styles, children }) => {
   const [bottomSheetVisible, setBottomSheetVisible] = useState(true);
 
-  const openBottomSheet = () => {
-    setBottomSheetVisible(true);
-  };
-
-  const closeBottomSheet = () => {
-    setBottomSheetVisible(false);
-  };
-
   return (
     <View style={{ ...styled.container }}>
-      <TouchableOpacity onPress={openBottomSheet}>
-        <Text>Open BottomSheet</Text>
-      </TouchableOpacity>
-
       {bottomSheetVisible && (
-        <View style={{ ...styled.bottomSheet, ...styles }}>
-          {/* <TouchableOpacity onPress={closeBottomSheet}>
-            <Text>Close BottomSheet</Text>
-          </TouchableOpacity> */}
-          {children}
-        </View>
+        <View style={{ ...styled.bottomSheet, ...styles }}>{children}</View>
       )}
     </View>
   );
@@ -42,9 +25,8 @@ const styled = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 300, // You can adjust this value according to your design
+    height: 300,
     backgroundColor: "white",
-    // backgroundColor: "red",
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderTopLeftRadius: 32,

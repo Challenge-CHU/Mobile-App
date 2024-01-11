@@ -13,13 +13,10 @@ import BottomSheet from "../components/BottomSheet";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 import ProfilHome from "./Profil/ProfilHome";
 import { createStackNavigator } from "@react-navigation/stack";
-import {
-  NavigationContainer,
-  useNavigation,
-  useNavigationContext,
-} from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import Settings from "./Profil/Settings";
 import ProfilNavigationHeader from "../components/Navigation/ProfilNavigationHeader";
+import BadgeDetail from "./Profil/BadgeDetail";
 
 const ProfilStack = createStackNavigator();
 
@@ -58,8 +55,8 @@ const ProfilStackNavigator = () => (
       }}
     />
     <ProfilStack.Screen
-      name="Badges/:id"
-      component={Settings}
+      name="Badges"
+      component={BadgeDetail}
       options={{
         cardStyle: {
           overflow: "visible",
@@ -139,7 +136,6 @@ const Profil = () => {
           padding: 0,
         }}
       >
-        {/* <BottomSheetNavigator /> */}
         <ProfilStackNavigator />
       </BottomSheet>
     </>

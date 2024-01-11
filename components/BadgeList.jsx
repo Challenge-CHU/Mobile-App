@@ -1,7 +1,15 @@
 import React from "react";
-import { View, StyleSheet, Text, Image, FlatList } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 import aspectRatio from "../tools/AspectRatio";
+import { useNavigation } from "@react-navigation/native";
 
 //En param un titre nullable + une liste de badge
 
@@ -40,6 +48,8 @@ let Allbadges = [
 ];
 
 const BadgeList = ({ titre }) => {
+  const navigation = useNavigation();
+
   return (
     <View style={{ gap: ResponsiveHeight(3.7) }}>
       {titre && (
@@ -69,7 +79,20 @@ const BadgeList = ({ titre }) => {
         }}
       >
         {Unlockbadges.map((badge) => {
-          return <Badges key={badge.id} badge={badge} />;
+          return (
+            <TouchableOpacity
+              key={badge.id}
+              onPress={() =>
+                navigation.navigate("Badges", {
+                  id: badge.id,
+                  title: "bang",
+                  badge: badge,
+                })
+              }
+            >
+              <Badges badge={badge} />
+            </TouchableOpacity>
+          );
         })}
       </View>
     </View>

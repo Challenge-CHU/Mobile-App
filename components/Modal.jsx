@@ -45,24 +45,6 @@ const CustomModal = ({
     <Modal animationType="slide" transparent={true} visible={modalVisible}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <View
-            style={{
-              width: "100%",
-              // backgroundColor: "red",
-              alignSelf: "flex-end",
-            }}
-          >
-            <TouchableOpacity onPress={() => onPress()}>
-              <Image
-                source={require("../assets/close-cross.png")}
-                style={{
-                  objectFit: "contain",
-                  width: 20,
-                  height: 20,
-                }}
-              />
-            </TouchableOpacity>
-          </View>
           <Text style={styles.modalText}>{text}</Text>
           <View style={styles.inputContainer}>
             <TextInput
@@ -71,13 +53,24 @@ const CustomModal = ({
               editable
               placeholder={placeholder}
             />
+            <View
+              style={{
+                flexDirection: "row",
+                gap: 4,
+                maxWidth: ResponsiveWidth(66.1),
+              }}
+            >
+              <Pressable
+                style={[styles.button2, styles.buttonClose]}
+                onPress={() => onPress()}
+              >
+                <Text style={styles.textStyle}>{BtnLabel}</Text>
+              </Pressable>
+              <Pressable style={styles.button3} onPress={() => onPress()}>
+                <Text style={styles.textStyle}>Annuler</Text>
+              </Pressable>
+            </View>
           </View>
-          <Pressable
-            style={[styles.button2, styles.buttonClose]}
-            onPress={() => onPress()}
-          >
-            <Text style={styles.textStyle}>{BtnLabel}</Text>
-          </Pressable>
         </View>
       </View>
     </Modal>
@@ -99,6 +92,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.5)",
   },
   modalView: {
+    maxWidth: ResponsiveWidth(84),
     position: "relative",
     margin: ResponsiveWidth(2.3),
     backgroundColor: "white",
@@ -106,6 +100,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: ResponsiveWidth(5),
     paddingVertical: ResponsiveHeight(2.8),
     alignItems: "center",
+    justifyContent: "center",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -114,12 +109,20 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    gap: ResponsiveHeight(1.42),
+    gap: ResponsiveHeight(1.65),
   },
   button2: {
-    borderRadius: ResponsiveHeight(1.42),
+    borderRadius: ResponsiveHeight(0.9),
     padding: ResponsiveHeight(1.1),
     elevation: 2,
+    flex: 2,
+  },
+  button3: {
+    borderRadius: ResponsiveHeight(0.9),
+    padding: ResponsiveHeight(1.1),
+    elevation: 2,
+    flex: 1,
+    backgroundColor: "#ADBCBB",
   },
   buttonOpen: {
     backgroundColor: "#F194FF",
@@ -131,27 +134,27 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
+    fontSize: ResponsiveHeight(2),
   },
   modalText: {
     // marginBottom: 15,
-    textAlign: "center",
+    fontWeight: "700",
+    textAlign: "left",
     fontSize: ResponsiveHeight(1.89),
   },
   input: {
     borderRadius: ResponsiveHeight(1.42),
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    // borderBlockColor: Colors.colors.blue,
-    width: ResponsiveWidth(47.9),
-    // width: "100%",
+    paddingHorizontal: ResponsiveHeight(1.42),
+    paddingVertical: ResponsiveHeight(0.9),
+    width: ResponsiveWidth(66.1),
     borderColor: Colors.colors.blue,
     borderWidth: 2,
-    // flexGrow: 0,
-    fontSize: 20,
+    fontSize: ResponsiveHeight(2.3),
   },
   inputContainer: {
     width: "100%",
-    // backgroundColor: "green",
+    alignItems: "center",
+    gap: ResponsiveHeight(1.42),
   },
 });
 

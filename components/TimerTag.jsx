@@ -6,7 +6,10 @@ import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 import { PercentageOf } from "../tools/Percentage";
 
 const TimerTag = ({ datetime }) => {
-  //Gérer le temps restant ici
+  /**
+   * TODO: Gérer la logique du tems restant ici
+   */
+
   return (
     <View
       style={{
