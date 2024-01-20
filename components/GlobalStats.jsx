@@ -5,14 +5,8 @@ import aspectRatio from "../tools/AspectRatio";
 import { PercentageOf } from "../tools/Percentage";
 import { ResponsiveHeight } from "../tools/ResponsiveHeight";
 
-const fakeData = [
-  { int: 187000, description: "Pas cumulés aujourd'hui" },
-  { int: 1584, description: "Marcheurs" },
-  { int: 6000000, description: "Pas depuis le début" },
-  { int: 7576, description: "Pas moyen par marcheur" },
-];
 
-const GlobalStats = () => {
+const GlobalStats = ({ data, flex }) => {
   let screenHeight = Dimensions.get("screen").height;
 
   let tabtext = PercentageOf(screenHeight, 1.6);
@@ -24,14 +18,15 @@ const GlobalStats = () => {
         alignItems: "center",
         gap: ResponsiveHeight(1.4),
         // backgroundColor: "purple",
-        flex: 2,
+        flex: flex ? 1 : 0,
         marginHorizontal: "auto",
         width: "100%",
       }}
     >
-      {fakeData.map(({ int, description }, idx) => {
-        return <Stats key={idx} int={int} description={description} />;
-      })}
+      {data &&
+        data.map(({ int, description }, idx) => {
+          return <Stats key={idx} int={int} description={description} />;
+        })}
     </View>
   );
 };

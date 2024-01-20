@@ -15,7 +15,6 @@ const ProfilHome = ({ navigation }) => {
         style={{
           paddingHorizontal: ResponsiveHeight(2.8),
           position: "relative",
-          gap: 32,
         }}
       >
         <View>

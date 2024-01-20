@@ -32,6 +32,13 @@ import { useStepCountStore } from "../store/useStepCountStore";
 //   "AlegreyaSansSC-Bold": require("../assets/fonts/AlegreyaSansSC-Bold.ttf"),
 // };
 
+const fakeData = [
+  { int: 187000, description: "Pas cumulés aujourd'hui" },
+  { int: 1584, description: "Marcheurs" },
+  { int: 6000000, description: "Pas depuis le début" },
+  { int: 7576, description: "Pas moyen par marcheur" },
+];
+
 const Home = () => {
   //Child fais référence a une tab View (le grpah ou les stats globals)
   const { dailySteps } = useStepCountStore();
@@ -83,7 +90,7 @@ const Home = () => {
 
           <ScrollTabView onChange={handleOnVisibleChildChange}>
             <ProgressCircle objectif={STEP_GOAL} progression={dailySteps} />
-            <GlobalStats />
+            <GlobalStats data={fakeData} flex />
           </ScrollTabView>
 
           <LittleWalkyMsg

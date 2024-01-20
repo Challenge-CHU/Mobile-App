@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { ResponsiveHeight } from "../tools/ResponsiveHeight";
 
+/**
+ * Le composant BottomSheet s'utilise 
+ * en dehors d'une PlateformSafeView
+ */
+
 const BottomSheet = ({ styles, children }) => {
   const [bottomSheetVisible, setBottomSheetVisible] = useState(true);
 

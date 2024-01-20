@@ -225,8 +225,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   dayContainer: {
-    width: ResponsiveHeight(2.9),
-    height: ResponsiveHeight(2.9),
+    width: ResponsiveHeight(3.5),
+    height: ResponsiveHeight(3.5),
+    // width: ResponsiveHeight(2.9),
+    // height: ResponsiveHeight(2.9),
     justifyContent: "center",
     alignItems: "center",
     margin: ResponsiveHeight(0.5),
