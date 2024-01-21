@@ -6,7 +6,7 @@ import { PercentageOf } from "../tools/Percentage";
 import { ResponsiveHeight } from "../tools/ResponsiveHeight";
 
 
-const GlobalStats = ({ data, flex }) => {
+const GlobalStats = ({ data, flex, justifyStart }) => {
   let screenHeight = Dimensions.get("screen").height;
 
   let tabtext = PercentageOf(screenHeight, 1.6);
@@ -14,7 +14,7 @@ const GlobalStats = ({ data, flex }) => {
   return (
     <View
       style={{
-        justifyContent: "center",
+        justifyContent: justifyStart != undefined ? "flex-start" : "center",
         alignItems: "center",
         gap: ResponsiveHeight(1.4),
         // backgroundColor: "purple",
@@ -48,8 +48,9 @@ const Stats = ({ int, description }) => {
         style={{
           color: Colors.colors.darkblue,
           fontSize: ResponsiveHeight(3.4),
+          // fontSize: ResponsiveHeight(3.4),
           fontWeight: "700",
-          width: "50%",
+          // width: "50%",
           textAlign: "right",
         }}
       >
@@ -59,7 +60,7 @@ const Stats = ({ int, description }) => {
       <Text
         style={{
           fontWeight: "600",
-          fontSize: ResponsiveHeight(1.4),
+          fontSize: ResponsiveHeight(1.6),
           width: "50%",
           textAlign: "left",
         }}

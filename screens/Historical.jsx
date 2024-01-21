@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import PlateformSafeView from "../components/PlateformSafeView";
 import BottomSheet from "../components/BottomSheet";
@@ -7,6 +7,8 @@ import LittleWalkyMsg from "../components/LittleWalkyMsg";
 import Calendar from "../components/Calendar";
 import Graph from "../components/Graph";
 import GlobalStats from "../components/GlobalStats";
+import useStepCount from "../hooks/useStepCount";
+import { useStepCountStore } from "../store/useStepCountStore";
 
 const fakeData = [
   { int: 7000, description: "Pas cumulés" },
@@ -15,19 +17,22 @@ const fakeData = [
 ];
 
 const Historical = () => {
-  const rangeStartDate = new Date(2023, 2, 1); // 1er Mars 2023
-  const rangeEndDate = new Date(2024, 10, 30);
-  // console.log("month ptn: ", rangeStartDate.getMonth());
+  const { startDateChallenge, endDateChallenge } = useStepCountStore();
+  const rangeStartDate = startDateChallenge; // 1er Mars 2023
+  const rangeEndDate = endDateChallenge;
+
+  const [selectedDay, setSelectedDay] = useState(null);
+
   return (
     <>
       <PlateformSafeView>
-        {/* <PlateformSafeView styles={{ backgroundColor: "#ffffff" }}> */}
         <View>
           <LittleWalkyMsg message="Consulte ton historique et tes progrès." />
           <View>
             <Calendar
               rangeStartDate={rangeStartDate}
               rangeEndDate={rangeEndDate}
+              isSelectedDay={(day) => setSelectedDay(day)}
             />
           </View>
         </View>
@@ -40,13 +45,30 @@ const Historical = () => {
           paddingTop: ResponsiveHeight(2.8),
         }}
       >
-        <AllDaysLayout />
+        {selectedDay != null ? (
+          <SelectedDayLayout date={selectedDay} />
+        ) : (
+          <AllDaysLayout />
+        )}
       </BottomSheet>
     </>
   );
 };
 
 const AllDaysLayout = () => {
+  const [data, setData] = useState(null);
+  const { computeAllDataFromBegining } = useStepCount();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const stats = await computeAllDataFromBegining();
+
+      setData(stats);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <>
       <Text style={styles.text}>7 derniers jours</Text>
@@ -58,7 +80,33 @@ const AllDaysLayout = () => {
       >
         <Text style={styles.text}>Depuis le début</Text>
       </View>
-      <GlobalStats data={fakeData} flex />
+      {/* <GlobalStats data={data} flex /> */}
+      {/* <GlobalStats data={fakeData} flex /> */}
+      {data && <GlobalStats data={data} flex />}
+    </>
+  );
+};
+const SelectedDayLayout = ({ date }) => {
+  const [formatDate, setFormatDate] = useState(null);
+  const [data, setData] = useState(null);
+  const { handleFormatDate, calculateStatsForDate } = useStepCount();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const dateString = handleFormatDate(date);
+      setFormatDate(dateString);
+
+      const stats = await calculateStatsForDate(date);
+      setData(stats);
+    };
+
+    fetchData();
+  }, [date]);
+
+  return (
+    <>
+      <Text style={[styles.text, { marginBottom: 32 }]}>{formatDate}</Text>
+      {data && <GlobalStats data={data} flex justifyStart />}
     </>
   );
 };

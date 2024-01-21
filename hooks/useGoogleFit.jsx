@@ -13,24 +13,95 @@ const permissions = {
 export const useGoogleFit = () => {
   const [hasPermissions, setHasPermissions] = useState(false);
   const [steps, setSteps] = useState(0);
-  // const stepCountStore = useStepCountStore();
-
-  const handleGetAllChallengeSteps = useMemo(() => {
-    //Todo: Récupérer la date de début de challenge qui doit etre un param et la date d'aujoud'hui ou la date de fin en param
-  });
+  const { startDateChallenge } = useStepCountStore();
 
   // Observateur pour les pas en temps réel (Pas fiable donc DEPRECATED)
-  const recordStep = () => {
-    GoogleFit.startRecording((res) => {
-      console.log(res, "res1");
-      GoogleFit.observeSteps((res) => {
-        console.log(res, "res2");
-        console.log("HEy");
-        if (res.steps) {
-          setSteps((prevValue) => prevValue + res.steps);
-        }
-      });
-    });
+  // const recordStep = () => {
+  //   GoogleFit.startRecording((res) => {
+  //     console.log(res, "res1");
+  //     GoogleFit.observeSteps((res) => {
+  //       console.log(res, "res2");
+  //       console.log("HEy");
+  //       if (res.steps) {
+  //         setSteps((prevValue) => prevValue + res.steps);
+  //       }
+  //     });
+  //   });
+  // };
+
+  const handleGetCountStepForADay = async (date) => {
+    let selectDate = new Date(date);
+
+    let startOfDay = new Date(
+      selectDate.getFullYear(),
+      selectDate.getMonth(),
+      selectDate.getDate(),
+      0, // heures
+      0, // minutes
+      0, // secondes
+      0 // millisecondes
+    );
+
+    // Obtenir la date de fin de la journée actuelle
+    let endOfDay = new Date(
+      selectDate.getFullYear(),
+      selectDate.getMonth(),
+      selectDate.getDate(),
+      23, // heures
+      59, // minutes
+      59, // secondes
+      999 // millisecondes
+    );
+
+    //TODO invalid end time
+    const options = {
+      startDate: startOfDay.toISOString(),
+      endDate: endOfDay.toISOString(),
+    };
+
+    console.log("date debut : ", selectDate.toLocaleString());
+    console.log("date fin : ", endOfDay.toLocaleString());
+
+    const dailySteps = await GoogleFit.getDailyStepCountSamples(options);
+
+    const googleFitData = dailySteps.find(
+      (entry) => entry.source === "com.google.android.gms:estimated_steps"
+    );
+
+    console.log("resulttttt: ", googleFitData.steps);
+
+    if (googleFitData.steps != undefined) {
+      const totalSteps = googleFitData.steps.reduce(
+        (acc, obj) => acc + obj.value,
+        0
+      );
+      return totalSteps;
+    }
+
+    return googleFitData.steps;
+  };
+  const handleGetAllStepsFromBeginning = async () => {
+    let today = new Date();
+    let firstDayChallenge = new Date(startDateChallenge);
+    console.log("start: ", firstDayChallenge.toISOString());
+    console.log("end: ", today.toISOString());
+
+    const options = {
+      startDate: firstDayChallenge.toISOString(),
+      endDate: today.toISOString(),
+    };
+
+    const dailySteps = await GoogleFit.getDailyStepCountSamples(options);
+    console.log("gg fit data all sources: ", dailySteps);
+    console.log("OOOMEGGAAAA: ", dailySteps);
+
+    const googleFitData = dailySteps.find(
+      (entry) => entry.source === "com.google.android.gms:estimated_steps"
+    );
+
+    console.log("gg fit data: ", googleFitData);
+
+    return googleFitData.steps;
   };
 
   //Demande d'authorisation API Google
@@ -119,6 +190,8 @@ export const useGoogleFit = () => {
   return {
     steps,
     hasPermissions,
-    recordStep,
+    // recordStep,
+    handleGetCountStepForADay,
+    handleGetAllStepsFromBeginning,
   };
 };

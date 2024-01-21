@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import AppleHealthKit, { HealthKitPermission } from "react-native-health";
+import { useStepCountStore } from "../store/useStepCountStore";
 
 const permissions = {
   permissions: {
@@ -16,6 +17,7 @@ export const useHealthKit = (date) => {
   const [hasPermissions, setHasPermissions] = useState(false);
   const [steps, setSteps] = useState(0);
   const [weekSteps, setWeekSteps] = useState();
+  const { startDateChallenge } = useStepCountStore();
 
   const handleGetAllChallengeSteps = useMemo(() => {
     //Todo: Récupérer la date de début de challenge qui doit etre un param et la date d'aujoud'hui ou la date de fin en param
@@ -31,11 +33,57 @@ export const useHealthKit = (date) => {
     });
   };
 
+  const handleGetCountStepForADay = (date) => {
+    return new Promise((resolve, reject) => {
+      const options = {
+        date: date.toISOString(),
+        includeManuallyAdded: false,
+      };
+
+      AppleHealthKit.getStepCount(options, (err, results) => {
+        if (err) {
+          console.log("Error get step count: ", err);
+          reject(err);
+          return;
+        }
+
+        console.log("test date dans le use healthkit: ", results.value);
+        resolve(results.value);
+      });
+    });
+  };
+
+  const handleGetAllStepsFromBeginning = () => {
+    return new Promise((resolve, reject) => {
+      let today = new Date();
+      let firstDayChallenge = new Date(startDateChallenge);
+
+      // const differenceInMillis = today.getTime() - firstDayChallenge.getTime();
+      // const differenceInMinutes = differenceInMillis / (1000 * 60);
+      // console.log("différence en minutes: ", differenceInMinutes);
+      let optionDate = {
+        startDate: firstDayChallenge.toISOString(),
+        endDate: today.toISOString(),
+        includeManuallyAdded: false,
+        period: 1440, //period en minutes sinon il va donner un datetime par enregistrement
+      };
+
+      AppleHealthKit.getDailyStepCountSamples(optionDate, (err, results) => {
+        if (err) {
+          console.log("Error get step week: ", err);
+          return;
+        }
+        // console.log(results, " CUrieux");
+        resolve(results);
+      });
+    });
+  };
+
   const handleGetWeekSteps = async () => {
     let day = date.getDay();
     let daysBefore = 0;
     if (day === 0) {
-      daysBefore = -6;
+      daysBefore = 6;
     } else {
       daysBefore = day - 1;
     }
@@ -46,6 +94,8 @@ export const useHealthKit = (date) => {
       today.getMonth(),
       today.getDate() - daysBefore
     );
+
+    console.log("last week date: ", lastWeekDate);
 
     let optionDate = {
       startDate: lastWeekDate.toISOString(),
@@ -60,11 +110,7 @@ export const useHealthKit = (date) => {
         return;
       }
 
-      // results.map((item, idx) => {
-      //   let date = new Date(item.endDate);
-      //   let day = date.getDay();
-      //   console.log(`${idx} DAY: ${day}, steps: ${item.value}`);
-      // });
+      // console.log("alors ?: ", results, " ", optionDate);
       setWeekSteps(results);
     });
   };
@@ -75,6 +121,7 @@ export const useHealthKit = (date) => {
         console.log("Error getting permissions: ", err);
         return;
       }
+      console.log("permissions accordé");
 
       setHasPermissions(true);
     });
@@ -82,6 +129,7 @@ export const useHealthKit = (date) => {
 
   useEffect(() => {
     if (!hasPermissions) {
+      console.log("pas de permissions");
       return;
     }
     const options = {
@@ -102,5 +150,7 @@ export const useHealthKit = (date) => {
     hasPermissions,
     handleGetWeekSteps,
     weekSteps,
+    handleGetCountStepForADay,
+    handleGetAllStepsFromBeginning,
   };
 };

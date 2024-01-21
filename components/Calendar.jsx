@@ -31,7 +31,7 @@ import { Colors } from "../styles";
 import { ResponsiveHeight } from "../tools/ResponsiveHeight";
 import aspectRatio from "../tools/AspectRatio";
 
-const Calendar = ({ rangeStartDate, rangeEndDate }) => {
+const Calendar = ({ rangeStartDate, rangeEndDate, isSelectedDay }) => {
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(rangeStartDate.getMonth());
   const [selectedYear, setSelectedYear] = useState(
@@ -124,6 +124,18 @@ const Calendar = ({ rangeStartDate, rangeEndDate }) => {
     setNextMonthEnabled(nextMonthDate < dateButoir);
   }, [selectedYear, selectedMonth]);
 
+  useEffect(() => {
+    let newdate = new Date(selectedYear, selectedMonth, selectedDay, 0, 0, 0);
+    // console.log("newwwdattte kkb: ", newdate.toLocaleString());
+    // console.log("newwwdattte kkb ISO: ", newdate.toISOString());
+
+    if (selectedDay != undefined || selectedDay != undefined) {
+      isSelectedDay(newdate);
+    } else {
+      isSelectedDay(null);
+    }
+  }, [selectedYear, selectedMonth, selectedDay]);
+
   const renderDay = ({ item }) => {
     const currentDate = new Date();
     const currentDay = currentDate.getDate();
@@ -187,7 +199,6 @@ const Calendar = ({ rangeStartDate, rangeEndDate }) => {
 };
 
 const ArrowButton = ({ left, onPress, disabled }) => {
-  console.log("bouton arrow: ", left, " alors disabled: ", disabled);
   return (
     <TouchableOpacity
       style={styles.arrowButton}
