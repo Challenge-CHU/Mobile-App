@@ -23,6 +23,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Settings from "./screens/Profil/Settings";
 import ProfilHome from "./screens/Profil/ProfilHome";
 import { colors } from "./styles/colors";
+import SignUp from "./screens/SignUp";
+import { useUserStore } from "./store/useUserStore";
 
 const Tab = createBottomTabNavigator();
 const ProfilStack = createStackNavigator();
@@ -60,6 +62,8 @@ export default function App() {
 }
 
 function MyTabs() {
+  const { username } = useUserStore();
+
   return (
     <Tab.Navigator
       tabBar={(props) => <TabBar {...props} />}
@@ -78,8 +82,10 @@ function MyTabs() {
           justifyContent: "center",
         },
       }}
-      initialRouteName="Splash"
+      initialRouteName={username != null ? "Splash" : "SignUp"}
+      // initialRouteName="Splash"
     >
+      <Tab.Screen name="SignUp" component={SignUp} />
       <Tab.Screen name="Social" component={Social} />
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Profil" component={Profil} />

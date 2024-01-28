@@ -20,8 +20,10 @@ function TabBar({ state, descriptors, navigation, route }) {
 
   const focusedRoute = state.routes[state.index].name;
   // Les routes que l'on ne veut pas montrer dans la Navbar
-  const hiddenRoutes = ["Splash", "Historical"];
-  const hiddenNavBar = ["Splash"];
+  const hiddenRoutes = ["Splash", "Historical", "SignUP"];
+
+  //Les routes ou l'on ne veut pas voir la Navbar
+  const hiddenNavBar = ["Splash", "SignUp"];
 
   if (hiddenNavBar.includes(focusedRoute)) return null;
 

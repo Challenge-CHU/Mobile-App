@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import Rive from "rive-react-native";
 import { Colors } from "../styles";
+import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 
 const SplashScreen = ({ navigation }) => {
   const idleUrl = process.env.EXPO_PUBLIC_S3_URL;
