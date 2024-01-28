@@ -45,8 +45,6 @@ const useStepCount = () => {
   const calculateStatsForDate = async (date) => {
     const steps = await handleGetStepsByDate(date);
 
-    //Reduce
-
     console.log("les pas dans function: ", steps);
 
     if (steps != undefined) {

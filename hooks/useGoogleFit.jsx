@@ -15,19 +15,6 @@ export const useGoogleFit = () => {
   const [steps, setSteps] = useState(0);
   const { startDateChallenge } = useStepCountStore();
 
-  // Observateur pour les pas en temps réel (Pas fiable donc DEPRECATED)
-  // const recordStep = () => {
-  //   GoogleFit.startRecording((res) => {
-  //     console.log(res, "res1");
-  //     GoogleFit.observeSteps((res) => {
-  //       console.log(res, "res2");
-  //       console.log("HEy");
-  //       if (res.steps) {
-  //         setSteps((prevValue) => prevValue + res.steps);
-  //       }
-  //     });
-  //   });
-  // };
 
   const handleGetCountStepForADay = async (date) => {
     let selectDate = new Date(date);
@@ -53,7 +40,6 @@ export const useGoogleFit = () => {
       999 // millisecondes
     );
 
-    //TODO invalid end time
     const options = {
       startDate: startOfDay.toISOString(),
       endDate: endOfDay.toISOString(),
