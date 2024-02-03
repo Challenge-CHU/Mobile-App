@@ -25,6 +25,7 @@ import ProfilHome from "./screens/Profil/ProfilHome";
 import { colors } from "./styles/colors";
 import SignUp from "./screens/SignUp";
 import { useUserStore } from "./store/useUserStore";
+import AddPseudo from "./screens/ChangePseudo";
 
 const Tab = createBottomTabNavigator();
 const ProfilStack = createStackNavigator();
@@ -82,10 +83,11 @@ function MyTabs() {
           justifyContent: "center",
         },
       }}
-      initialRouteName={username != null ? "Splash" : "SignUp"}
+      initialRouteName={username != null ? "Home" : "SignUp"}
       // initialRouteName="Splash"
     >
       <Tab.Screen name="SignUp" component={SignUp} />
+      <Tab.Screen name="AddPseudo" component={AddPseudo} />
       <Tab.Screen name="Social" component={Social} />
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Profil" component={Profil} />

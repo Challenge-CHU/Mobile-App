@@ -17,6 +17,7 @@ import { useNavigation } from "@react-navigation/native";
 import Settings from "./Profil/Settings";
 import ProfilNavigationHeader from "../components/Navigation/ProfilNavigationHeader";
 import BadgeDetail from "./Profil/BadgeDetail";
+import { useUserStore } from "../store/useUserStore.jsx";
 
 const ProfilStack = createStackNavigator();
 
@@ -69,7 +70,7 @@ const ProfilStackNavigator = () => (
 
 const Profil = () => {
   const navigation = useNavigation();
-  // const navigationContext = useNavigationContext();
+  const { username } = useUserStore();
   const changeContent = () => {
     navigation.navigate("Settings");
   };
@@ -116,7 +117,7 @@ const Profil = () => {
               fontWeight: "600",
             }}
           >
-            Pseudo
+            {username}
           </Text>
           <TouchableOpacity onPress={changeContent}>
             <Image

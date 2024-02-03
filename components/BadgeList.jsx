@@ -105,10 +105,13 @@ const Badges = ({ badge }) => {
     2: require("../assets/badges/silver.png"),
     3: require("../assets/badges/gold.png"),
   };
-
+const handleLoad = () => {
+  console.log("load");
+};
   return (
     <View>
       <Image
+        onLoad={handleLoad}
         source={levels[badge.level]}
         style={{
           width: ResponsiveWidth(27.9),

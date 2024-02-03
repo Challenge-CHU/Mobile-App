@@ -3,27 +3,60 @@ import { View, StyleSheet, Text, Image } from "react-native";
 import PlateformSafeView from "../components/PlateformSafeView";
 import Walky from "../components/Walky";
 import BubbleMessage from "../components/BubbleMessage";
-
+import Button from "../components/Button";
+import aspectRatio from "../tools/AspectRatio";
+import InputText from "../components/InputText";
+import { useNavigation } from "@react-navigation/native";
 const SignUp = () => {
+  const navigation = useNavigation();
+
+  const handleConnect = () => {
+    navigation.navigate("AddPseudo");
+  };
+
   return (
     <PlateformSafeView>
       <View
         style={{
-          justifyContent: "center",
+          justifyContent: "space-between",
           alignItems: "center",
-          // backgroundColor: "blue",
-          height: "22%",
+          flexDirection: "row",
+          height: "14%",
+          paddingHorizontal: 40,
+          marginTop: 42,
         }}
       >
-        <Image
-          source={require("../assets/chu-blanc.png")}
-          style={{ objectFit: "contain", width: 234, height: 125 }}
-        />
+        <View
+          style={{
+            width: 150,
+            height: 70,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Image
+            source={require("../assets/new-chu-blc.png")}
+            style={{ objectFit: "contain", width: "100%" }}
+          />
+        </View>
+        <View
+          style={{
+            width: 150,
+            height: 70,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Image
+            source={require("../assets/new-cesi-blc.png")}
+            style={{ objectFit: "contain", width: "100%" }}
+          />
+        </View>
       </View>
 
       <View
         style={{
-          height: "56%",
+          height: 341,
           alignItems: "center",
           justifyContent: "center",
         }}
@@ -39,7 +72,7 @@ const SignUp = () => {
         >
           <BubbleMessage
             msg={
-              "Il n’y a aucun challenge en cours en ce moment, reviens plus tard !"
+              "Bienvenue sur le challenge des 10 000 pas ! Connecte toi pour débuter l'aventure."
             }
           />
           <View style={{ position: "absolute", top: 12, right: -65 }}>
@@ -52,18 +85,33 @@ const SignUp = () => {
         style={{
           justifyContent: "center",
           alignItems: "center",
-          height: "22%",
+          paddingHorizontal: 40,
+          flexDirection: "column",
+          // height: "22%",
         }}
       >
-        <Image
-          source={require("../assets/cesi-blanc.png")}
-          style={{ objectFit: "contain", width: 208, height: 130 }}
-        />
+        <View style={{ marginTop: 32, marginBottom: 40, gap: 16 }}>
+          <InputText placeholder="Mot de passe" translate={true} />
+          <Text style={styles.text}>
+            Ces informations vous ont été envoyées par le CHU à la suite de
+            votre inscription au challenge
+          </Text>
+        </View>
+
+        <Button title="Se connecter" onPress={handleConnect} />
+        {/* input 1 et 2 */}
+        {/* petit texte */}
+        {/* Bouton */}
       </View>
     </PlateformSafeView>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  text: {
+    color: "#ffffff",
+    fontSize: aspectRatio(16),
+  },
+});
 
 export default SignUp;

@@ -4,4 +4,5 @@ export const useUserStore = create((set) => ({
   username: null,
   password: null,
   token: null,
+  updateUsername: (newUsername) => set({ username: newUsername }),
 }));
