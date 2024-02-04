@@ -4,12 +4,15 @@ import LottieView from "lottie-react-native";
 import { Colors } from "../styles";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 import { PercentageOf } from "../tools/Percentage";
+import { useImageStore } from "../store/useImageStore";
 const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
 
 const ProgressCircle = ({ objectif, progression }) => {
   const [animationProgress, setAnimationProgress] = useState(
     new Animated.Value(0)
   );
+
+  const { getImageFromCache, imageCache } = useImageStore();
 
   useEffect(() => {
     // Calculer le pourcentage d'avancement par rapport à l'objectif
@@ -42,7 +45,7 @@ const ProgressCircle = ({ objectif, progression }) => {
         }}
       >
         <Image
-          source={require("../assets/walkyy.png")}
+          source={{ uri: getImageFromCache("walkyy") }}
           style={{
             width: ResponsiveWidth(23),
             height: ResponsiveHeight(16),

@@ -5,13 +5,11 @@ import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 const IconProfil = ({ url, onClick, name, selected, onLoad }) => {
   const handleClick = () => {
     if (onClick != undefined) {
-      console.log("envoie: ", name);
       onClick(name);
     }
   };
 
   const handleLoad = () => {
-    console.log("load");
     if (onLoad != undefined) {
       onLoad;
     }
@@ -20,7 +18,8 @@ const IconProfil = ({ url, onClick, name, selected, onLoad }) => {
   return (
     <TouchableOpacity onPress={handleClick}>
       <Image
-        source={url}
+        // source={url}
+        source={{ uri: url }}
         style={{
           width: 59,
           height: 72,

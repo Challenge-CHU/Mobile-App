@@ -12,6 +12,7 @@ import SplashScreen from "../components/SplashScreen";
 import cacheAssetsAsync from "../components/CacheAssetAsync";
 import { Asset, useAssets } from "expo-asset";
 import { useUserStore } from "../store/useUserStore";
+import { useImageStore } from "../store/useImageStore";
 
 const fakedata = [
   { id: 1, url: require("../assets/iconfriend.png"), name: "image1" },
@@ -24,23 +25,14 @@ const fakedata = [
   { id: 8, url: require("../assets/iconfriend.png"), name: "image8" },
 ];
 
-function cacheImages(images) {
-  return images.map((image) => {
-    if (typeof image === "string") {
-      return Image.prefetch(image);
-    } else {
-      return Asset.fromModule(image).downloadAsync();
-    }
-  });
-}
-
 const AddPseudo = () => {
   const [selectedImg, setSelectedImg] = useState(null);
   const navigation = useNavigation();
-  const [appIsReady, setAppIsReady] = useState(false);
-  const [pseudo, setPseudo] = useState("brr");
 
+  const [pseudo, setPseudo] = useState("brr");
+  const [assets, error] = useAssets([require("../assets/iconfriend.png")]);
   const { updateUsername } = useUserStore();
+  const { getImageFromCache, fetched } = useImageStore();
 
   const handleContinue = () => {
     updateUsername(pseudo);
@@ -57,38 +49,8 @@ const AddPseudo = () => {
     setPseudo(pseudo);
   };
 
-  // const tryToLoad = async () => {
-  //   try {
-  //     await cacheAssetsAsync({
-  //       images: [require("../assets/iconfriend.png")],
-  //     });
-  //   } catch (e) {
-  //     console.log("error:", { e });
-  //   } finally {
-  //     console.log("passe a true");
-  //     setAppIsReady(true);
-  //   }
-  // };
-  useEffect(() => {
-    async function loadResourcesAndDataAsync() {
-      try {
-        const imageAssets = cacheImages([require("../assets/iconfriend.png")]);
-
-        await Promise.all([...imageAssets]);
-      } catch (e) {
-        // You might want to provide this error information to an error reporting service
-        console.warn(e);
-      } finally {
-        setAppIsReady(true);
-      }
-    }
-
-    loadResourcesAndDataAsync();
-  }, []);
-
-  if (!appIsReady) {
-    return <SplashScreen />; // Ou un écran de chargement
-    // return null; // Ou un écran de chargement
+  if (!fetched) {
+    return <SplashScreen />;
   }
 
   return (
@@ -157,7 +119,7 @@ const AddPseudo = () => {
               return (
                 <IconProfil
                   key={item.id}
-                  url={item.url}
+                  url={getImageFromCache("iconfriend")}
                   name={item.name}
                   selected={selectedImg === item.name ? true : false}
                   onClick={(name) => setSelectedImg(name)}
@@ -169,9 +131,6 @@ const AddPseudo = () => {
         </View>
 
         <Button title="Se connecter" onPress={handleContinue} />
-        {/* input 1 et 2 */}
-        {/* petit texte */}
-        {/* Bouton */}
       </View>
     </View>
   );

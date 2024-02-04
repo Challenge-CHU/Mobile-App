@@ -4,11 +4,12 @@ import { Colors, Spacing, Typography } from "../styles";
 import aspectRatio from "../tools/AspectRatio";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 import { PercentageOf } from "../tools/Percentage";
-
+import { useImageStore } from "../store/useImageStore";
 const TimerTag = ({ datetime }) => {
   /**
    * TODO: Gérer la logique du tems restant ici
    */
+  const { getImageFromCache, imageCache } = useImageStore();
 
   return (
     <View
@@ -49,7 +50,7 @@ const TimerTag = ({ datetime }) => {
         }}
       >
         <Image
-          source={require("../assets/timer.png")}
+          source={{ uri: getImageFromCache("timer") }}
           style={{
             width: ResponsiveWidth(6.66),
             height: ResponsiveHeight(3.7),

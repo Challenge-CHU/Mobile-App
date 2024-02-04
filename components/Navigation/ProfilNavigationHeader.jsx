@@ -5,9 +5,11 @@ import {
   ResponsiveWidth,
 } from "../../tools/ResponsiveHeight";
 import aspectRatio from "../../tools/AspectRatio";
+import { useImageStore } from "../../store/useImageStore";
 
 const ProfilNavigationHeader = ({ back, options, route, navigation }) => {
   const { name } = route;
+  const { getImageFromCache, imageCache } = useImageStore();
 
   const getBack = () => {
     navigation.goBack();
@@ -34,7 +36,7 @@ const ProfilNavigationHeader = ({ back, options, route, navigation }) => {
       {name != "ProfilHome" && (
         <TouchableOpacity onPress={getBack}>
           <Image
-            source={require("../../assets/backarrow.png")}
+            source={{ uri: getImageFromCache("backarrow") }}
             resizeMode="contain"
             style={{
               width: ResponsiveHeight(4),
@@ -91,7 +93,7 @@ const ProfilNavigationHeader = ({ back, options, route, navigation }) => {
         }}
       >
         <Image
-          source={require("../../assets/walkyy.png")}
+          source={{ uri: getImageFromCache("walkyy") }}
           style={{
             width: ResponsiveWidth(18),
             height: ResponsiveHeight(12),

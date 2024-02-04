@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
+import { useAssets } from "expo-asset";
 import PlateformSafeView from "../components/PlateformSafeView";
 import { Colors } from "../styles";
 import BottomSheet from "../components/BottomSheet";
@@ -18,6 +19,8 @@ import Settings from "./Profil/Settings";
 import ProfilNavigationHeader from "../components/Navigation/ProfilNavigationHeader";
 import BadgeDetail from "./Profil/BadgeDetail";
 import { useUserStore } from "../store/useUserStore.jsx";
+import SplashScreen from "../components/SplashScreen.jsx";
+import { useImageStore } from "../store/useImageStore.jsx";
 
 const ProfilStack = createStackNavigator();
 
@@ -75,6 +78,7 @@ const Profil = () => {
     navigation.navigate("Settings");
   };
 
+  const { getImageFromCache, imageCache } = useImageStore();
   useEffect(() => {
     navigation.navigate("ProfilHome");
   }, []);
@@ -101,7 +105,8 @@ const Profil = () => {
           }}
         >
           <Image
-            source={require("../assets/iconfriend.png")}
+            // source={require("../assets/iconfriend.png")}
+            source={{ uri: getImageFromCache("iconfriend") }}
             style={{
               width: ResponsiveWidth(19.2),
               height: ResponsiveHeight(10.9),
@@ -121,7 +126,7 @@ const Profil = () => {
           </Text>
           <TouchableOpacity onPress={changeContent}>
             <Image
-              source={require("../assets/setting-wheel.png")}
+              source={{ uri: getImageFromCache("setting-wheel") }}
               style={{
                 width: ResponsiveWidth(5.8),
                 height: ResponsiveHeight(2.8),

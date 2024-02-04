@@ -30,6 +30,7 @@ import {
 import { Colors } from "../styles";
 import { ResponsiveHeight } from "../tools/ResponsiveHeight";
 import aspectRatio from "../tools/AspectRatio";
+import { useImageStore } from "../store/useImageStore";
 
 const Calendar = ({ rangeStartDate, rangeEndDate, isSelectedDay }) => {
   const [selectedDay, setSelectedDay] = useState(null);
@@ -70,14 +71,11 @@ const Calendar = ({ rangeStartDate, rangeEndDate, isSelectedDay }) => {
   };
 
   const handleMonthChange = (isNext) => {
-    console.log("yo mama");
     //Vérifier si le mois d'après
     setSelectedMonth((prevMonth) => {
       //Récupère le mis d'après ou précédent avec l'année en cours
       let newMonth = isNext ? prevMonth + 1 : prevMonth - 1;
       let newYear = selectedYear;
-      console.log("select year: ", selectedYear);
-      console.log("select month: ", selectedMonth);
 
       //Détermine si il faut changer d'année
       if (newMonth < 0) {
@@ -87,26 +85,11 @@ const Calendar = ({ rangeStartDate, rangeEndDate, isSelectedDay }) => {
         newYear += 1;
         newMonth = 0;
       }
-      console.log("middle: ", newMonth);
 
       //Récupère la date et vérifie si elle est comprise entre la date de fin de et début
       const newMonthDate = new Date(newYear, newMonth, 1);
-      console.log(
-        "Début de laventure: ",
-        rangeStartDate,
-        "nouvelle date de laventure: ",
-        newMonthDate,
-        "Est ce que la nouvelle date est inférieur au début ?: ",
 
-        newMonthDate < rangeStartDate,
-        " ou supérieur à la fin? ",
-        newMonthDate > rangeEndDate
-      );
       if (newMonthDate < rangeStartDate || newMonthDate > rangeEndDate) {
-        console.log(
-          "biiitch: ",
-          newMonthDate < rangeStartDate || newMonthDate > rangeEndDate
-        );
         return prevMonth;
       }
 
@@ -126,8 +109,6 @@ const Calendar = ({ rangeStartDate, rangeEndDate, isSelectedDay }) => {
 
   useEffect(() => {
     let newdate = new Date(selectedYear, selectedMonth, selectedDay, 0, 0, 0);
-    // console.log("newwwdattte kkb: ", newdate.toLocaleString());
-    // console.log("newwwdattte kkb ISO: ", newdate.toISOString());
 
     if (selectedDay != undefined || selectedDay != undefined) {
       isSelectedDay(newdate);
@@ -199,6 +180,8 @@ const Calendar = ({ rangeStartDate, rangeEndDate, isSelectedDay }) => {
 };
 
 const ArrowButton = ({ left, onPress, disabled }) => {
+  const { getImageFromCache, imageCache } = useImageStore();
+
   return (
     <TouchableOpacity
       style={styles.arrowButton}
@@ -206,7 +189,7 @@ const ArrowButton = ({ left, onPress, disabled }) => {
       disabled={disabled}
     >
       <Image
-        source={require("../assets/arrow-calendar.png")}
+        source={{ uri: getImageFromCache("arrow-calendar") }}
         style={{
           objectFit: "contain",
           width: ResponsiveHeight(2.8),

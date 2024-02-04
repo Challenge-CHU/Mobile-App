@@ -5,6 +5,7 @@ import {
   ResponsiveWidth,
 } from "../../tools/ResponsiveHeight";
 import aspectRatio from "../../tools/AspectRatio";
+import { useImageStore } from "../../store/useImageStore";
 
 const BadgeDetail = ({ navigation, route }) => {
   /**
@@ -44,16 +45,17 @@ const BadgeDetail = ({ navigation, route }) => {
 };
 
 const BadgeLevel = ({ badge, level, objectif }) => {
+  const { getImageFromCache, imageCache } = useImageStore();
   let levels = {
-    1: require("../../assets/badges/bronze.png"),
-    2: require("../../assets/badges/silver.png"),
-    3: require("../../assets/badges/gold.png"),
+    1: getImageFromCache("bronze"),
+    2: getImageFromCache("silver"),
+    3: getImageFromCache("gold"),
   };
 
   return (
     <View style={styles.container}>
       <Image
-        source={levels[level]}
+        source={{ uri: levels[level] }}
         style={{
           width: ResponsiveWidth(27.9),
           height: ResponsiveHeight(8.8),

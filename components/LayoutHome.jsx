@@ -6,6 +6,7 @@ import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 import { gap, padding } from "../styles/spacing";
 import { Colors } from "../styles";
 import { useNavigation } from "@react-navigation/native";
+import { useImageStore } from "../store/useImageStore";
 
 export const LayoutHome = React.memo(({ value }) => {
   if (value === 1) return <LayoutHomePerso />;
@@ -13,6 +14,8 @@ export const LayoutHome = React.memo(({ value }) => {
 });
 
 export const LayoutHomePerso = React.memo(() => {
+  const { getImageFromCache, imageCache } = useImageStore();
+
   const navigation = useNavigation();
   return (
     <>
@@ -71,7 +74,7 @@ export const LayoutHomePerso = React.memo(() => {
               Titre du badge
             </Text>
             <Image
-              source={require("../assets/Badge2.png")}
+              source={{ uri: getImageFromCache("gold") }}
               style={{
                 width: ResponsiveWidth(27.95),
                 height: ResponsiveHeight(8.89),
@@ -118,7 +121,7 @@ export const LayoutHomePerso = React.memo(() => {
               }}
             >
               <Image
-                source={require("../assets/iconfriend.png")}
+                source={{ uri: getImageFromCache("iconfriend") }}
                 style={{
                   width: ResponsiveWidth(12.56),
                   height: ResponsiveHeight(7.11),
@@ -152,22 +155,23 @@ export const LayoutHomePerso = React.memo(() => {
 });
 
 export const LayoutHomeGlobal = React.memo(() => {
+  const { getImageFromCache } = useImageStore();
   return (
     <View style={{ flexGrow: 1, gap: ResponsiveHeight(1.42) }}>
       <GlobalStatsCard
         stat="10"
         text="Tour(s) de la Terre parcourus ensemble"
-        icon={require("../assets/earth.png")}
+        icon={getImageFromCache("earth")}
       />
       <GlobalStatsCard
         stat="10"
         text="Kg de CO² économisé"
-        icon={require("../assets/feuille.png")}
+        icon={getImageFromCache("feuille")}
       />
       <GlobalStatsCard
         stat="1,5Mi"
         text="Km parcourus"
-        icon={require("../assets/green-character.png")}
+        icon={getImageFromCache("green-character")}
       />
     </View>
   );
@@ -201,7 +205,7 @@ const GlobalStatsCard = ({ stat, text, icon }) => {
         <Text style={{ fontSize: ResponsiveHeight(1.6) }}>{text}</Text>
       </View>
       <Image
-        source={icon}
+        source={{ uri: icon }}
         style={{
           objectFit: "contain",
           width: ResponsiveWidth(7.6),

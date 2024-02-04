@@ -3,8 +3,10 @@ import { View, StyleSheet, Text, Image } from "react-native";
 import PlateformSafeView from "../components/PlateformSafeView";
 import Walky from "../components/Walky";
 import BubbleMessage from "../components/BubbleMessage";
-
+import { useImageStore } from "../store/useImageStore";
 const NoChallenge = () => {
+  const { getImageFromCache, imageCache } = useImageStore();
+
   return (
     <PlateformSafeView>
       <View
@@ -16,7 +18,7 @@ const NoChallenge = () => {
         }}
       >
         <Image
-          source={require("../assets/chu-blanc.png")}
+          source={{ uri: getImageFromCache("chu-blanc") }}
           style={{ objectFit: "contain", width: 234, height: 125 }}
         />
       </View>
@@ -56,7 +58,7 @@ const NoChallenge = () => {
         }}
       >
         <Image
-          source={require("../assets/cesi-blanc.png")}
+          source={{ uri: getImageFromCache("cesi-blanc") }}
           style={{ objectFit: "contain", width: 208, height: 130 }}
         />
       </View>

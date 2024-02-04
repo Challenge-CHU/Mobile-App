@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text, Image } from "react-native";
 import PlateformSafeView from "../components/PlateformSafeView";
 import Walky from "../components/Walky";
@@ -7,12 +7,32 @@ import Button from "../components/Button";
 import aspectRatio from "../tools/AspectRatio";
 import InputText from "../components/InputText";
 import { useNavigation } from "@react-navigation/native";
+import { useImageStore } from "../store/useImageStore";
+import FirstLoadingScreen from "./FirstLoadingScreen";
+import { Asset } from "expo-asset";
+import ImageLoader from "../components/ImageLoader";
+import SplashScreen from "../components/SplashScreen";
+
 const SignUp = () => {
   const navigation = useNavigation();
+  const {
+    imageCache,
+    getImageFromCache,
+    fetched,
+    addImageToCache,
+    updateFetched,
+  } = useImageStore();
+  const [img1, setImg1] = useState(null);
+
+  // useEffect(() => {
+  //   if (!fetched) ImageLoader();
+  // }, []);
 
   const handleConnect = () => {
     navigation.navigate("AddPseudo");
   };
+
+  if (!fetched) return <SplashScreen />;
 
   return (
     <PlateformSafeView>
@@ -35,8 +55,8 @@ const SignUp = () => {
           }}
         >
           <Image
-            source={require("../assets/new-chu-blc.png")}
-            style={{ objectFit: "contain", width: "100%" }}
+            source={{ uri: getImageFromCache("new-chu-blc") }}
+            style={{ objectFit: "contain", width: "100%", height: 72 }}
           />
         </View>
         <View
@@ -48,8 +68,9 @@ const SignUp = () => {
           }}
         >
           <Image
-            source={require("../assets/new-cesi-blc.png")}
-            style={{ objectFit: "contain", width: "100%" }}
+            source={{ uri: getImageFromCache("new-cesi-blc") }}
+            // source={require("../assets/new-cesi-blc.png")}
+            style={{ objectFit: "contain", width: "100%", height: 72 }}
           />
         </View>
       </View>

@@ -26,6 +26,7 @@ import { colors } from "./styles/colors";
 import SignUp from "./screens/SignUp";
 import { useUserStore } from "./store/useUserStore";
 import AddPseudo from "./screens/ChangePseudo";
+import ImageLoader from "./components/ImageLoader";
 
 const Tab = createBottomTabNavigator();
 const ProfilStack = createStackNavigator();
@@ -55,6 +56,7 @@ export default function App() {
           },
         }}
       >
+        <ImageLoader />
         <MyTabs />
       </NavigationContainer>
       <StatusBar style="auto" />

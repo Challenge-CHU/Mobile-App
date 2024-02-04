@@ -10,6 +10,7 @@ import {
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 import aspectRatio from "../tools/AspectRatio";
 import { useNavigation } from "@react-navigation/native";
+import { useImageStore } from "../store/useImageStore";
 
 //En param un titre nullable + une liste de badge
 
@@ -100,19 +101,17 @@ const BadgeList = ({ titre }) => {
 };
 
 const Badges = ({ badge }) => {
+  const { getImageFromCache, imageCache } = useImageStore();
   let levels = {
-    1: require("../assets/badges/bronze.png"),
-    2: require("../assets/badges/silver.png"),
-    3: require("../assets/badges/gold.png"),
+    1: getImageFromCache("bronze"),
+    2: getImageFromCache("silver"),
+    3: getImageFromCache("gold"),
   };
-const handleLoad = () => {
-  console.log("load");
-};
+
   return (
     <View>
       <Image
-        onLoad={handleLoad}
-        source={levels[badge.level]}
+        source={{ uri: levels[badge.level] }}
         style={{
           width: ResponsiveWidth(27.9),
           height: ResponsiveHeight(8.8),

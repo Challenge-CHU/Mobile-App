@@ -17,11 +17,9 @@ const InputText = ({ placeholder, translate, onChange }) => {
     }
   }, [text]);
   const handleblur = (e) => {
-    // console.log("focus", e);
     onChangeFocus(false);
   };
   const handleFocus = (e) => {
-    // console.log("focus", e);
     onChangeFocus(true);
   };
 

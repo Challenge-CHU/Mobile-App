@@ -3,8 +3,10 @@ import { View, StyleSheet, Image, Text, Dimensions } from "react-native";
 import aspectRatio from "../tools/AspectRatio";
 import { PercentageOf } from "../tools/Percentage";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
-
+import { useImageStore } from "../store/useImageStore";
 const LittleWalkyMsg = ({ message }) => {
+  const { getImageFromCache, imageCache } = useImageStore();
+
   return (
     <View
       style={{
@@ -18,7 +20,7 @@ const LittleWalkyMsg = ({ message }) => {
       }}
     >
       <Image
-        source={require("../assets/littlewalky.png")}
+        source={{ uri: getImageFromCache("littlewalky") }}
         style={{ width: ResponsiveWidth(7.4), height: ResponsiveHeight(5.32) }}
         resizeMode="contain"
       />
