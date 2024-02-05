@@ -4,6 +4,7 @@ import PlateformSafeView from "../components/PlateformSafeView";
 import Walky from "../components/Walky";
 import BubbleMessage from "../components/BubbleMessage";
 import { useImageStore } from "../store/useImageStore";
+import { ResponsiveHeight } from "../tools/ResponsiveHeight";
 const NoChallenge = () => {
   const { getImageFromCache, imageCache } = useImageStore();
 
@@ -13,13 +14,16 @@ const NoChallenge = () => {
         style={{
           justifyContent: "center",
           alignItems: "center",
-          // backgroundColor: "blue",
           height: "22%",
         }}
       >
         <Image
           source={{ uri: getImageFromCache("chu-blanc") }}
-          style={{ objectFit: "contain", width: 234, height: 125 }}
+          style={{
+            objectFit: "contain",
+            width: ResponsiveHeight(27.7),
+            height: ResponsiveHeight(14.8),
+          }}
         />
       </View>
 
@@ -36,7 +40,7 @@ const NoChallenge = () => {
             justifyContent: "center",
             alignItems: "center",
             position: "relative",
-            transform: "translateY(-80px)",
+            transform: [{ translateY: ResponsiveHeight(9.4) }],
           }}
         >
           <BubbleMessage
@@ -44,7 +48,13 @@ const NoChallenge = () => {
               "Il n’y a aucun challenge en cours en ce moment, reviens plus tard !"
             }
           />
-          <View style={{ position: "absolute", top: 12, right: -65 }}>
+          <View
+            style={{
+              position: "absolute",
+              top: ResponsiveHeight(12),
+              right: -ResponsiveHeight(1.4),
+            }}
+          >
             <Walky />
           </View>
         </View>
@@ -59,7 +69,11 @@ const NoChallenge = () => {
       >
         <Image
           source={{ uri: getImageFromCache("cesi-blanc") }}
-          style={{ objectFit: "contain", width: 208, height: 130 }}
+          style={{
+            objectFit: "contain",
+            width: ResponsiveHeight(24),
+            height: ResponsiveHeight(15),
+          }}
         />
       </View>
     </PlateformSafeView>
