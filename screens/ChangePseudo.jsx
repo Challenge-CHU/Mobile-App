@@ -13,6 +13,7 @@ import cacheAssetsAsync from "../components/CacheAssetAsync";
 import { Asset, useAssets } from "expo-asset";
 import { useUserStore } from "../store/useUserStore";
 import { useImageStore } from "../store/useImageStore";
+import { ResponsiveHeight } from "../tools/ResponsiveHeight";
 
 const fakedata = [
   { id: 1, url: require("../assets/iconfriend.png"), name: "image1" },
@@ -29,7 +30,7 @@ const AddPseudo = () => {
   const [selectedImg, setSelectedImg] = useState(null);
   const navigation = useNavigation();
 
-  const [pseudo, setPseudo] = useState("brr");
+  const [pseudo, setPseudo] = useState("");
   const [assets, error] = useAssets([require("../assets/iconfriend.png")]);
   const { updateUsername } = useUserStore();
   const { getImageFromCache, fetched } = useImageStore();
@@ -57,10 +58,10 @@ const AddPseudo = () => {
     <View>
       <View
         style={{
-          height: 341,
+          height: ResponsiveHeight(40.2),
           alignItems: "center",
           justifyContent: "center",
-          marginTop: 64,
+          marginTop: ResponsiveHeight(5.5),
         }}
       >
         <View
@@ -69,13 +70,19 @@ const AddPseudo = () => {
             justifyContent: "center",
             alignItems: "center",
             position: "relative",
-            transform: "translateY(-80px)",
+            transform: `translateY(-${ResponsiveHeight(9.4)}px)`,
           }}
         >
           <BubbleMessage
             msg={"Je m’apelle Walky, et toi, comment dois-je t’appeler ?"}
           />
-          <View style={{ position: "absolute", top: 12, right: -65 }}>
+          <View
+            style={{
+              position: "absolute",
+              top: ResponsiveHeight(1.4),
+              right: -ResponsiveHeight(7.7),
+            }}
+          >
             <Walky />
           </View>
         </View>
@@ -85,16 +92,14 @@ const AddPseudo = () => {
         style={{
           justifyContent: "center",
           alignItems: "center",
-          paddingHorizontal: 40,
+          paddingHorizontal: ResponsiveHeight(4.7),
           flexDirection: "column",
-          // height: "22%",
         }}
       >
         <View
           style={{
-            marginTop: 32,
-            marginBottom: 40,
-            // backgroundColor: "red",
+            marginTop: ResponsiveHeight(3.7),
+            marginBottom: ResponsiveHeight(4.7),
             width: "100%",
           }}
         >
@@ -105,14 +110,20 @@ const AddPseudo = () => {
           />
         </View>
 
-        <View style={{ width: "100%", marginBottom: 64, gap: 14 }}>
+        <View
+          style={{
+            width: "100%",
+            marginBottom: ResponsiveHeight(3.5),
+            gap: ResponsiveHeight(1.6),
+          }}
+        >
           <Text style={styles.text}>Selectionne un Avatar</Text>
           <View
             style={{
               flexDirection: "row",
               justifyContent: "center",
               flexWrap: "wrap",
-              gap: 20,
+              gap: ResponsiveHeight(2.3),
             }}
           >
             {fakedata.map((item) => {
@@ -139,7 +150,7 @@ const AddPseudo = () => {
 const styles = StyleSheet.create({
   text: {
     color: "#ffffff",
-    fontSize: 18,
+    fontSize: aspectRatio(ResponsiveHeight(2.1)),
     fontWeight: "600",
     textAlign: "left",
   },

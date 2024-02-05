@@ -1,6 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Text, Image } from "react-native";
 import { useImageStore } from "../store/useImageStore";
+import { ResponsiveHeight } from "../tools/ResponsiveHeight";
 
 const BubbleMessage = ({ msg }) => {
   const { getImageFromCache, imageCache } = useImageStore();
@@ -11,7 +12,12 @@ const BubbleMessage = ({ msg }) => {
       <View style={styles.bottomBubble}>
         <Image
           source={{ uri: getImageFromCache("queue") }}
-          style={{ objectFit: "contain", width: 42, height: 27 }}
+          style={{
+            objectFit: "contain",
+            width: ResponsiveHeight(4.9),
+            height: ResponsiveHeight(3.1),
+          }}
+          // style={{ objectFit: "contain", width: 42, height: 27 }}
         />
       </View>
     </View>
@@ -21,25 +27,21 @@ const BubbleMessage = ({ msg }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#ffffff",
-    // backgroundColor: "yellow",
     position: "relative",
     width: "auto",
-    paddingVertical: 22,
-    paddingHorizontal: 22,
-    borderRadius: 12,
+    paddingVertical: ResponsiveHeight(2.6),
+    paddingHorizontal: ResponsiveHeight(2.6),
+    borderRadius: ResponsiveHeight(1.4),
   },
-  // wrapper: {
-
-  // },
   bottomBubble: {
     position: "absolute",
-    bottom: -25,
+    bottom: -ResponsiveHeight(2.9),
     right: "50%",
 
     // backgroundColor: "green",
   },
   text: {
-    fontSize: 18,
+    fontSize: ResponsiveHeight(2.1),
     fontWeight: "600",
   },
 });

@@ -16,8 +16,10 @@ const Walky = () => {
           stateMachineName="State Machine 1"
           // style={{ width: ResponsiveWidth(35.1), height: ResponsiveHeight(24.8) }}
           style={{
-            width: 300,
-            height: 373,
+            width: ResponsiveHeight(35.5),
+            height: ResponsiveHeight(44.1),
+            // width: 300,
+            // height: 373,
             padding: 0,
             margin: 0,
             // backgroundColor: "red",

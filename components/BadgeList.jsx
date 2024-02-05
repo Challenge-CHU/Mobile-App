@@ -64,11 +64,6 @@ const BadgeList = ({ titre }) => {
         </Text>
       )}
 
-      {/* <FlatList
-        data={Unlockbadges}
-        renderItem={(item) => <Badges badge={item} />}
-        keyExtractor={(item) => item.id}
-      /> */}
 
       <View
         style={{

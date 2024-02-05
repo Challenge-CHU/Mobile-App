@@ -12,6 +12,7 @@ import FirstLoadingScreen from "./FirstLoadingScreen";
 import { Asset } from "expo-asset";
 import ImageLoader from "../components/ImageLoader";
 import SplashScreen from "../components/SplashScreen";
+import { ResponsiveHeight } from "../tools/ResponsiveHeight";
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -42,44 +43,57 @@ const SignUp = () => {
           alignItems: "center",
           flexDirection: "row",
           height: "14%",
-          paddingHorizontal: 40,
-          marginTop: 42,
+          paddingHorizontal: ResponsiveHeight(4.7),
+          marginTop: ResponsiveHeight(4.9),
+          marginBottom: ResponsiveHeight(2),
+          // paddingHorizontal: 40,
+          // marginTop: 42,
         }}
       >
         <View
           style={{
-            width: 150,
-            height: 70,
+            width: ResponsiveHeight(17.7),
+            height: ResponsiveHeight(8.2),
+            // width: 150,
+            // height: 70,
             alignItems: "center",
             justifyContent: "center",
           }}
         >
           <Image
             source={{ uri: getImageFromCache("new-chu-blc") }}
-            style={{ objectFit: "contain", width: "100%", height: 72 }}
+            style={{
+              objectFit: "contain",
+              width: "100%",
+              height: ResponsiveHeight(8.5),
+            }}
           />
         </View>
         <View
           style={{
-            width: 150,
-            height: 70,
+            width: ResponsiveHeight(17.7),
+            height: ResponsiveHeight(8.2),
             alignItems: "center",
             justifyContent: "center",
           }}
         >
           <Image
             source={{ uri: getImageFromCache("new-cesi-blc") }}
-            // source={require("../assets/new-cesi-blc.png")}
-            style={{ objectFit: "contain", width: "100%", height: 72 }}
+            style={{
+              objectFit: "contain",
+              width: "100%",
+              height: ResponsiveHeight(8.5),
+            }}
           />
         </View>
       </View>
 
       <View
         style={{
-          height: 341,
+          height: ResponsiveHeight(40.4),
           alignItems: "center",
           justifyContent: "center",
+          // backgroundColor: "red",
         }}
       >
         <View
@@ -88,7 +102,7 @@ const SignUp = () => {
             justifyContent: "center",
             alignItems: "center",
             position: "relative",
-            transform: "translateY(-80px)",
+            transform: `translateY(-${ResponsiveHeight(9.2)}px)`,
           }}
         >
           <BubbleMessage
@@ -96,7 +110,13 @@ const SignUp = () => {
               "Bienvenue sur le challenge des 10 000 pas ! Connecte toi pour débuter l'aventure."
             }
           />
-          <View style={{ position: "absolute", top: 12, right: -65 }}>
+          <View
+            style={{
+              position: "absolute",
+              top: ResponsiveHeight(1.4),
+              right: -ResponsiveHeight(7.7),
+            }}
+          >
             <Walky />
           </View>
         </View>
@@ -106,12 +126,17 @@ const SignUp = () => {
         style={{
           justifyContent: "center",
           alignItems: "center",
-          paddingHorizontal: 40,
+          paddingHorizontal: ResponsiveHeight(4.7),
           flexDirection: "column",
-          // height: "22%",
         }}
       >
-        <View style={{ marginTop: 32, marginBottom: 40, gap: 16 }}>
+        <View
+          style={{
+            marginTop: ResponsiveHeight(3.7),
+            marginBottom: ResponsiveHeight(4.7),
+            gap: ResponsiveHeight(1.8),
+          }}
+        >
           <InputText placeholder="Mot de passe" translate={true} />
           <Text style={styles.text}>
             Ces informations vous ont été envoyées par le CHU à la suite de
@@ -131,7 +156,7 @@ const SignUp = () => {
 const styles = StyleSheet.create({
   text: {
     color: "#ffffff",
-    fontSize: aspectRatio(16),
+    fontSize: aspectRatio(ResponsiveHeight(1.8)),
   },
 });
 

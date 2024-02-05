@@ -21,11 +21,9 @@ const IconProfil = ({ url, onClick, name, selected, onLoad }) => {
         // source={url}
         source={{ uri: url }}
         style={{
-          width: 59,
-          height: 72,
+          width: ResponsiveHeight(6.9),
+          height: ResponsiveHeight(8.5),
           opacity: selected ? 0.5 : 1,
-          // width: ResponsiveWidth(19.2),
-          // height: ResponsiveHeight(10.9),
         }}
         resizeMode="contain"
         onLoad={handleLoad}
