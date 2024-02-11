@@ -18,9 +18,7 @@ function cacheImages(images) {
 }
 
 const ImageLoader = () => {
-  // const { addImageToCache } = useImageStore();
   const { updateFetched, addImageToCache } = useImageStore();
-
 
   useEffect(() => {
     async function loadResourcesAndDataAsync() {
@@ -45,6 +43,7 @@ const ImageLoader = () => {
           require("../assets/badges/bronze.png"),
           require("../assets/badges/silver.png"),
           require("../assets/badges/gold.png"),
+          require("../assets/plus.png"),
         ]);
         console.log("oh lala: ", imageAssets);
         let result = await Promise.all([...imageAssets]);

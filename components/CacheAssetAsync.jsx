@@ -7,7 +7,6 @@ export default function cacheAssetsAsync({
   return Promise.all([
     ...cacheImages(images),
     // ...cacheFonts(fonts),
-    // ...cacheVideos(videos),
   ]);
 }
 function cacheImages(images) {

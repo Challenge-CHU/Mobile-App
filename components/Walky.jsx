@@ -5,7 +5,7 @@ import { Colors } from "../styles";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 import BubbleMessage from "./BubbleMessage";
 
-const Walky = () => {
+const Walky = ({ width, height, reverse }) => {
   const idleUrl = process.env.EXPO_PUBLIC_S3_URL;
 
   return (
@@ -16,13 +16,11 @@ const Walky = () => {
           stateMachineName="State Machine 1"
           // style={{ width: ResponsiveWidth(35.1), height: ResponsiveHeight(24.8) }}
           style={{
-            width: ResponsiveHeight(35.5),
-            height: ResponsiveHeight(44.1),
-            // width: 300,
-            // height: 373,
+            width: width,
+            height: height,
             padding: 0,
             margin: 0,
-            // backgroundColor: "red",
+            transform: reverse != undefined ? "scaleX(-1)" : "",
           }}
           // style={{ width: 350, height: 423, backgroundColor: "red" }}
         />

@@ -117,7 +117,10 @@ const SignUp = () => {
               right: -ResponsiveHeight(7.7),
             }}
           >
-            <Walky />
+            <Walky
+              width={ResponsiveHeight(35.5)}
+              height={ResponsiveHeight(44.1)}
+            />
           </View>
         </View>
       </View>
