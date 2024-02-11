@@ -7,6 +7,7 @@ import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 import { useImageStore } from "../store/useImageStore.jsx";
 const FirstLoadingScreen = () => {
   const idleUrl = process.env.EXPO_PUBLIC_S3_URL;
+  
 
   return (
     <View style={styles.container}>
