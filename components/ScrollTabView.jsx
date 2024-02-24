@@ -10,7 +10,7 @@ import {
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { ResponsiveHeight } from "../tools/ResponsiveHeight";
 
-const ScrollTabView = ({ children, onChange }) => {
+const ScrollTabView = ({ children, onChange, tabNames, color }) => {
   const scrollViewRef = useRef(null);
   const [visibleChild, setVisibleChild] = useState(1);
 
@@ -43,26 +43,30 @@ const ScrollTabView = ({ children, onChange }) => {
         }}
       >
         <TabText
-          name={"Perso"}
+          name={tabNames[0]}
+          // name={"Perso"}
           onPressEvent={() => handleScrollToTab(0)}
           visibleChild={visibleChild}
           id={1}
+          color={color}
         />
 
         <View
           style={{
             width: 2,
             height: ResponsiveHeight(2.8),
-            backgroundColor: "black",
+            backgroundColor: color,
             borderRadius: 64,
             opacity: 0.25,
           }}
         />
         <TabText
-          name={"Global"}
+          name={tabNames[1]}
+          // name={"Global"}
           onPressEvent={() => handleScrollToTab(1)}
           visibleChild={visibleChild}
           id={2}
+          color={color}
         />
       </View>
       <FlatList
@@ -76,7 +80,13 @@ const ScrollTabView = ({ children, onChange }) => {
         showsHorizontalScrollIndicator={false}
         data={children}
         renderItem={({ item, index }) => (
-          <View style={{ width: Dimensions.get("window").width }}>{item}</View>
+          <View
+            style={{
+              width: Dimensions.get("window").width,
+            }}
+          >
+            {item}
+          </View>
         )}
         keyExtractor={(item, index) => index.toString()}
         viewabilityConfig={{
@@ -88,13 +98,12 @@ const ScrollTabView = ({ children, onChange }) => {
   );
 };
 
-const TabText = ({ name, onPressEvent, visibleChild, id }) => {
+const TabText = ({ name, onPressEvent, visibleChild, id, color }) => {
   return (
     <TouchableOpacity onPress={onPressEvent}>
       <Text
         style={{
-          color: "#000000",
-          color: "#000000",
+          color: color,
           opacity: visibleChild === id ? 1 : 0.25,
           fontFamily: "Inter-Regular",
           fontSize: ResponsiveHeight(1.6),

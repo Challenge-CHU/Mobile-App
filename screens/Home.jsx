@@ -59,6 +59,8 @@ const Home = () => {
     setSteps(dailySteps);
   }, [dailySteps]);
 
+  const tabNames = ["Perso", "Global"];
+
   return (
     <PlateformSafeView styles={{ backgroundColor: "#ffffff" }}>
       <View style={{ backgroundColor: Colors.colors.blue, display: "flex" }}>
@@ -88,7 +90,11 @@ const Home = () => {
           </View>
           {/* selector tab perso && global */}
 
-          <ScrollTabView onChange={handleOnVisibleChildChange}>
+          <ScrollTabView
+            onChange={handleOnVisibleChildChange}
+            tabNames={tabNames}
+            color="#000000"
+          >
             <ProgressCircle objectif={STEP_GOAL} progression={dailySteps} />
             <GlobalStats data={fakeData} flex />
           </ScrollTabView>
