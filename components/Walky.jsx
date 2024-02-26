@@ -12,17 +12,21 @@ const Walky = ({ width, height, reverse }) => {
     <View style={styles.container}>
       <View>
         <Rive
-          url={idleUrl}
+          resourceName="idle-walky2"
+          // url={idleUrl}
           stateMachineName="State Machine 1"
           // style={{ width: ResponsiveWidth(35.1), height: ResponsiveHeight(24.8) }}
-          style={{
-            width: width,
-            height: height,
-            padding: 0,
-            margin: 0,
-            transform: reverse != undefined ? "scaleX(-1)" : "",
-          }}
-          // style={{ width: 350, height: 423, backgroundColor: "red" }}
+          // style={{
+          //   width: width,
+          //   height: height,
+          //   padding: 0,
+          //   margin: 0,
+          //   transform: reverse != undefined ? "scaleX(-1)" : "",
+          //   backgroundColor: "transparent",
+          // }}
+          fit="contain"
+          alignment="center"
+          style={{ width: 350, height: 423, backgroundColor: "transparent" }}
         />
       </View>
     </View>
