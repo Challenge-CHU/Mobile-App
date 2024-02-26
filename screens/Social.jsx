@@ -145,7 +145,6 @@ const Social = () => {
         <View
           style={{
             height: ResponsiveHeight(22),
-            // backgroundColor: "red",
             marginTop: ResponsiveHeight(3.7),
           }}
         >
@@ -221,12 +220,6 @@ const Social = () => {
           padding: 0,
         }}
       >
-        {/* <View style={{ gap: 24 }}>
-          {friends.map((item) => {
-            return <SocialCard />;
-          })}
-        </View> */}
-
         <FlatList
           style={{
             width: "100%",
@@ -234,8 +227,13 @@ const Social = () => {
             paddingHorizontal: 32,
           }}
           data={friends}
-          renderItem={(item) => (
-            <SocialCard name={item.name} steps={item.steps} />
+          renderItem={({ item }) => (
+            <SocialCard
+              name={item.name}
+              steps={item.steps}
+              allSteps={item.allSteps}
+              showGlobal={visibleChild}
+            />
           )}
           keyExtractor={(item) => item.id}
           // numColumns={8}
@@ -268,7 +266,7 @@ const styles = StyleSheet.create({});
 
 export default Social;
 
-const SocialCard = ({ name, steps }) => {
+const SocialCard = ({ name, steps, allSteps, showGlobal }) => {
   const { getImageFromCache, imageCache } = useImageStore();
 
   return (
@@ -299,12 +297,12 @@ const SocialCard = ({ name, steps }) => {
         />
         <View>
           <Text style={{ fontSize: 20, fontWeight: "600", color: "#ffffff" }}>
-            Nom de la personne
+            {name}
           </Text>
         </View>
         <View>
           <Text style={{ fontSize: 20, fontWeight: "600", color: "#ffffff" }}>
-            14 000
+            {showGlobal === 2 ? allSteps : steps}
           </Text>
           <Text style={{ fontSize: 14, fontWeight: "600", color: "#ffffff" }}>
             pas

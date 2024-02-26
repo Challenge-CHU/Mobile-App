@@ -25,9 +25,6 @@ const SignUp = () => {
   } = useImageStore();
   const [img1, setImg1] = useState(null);
 
-  // useEffect(() => {
-  //   if (!fetched) ImageLoader();
-  // }, []);
 
   const handleConnect = () => {
     navigation.navigate("AddPseudo");
@@ -93,7 +90,6 @@ const SignUp = () => {
           height: ResponsiveHeight(40.4),
           alignItems: "center",
           justifyContent: "center",
-          // backgroundColor: "red",
         }}
       >
         <View
