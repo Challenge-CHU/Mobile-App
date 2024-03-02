@@ -55,7 +55,6 @@ const Home = () => {
   });
 
   useEffect(() => {
-    console.log(dailySteps, " daily daily");
     setSteps(dailySteps);
   }, [dailySteps]);
 

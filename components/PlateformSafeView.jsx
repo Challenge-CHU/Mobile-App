@@ -9,7 +9,7 @@ const PlateformSafeView = ({ children, styles }) => {
       <View
         style={{
           color: Colors.colors.black,
-          paddingTop: ResponsiveHeight(3.7),
+          paddingTop: ResponsiveHeight(4),
           ...styles,
         }}
       >
@@ -18,6 +18,16 @@ const PlateformSafeView = ({ children, styles }) => {
     );
   } else if (Platform.OS === "ios") {
     return <SafeAreaView style={styles}>{children}</SafeAreaView>;
+  } else {
+    <View
+    style={{
+      color: Colors.colors.black,
+      paddingTopTop: ResponsiveHeight(4),
+      ...styles,
+    }}
+  >
+    {children}
+  </View>
   }
 };
 

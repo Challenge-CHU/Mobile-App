@@ -16,14 +16,22 @@ import {
 import aspectRatio from "../../tools/AspectRatio";
 import { Colors } from "../../styles";
 import CustomModal from "../../components/Modal";
+import { useUserStore } from "../../store/useUserStore";
 
 const Settings = ({ navigation }) => {
   const [isEnabled, setIsEnabled] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [text, onChangeText] = useState("");
+  const { updateUsername } = useUserStore();
 
   const toggleSwitch = () => {
     setIsEnabled((prev) => setIsEnabled(!prev));
+  };
+
+  const handlePress = () => {
+    updateUsername(text);
+
+    setModalVisible((prev) => !prev);
   };
 
   return (
@@ -34,9 +42,8 @@ const Settings = ({ navigation }) => {
     >
       <CustomModal
         text="Veuillez entrer votre nouveau pseudo."
-        // text="Veuillez entrer le pseudo de votre ami que vous souhaitez ajouter"
         placeholder="Pseudo"
-        onPress={() => setModalVisible((prev) => !prev)}
+        onPress={handlePress}
         modalVisible={modalVisible}
         onChangeText={onChangeText}
         BtnLabel="Changer"

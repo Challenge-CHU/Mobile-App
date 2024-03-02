@@ -47,7 +47,7 @@ export const useHealthKit = (date) => {
           return;
         }
 
-        console.log("test date dans le use healthkit: ", results.value);
+        // console.log("test date dans le use healthkit: ", results.value);
         resolve(results.value);
       });
     });
@@ -95,7 +95,7 @@ export const useHealthKit = (date) => {
       today.getDate() - daysBefore
     );
 
-    console.log("last week date: ", lastWeekDate);
+    // console.log("last week date: ", lastWeekDate);
 
     let optionDate = {
       startDate: lastWeekDate.toISOString(),

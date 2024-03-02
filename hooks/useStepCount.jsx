@@ -45,8 +45,6 @@ const useStepCount = () => {
   const calculateStatsForDate = async (date) => {
     const steps = await handleGetStepsByDate(date);
 
-    console.log("les pas dans function: ", steps);
-
     if (steps != undefined) {
       const km = convertStepToKm(steps);
       const ecoScore = computeEcoScore(steps);
@@ -84,7 +82,6 @@ const useStepCount = () => {
     const stepsObj = await handleGetStepsFromBeginning();
 
     if (stepsObj != undefined) {
-      console.log("CA PASSE");
       const totalSteps = stepsObj.reduce((acc, obj) => acc + obj.value, 0);
       const average = Math.round(totalSteps / stepsObj.length);
       const km = Math.round(convertStepToKm(totalSteps));
@@ -97,7 +94,6 @@ const useStepCount = () => {
 
       return stats;
     } else {
-      console.log("CA PASSE PAS");
       const stats = [
         { int: 0, description: "Pas cumulés" },
         { int: 0, description: "Km cumulés" },

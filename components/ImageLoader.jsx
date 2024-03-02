@@ -6,12 +6,8 @@ import { useImageStore } from "../store/useImageStore";
 function cacheImages(images) {
   return images.map((image) => {
     if (typeof image === "string") {
-      console.log("string ?");
       return Image.prefetch(image);
     } else {
-      console.log("Not string ?");
-      console.log("Not string ?: ", Asset.fromModule(image).downloadAsync());
-
       return Asset.fromModule(image).downloadAsync();
     }
   });
@@ -45,25 +41,22 @@ const ImageLoader = () => {
           require("../assets/badges/gold.png"),
           require("../assets/plus.png"),
         ]);
-        console.log("oh lala: ", imageAssets);
         let result = await Promise.all([...imageAssets]);
-        console.log("mamama maaaaa: ", result);
 
         result.map((image) => {
           addImageToCache(image.name, image.localUri);
         });
         updateFetched(true);
       } catch (e) {
-        // You might want to provide this error information to an error reporting service
+        console.log(e);
         console.warn(e);
       } finally {
-        console.log("finally");
       }
     }
     loadResourcesAndDataAsync();
   }, []);
 
-  return null; // Le composant n'a pas besoin de retourner du JSX s'il n'est pas rendu.
+  return null;
 };
 
 export default ImageLoader;

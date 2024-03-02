@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   Image,
+  Pressable,
   FlatList,
 } from "react-native";
 import PlateformSafeView from "../components/PlateformSafeView";
@@ -26,7 +27,11 @@ const Social = () => {
   const handleOnVisibleChildChange = useCallback((visibleInt) => {
     setVisibleChild(visibleInt);
   });
-  // const friends = false;
+
+  const handlePressModal = () => {
+    setModalVisible(true);
+  };
+
   const friends = [
     { id: 1, name: "Joselito", steps: 1000, allSteps: 100000 },
     { id: 2, name: "Karine", steps: 45000, allSteps: 35000 },
@@ -36,74 +41,6 @@ const Social = () => {
 
   const tabNames = ["Aujourd'hui", "Depuis le début"];
 
-  if (!friends) {
-    return (
-      <>
-        <PlateformSafeView styles={{ backgroundColor: Colors.colors.blue }}>
-          <View
-            style={{
-              justifyContent: "space-between",
-              alignItems: "center",
-              flexDirection: "row",
-              paddingHorizontal: 24,
-            }}
-          >
-            <Text style={{ fontSize: 25, fontWeight: "600", color: "#ffffff" }}>
-              Mes amis
-            </Text>
-            <TouchableOpacity
-              style={{
-                backgroundColor: "#317DBA",
-                paddingHorizontal: 12,
-                paddingVertical: 8,
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 6,
-                borderRadius: 6,
-              }}
-              onPress={() => setModalVisible(true)}
-            >
-              <Image
-                source={{ uri: getImageFromCache("plus") }}
-                style={{
-                  objectFit: "contain",
-                  width: 15,
-                  height: 15,
-                }}
-              />
-              <Text
-                style={{ color: "#ffffff", fontSize: 16, fontWeight: "600" }}
-              >
-                Ajouter un ami
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </PlateformSafeView>
-        <BottomSheet styles={{ height: ResponsiveHeight(70), padding: 0 }}>
-          <View
-            style={{ justifyContent: "center", alignItems: "center", flex: 1 }}
-          >
-            <View
-              style={{
-                height: ResponsiveHeight(33),
-                justifyContent: "center",
-                alignItems: "center",
-                overflow: "hidden",
-              }}
-            >
-              <Walky
-                width={ResponsiveHeight(35.5)}
-                height={ResponsiveHeight(44.1)}
-                reverse
-              />
-            </View>
-            <GreyCard />
-          </View>
-        </BottomSheet>
-      </>
-    );
-  }
-
   return (
     <>
       <PlateformSafeView styles={{ backgroundColor: Colors.colors.blue }}>
@@ -112,21 +49,28 @@ const Social = () => {
             justifyContent: "space-between",
             alignItems: "center",
             flexDirection: "row",
-            paddingHorizontal: 24,
+            paddingHorizontal: ResponsiveHeight(2.8),
           }}
         >
-          <Text style={{ fontSize: 25, fontWeight: "600", color: "#ffffff" }}>
+          <Text
+            style={{
+              fontSize: ResponsiveHeight(2.8),
+              fontWeight: "600",
+              color: "#ffffff",
+            }}
+          >
             Mes amis
           </Text>
           <TouchableOpacity
+            onPress={handlePressModal}
             style={{
               backgroundColor: "#317DBA",
               paddingHorizontal: 12,
-              paddingVertical: 8,
+              paddingVertical: ResponsiveHeight(0.9),
               flexDirection: "row",
               alignItems: "center",
-              gap: 6,
-              borderRadius: 6,
+              gap: ResponsiveHeight(0.7),
+              borderRadius: ResponsiveHeight(0.7),
             }}
           >
             <Image
@@ -142,116 +86,22 @@ const Social = () => {
             </Text>
           </TouchableOpacity>
         </View>
-        <View
-          style={{
-            height: ResponsiveHeight(22),
-            marginTop: ResponsiveHeight(3.7),
-          }}
-        >
-          <ScrollTabView
-            onChange={handleOnVisibleChildChange}
+        {friends != undefined || friends.length > 0 ? (
+          <FriendsScrollData
+            handleOnVisibleChildChange={handleOnVisibleChildChange}
             tabNames={tabNames}
-            color="#ffffff"
-          >
-            <View
-              style={{
-                flex: "0 1",
-                height: "100%",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: ResponsiveHeight(1.4),
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: ResponsiveHeight(2.3),
-                  fontWeight: "600",
-                  color: "#ffffff",
-                }}
-              >
-                Ensemble vous avez marché
-              </Text>
-              <Text
-                style={{
-                  fontSize: ResponsiveHeight(2.3),
-                  fontWeight: "600",
-                  color: "#ffffff",
-                }}
-              >
-                25 000 pas aujourd'hui
-              </Text>
-            </View>
-            <View
-              style={{
-                flex: "0 1",
-                height: "100%",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: ResponsiveHeight(1.4),
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: ResponsiveHeight(2.3),
-                  fontWeight: "600",
-                  color: "#ffffff",
-                }}
-              >
-                Ensemble vous avez marché
-              </Text>
-              <Text
-                style={{
-                  fontSize: ResponsiveHeight(2.3),
-                  fontWeight: "600",
-                  color: "#ffffff",
-                }}
-              >
-                25 000 pas depuis le début
-              </Text>
-            </View>
-          </ScrollTabView>
-        </View>
+          />
+        ) : (
+          ""
+        )}
       </PlateformSafeView>
-      <BottomSheet
-        styles={{
-          height: ResponsiveHeight(58),
-          padding: 0,
-        }}
-      >
-        <FlatList
-          style={{
-            width: "100%",
-            paddingVertical: 44,
-            paddingHorizontal: 32,
-          }}
-          data={friends}
-          renderItem={({ item }) => (
-            <SocialCard
-              name={item.name}
-              steps={item.steps}
-              allSteps={item.allSteps}
-              showGlobal={visibleChild}
-            />
-          )}
-          keyExtractor={(item) => item.id}
-          // numColumns={8}
-          contentContainerStyle={{
-            gap: 24,
-            width: "100%",
-            margin: 0,
-            padding: 0,
-            overflow: "visible",
-            marginHorizontal: 0,
-            paddingHorizontal: 0,
-          }}
-          scrollEnabled={true}
-        />
-      </BottomSheet>
+      {friends === undefined || friends.length <= 0 ? (
+        <NoFriendContent />
+      ) : (
+        <FriendContent friends={friends} visibleChild={visibleChild} />
+      )}
       <CustomModal
         text="Veuillez entrer votre nouveau pseudo."
-        // text="Veuillez entrer le pseudo de votre ami que vous souhaitez ajouter"
         placeholder="Pseudo"
         onPress={() => setModalVisible((prev) => !prev)}
         modalVisible={modalVisible}
@@ -260,6 +110,76 @@ const Social = () => {
       />
     </>
   );
+
+  // return (
+  //   <>
+  //     <PlateformSafeView styles={{ backgroundColor: Colors.colors.blue }}>
+  //       <View
+  //         style={{
+  //           justifyContent: "space-between",
+  //           alignItems: "center",
+  //           flexDirection: "row",
+  //           paddingHorizontal: ResponsiveHeight(2.8),
+  //         }}
+  //       >
+  //         <Text
+  //           style={{
+  //             fontSize: ResponsiveHeight(2.8),
+  //             fontWeight: "600",
+  //             color: "#ffffff",
+  //           }}
+  //         >
+  //           Mes amis
+  //         </Text>
+  //         <TouchableOpacity
+  //           style={{
+  //             backgroundColor: "#317DBA",
+  //             paddingHorizontal: 12,
+  //             paddingVertical: ResponsiveHeight(0.9),
+  //             flexDirection: "row",
+  //             alignItems: "center",
+  //             gap: ResponsiveHeight(0.7),
+  //             borderRadius: ResponsiveHeight(0.7),
+  //           }}
+  //         >
+  //           <Image
+  //             source={{ uri: getImageFromCache("plus") }}
+  //             style={{
+  //               objectFit: "contain",
+  //               width: ResponsiveHeight(1.7),
+  //               height: ResponsiveHeight(1.7),
+  //             }}
+  //           />
+  //           <Text
+  //             style={{
+  //               color: "#ffffff",
+  //               fontSize: ResponsiveHeight(1.8),
+  //               fontWeight: "600",
+  //             }}
+  //           >
+  //             Ajouter un ami
+  //           </Text>
+  //         </TouchableOpacity>
+  //       </View>
+  //       <View
+  //         style={{
+  //           height: ResponsiveHeight(22),
+  //           marginTop: ResponsiveHeight(3.7),
+  //         }}
+  //       >
+
+  //       </View>
+  //       <CustomModal
+  //         text="Veuillez entrer votre nouveau pseudo."
+  //         placeholder="Pseudo"
+  //         onPress={() => setModalVisible((prev) => !prev)}
+  //         modalVisible={modalVisible}
+  //         onChangeText={onChangeText}
+  //         BtnLabel="Changer"
+  //       />
+  //     </PlateformSafeView>
+  //   </>
+  // );
 };
 
 const styles = StyleSheet.create({});
@@ -277,38 +197,201 @@ const SocialCard = ({ name, steps, allSteps, showGlobal }) => {
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
-          borderRadius: 10,
+          borderRadius: ResponsiveHeight(1.1),
           position: "relative",
-          paddingVertical: 8,
-          paddingLeft: 48,
-          paddingRight: 14,
+          paddingVertical: ResponsiveHeight(0.9),
+          paddingLeft: ResponsiveHeight(5.6),
+          paddingRight: ResponsiveHeight(1.6),
           overflow: "visible",
         }}
       >
         <Image
           src={getImageFromCache("iconfriend")}
           style={{
-            width: 48,
-            height: 58,
+            width: ResponsiveHeight(5.6),
+            height: ResponsiveHeight(6.8),
             objectFit: "contain",
             position: "absolute",
-            left: -14,
+            left: -ResponsiveHeight(1.6),
           }}
         />
         <View>
-          <Text style={{ fontSize: 20, fontWeight: "600", color: "#ffffff" }}>
+          <Text
+            style={{
+              fontSize: ResponsiveHeight(2.3),
+              fontWeight: "600",
+              color: "#ffffff",
+            }}
+          >
             {name}
           </Text>
         </View>
         <View>
-          <Text style={{ fontSize: 20, fontWeight: "600", color: "#ffffff" }}>
+          <Text
+            style={{
+              fontSize: ResponsiveHeight(2.3),
+              fontWeight: "600",
+              color: "#ffffff",
+            }}
+          >
             {showGlobal === 2 ? allSteps : steps}
           </Text>
-          <Text style={{ fontSize: 14, fontWeight: "600", color: "#ffffff" }}>
+          <Text
+            style={{
+              fontSize: ResponsiveHeight(1.6),
+              fontWeight: "600",
+              color: "#ffffff",
+            }}
+          >
             pas
           </Text>
         </View>
       </View>
+    </View>
+  );
+};
+
+const NoFriendContent = () => {
+  return (
+    <BottomSheet styles={{ height: ResponsiveHeight(70), padding: 0 }}>
+      <View
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          flex: 1,
+        }}
+      >
+        <View
+          style={{
+            height: ResponsiveHeight(33),
+            justifyContent: "center",
+            alignItems: "center",
+            overflow: "hidden",
+          }}
+        >
+          <Walky
+            width={ResponsiveHeight(35.5)}
+            height={ResponsiveHeight(44.1)}
+            reverse
+          />
+        </View>
+        <GreyCard />
+      </View>
+    </BottomSheet>
+  );
+};
+
+const FriendContent = ({ friends, visibleChild }) => {
+  return (
+    <BottomSheet
+      styles={{
+        height: ResponsiveHeight(58),
+        padding: 0,
+      }}
+    >
+      <FlatList
+        style={{
+          width: "100%",
+          paddingVertical: ResponsiveHeight(5.2),
+          paddingHorizontal: ResponsiveHeight(3.7),
+        }}
+        data={friends}
+        renderItem={({ item }) => (
+          <SocialCard
+            name={item.name}
+            steps={item.steps}
+            allSteps={item.allSteps}
+            showGlobal={visibleChild}
+          />
+        )}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={{
+          gap: ResponsiveHeight(2.8),
+          width: "100%",
+          margin: 0,
+          padding: 0,
+          overflow: "visible",
+          marginHorizontal: 0,
+          paddingHorizontal: 0,
+        }}
+        scrollEnabled={true}
+      />
+    </BottomSheet>
+  );
+};
+
+const FriendsScrollData = ({ handleOnVisibleChildChange, tabNames }) => {
+  return (
+    <View
+      style={{
+        height: ResponsiveHeight(22),
+        marginTop: ResponsiveHeight(3.7),
+      }}
+    >
+      <ScrollTabView
+        onChange={handleOnVisibleChildChange}
+        tabNames={tabNames}
+        color="#ffffff"
+      >
+        <View
+          style={{
+            // flex: "0 1",
+            height: "100%",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: ResponsiveHeight(1.4),
+          }}
+        >
+          <Text
+            style={{
+              fontSize: ResponsiveHeight(2.3),
+              fontWeight: "600",
+              color: "#ffffff",
+            }}
+          >
+            Ensemble vous avez marché
+          </Text>
+          <Text
+            style={{
+              fontSize: ResponsiveHeight(2.3),
+              fontWeight: "600",
+              color: "#ffffff",
+            }}
+          >
+            25 000 pas aujourd'hui
+          </Text>
+        </View>
+        <View
+          style={{
+            // flex: "0 1",
+            height: "100%",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: ResponsiveHeight(1.4),
+          }}
+        >
+          <Text
+            style={{
+              fontSize: ResponsiveHeight(2.3),
+              fontWeight: "600",
+              color: "#ffffff",
+            }}
+          >
+            Ensemble vous avez marché
+          </Text>
+          <Text
+            style={{
+              fontSize: ResponsiveHeight(2.3),
+              fontWeight: "600",
+              color: "#ffffff",
+            }}
+          >
+            25 000 pas depuis le début
+          </Text>
+        </View>
+      </ScrollTabView>
     </View>
   );
 };

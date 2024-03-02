@@ -74,14 +74,20 @@ const ProfilStackNavigator = () => (
 const Profil = () => {
   const navigation = useNavigation();
   const { username } = useUserStore();
+  const [usernameActive, setUsernameActive] = useState("");
+  const { getImageFromCache, imageCache } = useImageStore();
+
   const changeContent = () => {
     navigation.navigate("Settings");
   };
 
-  const { getImageFromCache, imageCache } = useImageStore();
   useEffect(() => {
     navigation.navigate("ProfilHome");
   }, []);
+
+  useEffect(() => {
+    console.log("il a chnager gros: ", username);
+  }, [username]);
 
   return (
     <>
@@ -101,11 +107,9 @@ const Profil = () => {
             justifyContent: "space-between",
             paddingHorizontal: ResponsiveWidth(8.2),
             gap: ResponsiveHeight(2.84),
-            // backgroundColor: "red",
           }}
         >
           <Image
-            // source={require("../assets/iconfriend.png")}
             source={{ uri: getImageFromCache("iconfriend") }}
             style={{
               width: ResponsiveWidth(19.2),
