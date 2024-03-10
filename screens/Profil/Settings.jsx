@@ -15,39 +15,50 @@ import {
 } from "../../tools/ResponsiveHeight";
 import aspectRatio from "../../tools/AspectRatio";
 import { Colors } from "../../styles";
-import CustomModal from "../../components/Modal";
 import { useUserStore } from "../../store/useUserStore";
+import ModalAnimated from "../../components/ModalAnimated";
+import CustomModal from "../../components/Modal";
+import { useModalStore } from "../../store/useModalStore";
 
 const Settings = ({ navigation }) => {
   const [isEnabled, setIsEnabled] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [text, onChangeText] = useState("");
-  const { updateUsername } = useUserStore();
+  const { updateModalSettings } = useModalStore();
 
   const toggleSwitch = () => {
     setIsEnabled((prev) => setIsEnabled(!prev));
   };
 
   const handlePress = () => {
-    updateUsername(text);
-
-    setModalVisible((prev) => !prev);
+    updateModalSettings(true);
   };
 
   return (
     <View
       style={{
         paddingHorizontal: ResponsiveHeight(2.8),
+        height: "100%",
       }}
     >
-      <CustomModal
+      {/* <CustomModal
         text="Veuillez entrer votre nouveau pseudo."
         placeholder="Pseudo"
         onPress={handlePress}
         modalVisible={modalVisible}
         onChangeText={onChangeText}
         BtnLabel="Changer"
-      />
+      /> */}
+      {/* <View
+        style={{ position: "absolute", top: 0, bottom: 0, left: 0, right: 0 }}
+      >
+        <ModalAnimated
+          text="Veuillez entrer votre nouveau pseudo."
+          placeholder="Pseudo"
+          onPress={handlePress}
+          modalVisible={modalVisible}
+          onChangeText={onChangeText}
+          BtnLabel="Changer"
+        />
+      </View> */}
 
       <View
         style={{
@@ -55,10 +66,7 @@ const Settings = ({ navigation }) => {
           marginBottom: ResponsiveHeight(2.8),
         }}
       >
-        <CustomBtn
-          title="Modifier pseudo"
-          onPress={() => setModalVisible(true)}
-        />
+        <CustomBtn title="Modifier pseudo" onPress={handlePress} />
         <CustomBtn title="CGU" />
       </View>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>

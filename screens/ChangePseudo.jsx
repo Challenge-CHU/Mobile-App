@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, Image } from "react-native";
 import PlateformSafeView from "../components/PlateformSafeView";
-import Walky from "../components/Walky";
+import Walky, { Walky2 } from "../components/Walky";
 import BubbleMessage from "../components/BubbleMessage";
 import Button from "../components/Button";
 import aspectRatio from "../tools/AspectRatio";

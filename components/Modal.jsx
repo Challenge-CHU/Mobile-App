@@ -10,9 +10,9 @@ import {
   Pressable,
   TextInput,
   Image,
+  Dimensions,
 } from "react-native";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
-import aspectRatio from "../tools/AspectRatio";
 import { Colors } from "../styles";
 
 /**
@@ -38,7 +38,6 @@ const CustomModal = ({
   placeholder,
   onPress,
   onChangeText,
-  value,
   BtnLabel,
 }) => {
   return (

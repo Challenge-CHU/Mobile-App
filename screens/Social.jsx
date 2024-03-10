@@ -18,6 +18,7 @@ import GreyCard from "../components/GreyCard";
 import { useImageStore } from "../store/useImageStore";
 import ScrollTabView from "../components/ScrollTabView";
 import CustomModal from "../components/Modal";
+import ModalAnimated from "../components/ModalAnimated";
 
 const Social = () => {
   const { getImageFromCache, imageCache } = useImageStore();
@@ -37,6 +38,10 @@ const Social = () => {
     { id: 2, name: "Karine", steps: 45000, allSteps: 35000 },
     { id: 3, name: "Bruno", steps: 200, allSteps: 100000 },
     { id: 4, name: "Michel", steps: 500, allSteps: 15000 },
+    { id: 5, name: "Michel", steps: 500, allSteps: 15000 },
+    { id: 6, name: "Michel", steps: 500, allSteps: 15000 },
+    { id: 7, name: "Michel", steps: 500, allSteps: 15000 },
+    { id: 8, name: "Michel", steps: 500, allSteps: 15000 },
   ];
 
   const tabNames = ["Aujourd'hui", "Depuis le début"];
@@ -65,7 +70,7 @@ const Social = () => {
             onPress={handlePressModal}
             style={{
               backgroundColor: "#317DBA",
-              paddingHorizontal: 12,
+              paddingHorizontal: ResponsiveHeight(1.4),
               paddingVertical: ResponsiveHeight(0.9),
               flexDirection: "row",
               alignItems: "center",
@@ -77,11 +82,17 @@ const Social = () => {
               source={{ uri: getImageFromCache("plus") }}
               style={{
                 objectFit: "contain",
-                width: 15,
-                height: 15,
+                width: ResponsiveHeight(1.8),
+                height: ResponsiveHeight(1.8),
               }}
             />
-            <Text style={{ color: "#ffffff", fontSize: 16, fontWeight: "600" }}>
+            <Text
+              style={{
+                color: "#ffffff",
+                fontSize: ResponsiveHeight(1.8),
+                fontWeight: "600",
+              }}
+            >
               Ajouter un ami
             </Text>
           </TouchableOpacity>
@@ -100,8 +111,19 @@ const Social = () => {
       ) : (
         <FriendContent friends={friends} visibleChild={visibleChild} />
       )}
-      <CustomModal
+      {/* <CustomModal
         text="Veuillez entrer votre nouveau pseudo."
+        placeholder="Pseudo"
+        onPress={() => setModalVisible((prev) => !prev)}
+        modalVisible={modalVisible}
+        onChangeText={onChangeText}
+        BtnLabel="Changer"
+      /> */}
+
+      <ModalAnimated
+        // visible={modalVisible}
+        // onClose={() => setModalVisible((prev) => !prev)}
+        text="Veuillez entrer le pseudo de votre ami."
         placeholder="Pseudo"
         onPress={() => setModalVisible((prev) => !prev)}
         modalVisible={modalVisible}
@@ -110,76 +132,6 @@ const Social = () => {
       />
     </>
   );
-
-  // return (
-  //   <>
-  //     <PlateformSafeView styles={{ backgroundColor: Colors.colors.blue }}>
-  //       <View
-  //         style={{
-  //           justifyContent: "space-between",
-  //           alignItems: "center",
-  //           flexDirection: "row",
-  //           paddingHorizontal: ResponsiveHeight(2.8),
-  //         }}
-  //       >
-  //         <Text
-  //           style={{
-  //             fontSize: ResponsiveHeight(2.8),
-  //             fontWeight: "600",
-  //             color: "#ffffff",
-  //           }}
-  //         >
-  //           Mes amis
-  //         </Text>
-  //         <TouchableOpacity
-  //           style={{
-  //             backgroundColor: "#317DBA",
-  //             paddingHorizontal: 12,
-  //             paddingVertical: ResponsiveHeight(0.9),
-  //             flexDirection: "row",
-  //             alignItems: "center",
-  //             gap: ResponsiveHeight(0.7),
-  //             borderRadius: ResponsiveHeight(0.7),
-  //           }}
-  //         >
-  //           <Image
-  //             source={{ uri: getImageFromCache("plus") }}
-  //             style={{
-  //               objectFit: "contain",
-  //               width: ResponsiveHeight(1.7),
-  //               height: ResponsiveHeight(1.7),
-  //             }}
-  //           />
-  //           <Text
-  //             style={{
-  //               color: "#ffffff",
-  //               fontSize: ResponsiveHeight(1.8),
-  //               fontWeight: "600",
-  //             }}
-  //           >
-  //             Ajouter un ami
-  //           </Text>
-  //         </TouchableOpacity>
-  //       </View>
-  //       <View
-  //         style={{
-  //           height: ResponsiveHeight(22),
-  //           marginTop: ResponsiveHeight(3.7),
-  //         }}
-  //       >
-
-  //       </View>
-  //       <CustomModal
-  //         text="Veuillez entrer votre nouveau pseudo."
-  //         placeholder="Pseudo"
-  //         onPress={() => setModalVisible((prev) => !prev)}
-  //         modalVisible={modalVisible}
-  //         onChangeText={onChangeText}
-  //         BtnLabel="Changer"
-  //       />
-  //     </PlateformSafeView>
-  //   </>
-  // );
 };
 
 const styles = StyleSheet.create({});
@@ -190,7 +142,16 @@ const SocialCard = ({ name, steps, allSteps, showGlobal }) => {
   const { getImageFromCache, imageCache } = useImageStore();
 
   return (
-    <View style={{ overflow: "visible" }}>
+    <View
+      style={{
+        overflow: "visible",
+        // backgroundColor: "red",
+        flexDirection: "row",
+        alignItems: "center",
+        position: "relative",
+        justifyContent: "center",
+      }}
+    >
       <View
         style={{
           backgroundColor: Colors.colors.blue,
@@ -198,21 +159,26 @@ const SocialCard = ({ name, steps, allSteps, showGlobal }) => {
           justifyContent: "space-between",
           alignItems: "center",
           borderRadius: ResponsiveHeight(1.1),
-          position: "relative",
+          // position: "relative",
           paddingVertical: ResponsiveHeight(0.9),
           paddingLeft: ResponsiveHeight(5.6),
+          marginLeft: "5%",
           paddingRight: ResponsiveHeight(1.6),
           overflow: "visible",
+          flex: 1,
         }}
       >
         <Image
           src={getImageFromCache("iconfriend")}
           style={{
-            width: ResponsiveHeight(5.6),
-            height: ResponsiveHeight(6.8),
+            width: "20%",
+            // width: ResponsiveHeight(5.6),
+            height: "130%",
+            // height: ResponsiveHeight(6.8),
             objectFit: "contain",
             position: "absolute",
-            left: -ResponsiveHeight(1.6),
+            left: "-8%",
+            // left: -ResponsiveHeight(1.6),
           }}
         />
         <View>
@@ -238,7 +204,7 @@ const SocialCard = ({ name, steps, allSteps, showGlobal }) => {
           </Text>
           <Text
             style={{
-              fontSize: ResponsiveHeight(1.6),
+              fontSize: ResponsiveHeight(1.4),
               fontWeight: "600",
               color: "#ffffff",
             }}

@@ -21,10 +21,12 @@ import BadgeDetail from "./Profil/BadgeDetail";
 import { useUserStore } from "../store/useUserStore.jsx";
 import SplashScreen from "../components/SplashScreen.jsx";
 import { useImageStore } from "../store/useImageStore.jsx";
+import ModalAnimated from "../components/ModalAnimated.jsx";
+import { useModalStore } from "../store/useModalStore.jsx";
 
 const ProfilStack = createStackNavigator();
 
-const ProfilStackNavigator = () => (
+const ProfilStackNavigator = ({ handleVisibleModal }) => (
   <ProfilStack.Navigator
     screenOptions={{
       header: (props) => {
@@ -76,6 +78,17 @@ const Profil = () => {
   const { username } = useUserStore();
   const [usernameActive, setUsernameActive] = useState("");
   const { getImageFromCache, imageCache } = useImageStore();
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const { isModalSettingsOpen, updateModalSettings } = useModalStore();
+  const [text, onChangeText] = useState("");
+  const { updateUsername } = useUserStore();
+
+  const handlePress = () => {
+    updateUsername(text);
+    updateModalSettings(false);
+    // setModalVisible((prev) => !prev);
+  };
 
   const changeContent = () => {
     navigation.navigate("Settings");
@@ -148,6 +161,14 @@ const Profil = () => {
       >
         <ProfilStackNavigator />
       </BottomSheet>
+      <ModalAnimated
+        text="Veuillez entrer le pseudo de votre ami."
+        placeholder="Pseudo"
+        onPress={handlePress}
+        modalVisible={isModalSettingsOpen}
+        onChangeText={onChangeText}
+        BtnLabel="Changer"
+      />
     </>
   );
 };

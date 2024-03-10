@@ -6,8 +6,6 @@ import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 import Walky from "./Walky";
 
 const SplashScreen = ({ navigation }) => {
-  const idleUrl = process.env.EXPO_PUBLIC_S3_URL;
-
   return (
     <View style={styles.container}>
       <Walky width={400} height={400} />

@@ -5,16 +5,14 @@ import Rive from "rive-react-native";
 import { Colors } from "../styles";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 import { useImageStore } from "../store/useImageStore.jsx";
-const FirstLoadingScreen = () => {
-  const idleUrl = process.env.EXPO_PUBLIC_S3_URL;
-  
 
+const FirstLoadingScreen = () => {
   return (
     <View style={styles.container}>
       <Rive
-        url={idleUrl}
+        resourceName="idle_walky1"
         stateMachineName="State Machine 1"
-        style={{ width: 400, height: 400 }}
+        style={{ width: ResponsiveHeight(47), height: ResponsiveHeight(47) }}
       />
       <Text>First</Text>
     </View>

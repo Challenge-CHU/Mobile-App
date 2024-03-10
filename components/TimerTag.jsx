@@ -1,15 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text, Image } from "react-native";
 import { Colors, Spacing, Typography } from "../styles";
 import aspectRatio from "../tools/AspectRatio";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 import { PercentageOf } from "../tools/Percentage";
 import { useImageStore } from "../store/useImageStore";
+import { useStepCountStore } from "../store/useStepCountStore";
 const TimerTag = ({ datetime }) => {
   /**
    * TODO: Gérer la logique du tems restant ici
    */
+
+  const { endDateChallenge } = useStepCountStore();
   const { getImageFromCache, imageCache } = useImageStore();
+
+  const [monthRemaining, setMonthRemaining] = useState();
+
+  const handleDate = () => {
+    const today = new Date();
+    const endDate = new Date(endDateChallenge);
+    const remainingTime = new Date(
+      endDateChallenge.getTime() - today.getTime()
+    );
+    console.log("remainingMonths: ", remainingTime.getUTCMonth());
+    setMonthRemaining(remainingTime.getUTCMonth());
+    console.log("LA date de fin: ", endDateChallenge);
+  };
+
+  useEffect(() => {
+    handleDate();
+  }, []);
 
   return (
     <View
@@ -40,7 +60,12 @@ const TimerTag = ({ datetime }) => {
             fontSize: ResponsiveHeight(1.4),
           }}
         >
-          2 mois restants
+          {monthRemaining > 1 && monthRemaining != undefined
+            ? monthRemaining + " mois restant"
+            : ""}
+          {monthRemaining <= 1 && monthRemaining != undefined
+            ? "Dernier mois"
+            : ""}
         </Text>
       </View>
       <View

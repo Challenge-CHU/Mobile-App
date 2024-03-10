@@ -22,41 +22,25 @@ const ProgressCircle = ({ objectif, progression }) => {
     Animated.timing(animationProgress, {
       toValue: progressPercentage / 100,
       duration: 1000, // Durée de l'animation en millisecondes
-      easing: Easing.linear,
-      useNativeDriver: false, // Nécessaire pour les animations Lottie
+      easing: Easing.ease,
+      // easing: Easing.linear,
+      useNativeDriver: true, // Nécessaire pour les animations Lottie
     }).start();
   }, [progression, objectif]);
 
   return (
     <View style={styles.container}>
       <AnimatedLottieView
-        source={require("../assets/grph2.json")}
+        source={require("../assets/arm-walky.json")}
+        // source={require("../assets/grph2.json")}
         progress={animationProgress ?? 0}
         style={{ width: "100%", height: "100%" }}
         resizeMode="contain"
       />
       <View
         style={{
-          flex: 1,
-          width: ResponsiveWidth(23),
-          height: ResponsiveHeight(16),
           position: "absolute",
-          bottom: PercentageOf(ResponsiveHeight(16), 35),
-        }}
-      >
-        <Image
-          source={{ uri: getImageFromCache("walkyy") }}
-          style={{
-            width: ResponsiveWidth(23),
-            height: ResponsiveHeight(16),
-            resizeMode: "contain", // Pour que l'image ne soit pas cut en hauteur ou longueur
-          }}
-        />
-      </View>
-      <View
-        style={{
-          position: "absolute",
-          bottom: 0,
+          bottom: -5,
         }}
       >
         <Text
