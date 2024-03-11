@@ -24,6 +24,7 @@ import Graph from "../components/Graph";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 import { LayoutHome, LayoutHomeGlobal } from "../components/LayoutHome";
 import { useStepCountStore } from "../store/useStepCountStore";
+import Walky from "../components/Walky";
 // import { useFonts } from "expo-font";
 // let customFonts = {
 //   // 'Poppins-Black': require('./assets/fonts/Poppins-Black.ttf')
@@ -61,68 +62,71 @@ const Home = () => {
   const tabNames = ["Perso", "Global"];
 
   return (
-    <PlateformSafeView styles={{ backgroundColor: "#ffffff" }}>
-      <View style={{ backgroundColor: Colors.colors.blue, display: "flex" }}>
-        <View
-          style={{
-            height: halfWindowsHeigth - ResponsiveHeight(1.4),
-            borderWidth: 1,
-            borderColor: "transparent",
-            borderBottomLeftRadius: 32,
-            borderBottomRightRadius: 32,
-            overflow: "hidden",
-            backgroundColor: "#ffffff",
-            zIndex: 1,
-            paddingTop: ResponsiveHeight(1.18),
-          }}
-        >
-          {/* View lottie fire + chrono */}
+    <>
+      <PlateformSafeView styles={{ backgroundColor: "#ffffff" }}>
+        <View style={{ backgroundColor: Colors.colors.blue, display: "flex" }}>
           <View
             style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
+              height: halfWindowsHeigth - ResponsiveHeight(1.4),
+              borderWidth: 1,
+              borderColor: "transparent",
+              borderBottomLeftRadius: 32,
+              borderBottomRightRadius: 32,
+              overflow: "hidden",
+              backgroundColor: "#ffffff",
+              zIndex: 1,
+              paddingTop: ResponsiveHeight(1.18),
             }}
           >
-            <FireTag />
-            <TimerTag />
+            {/* View lottie fire + chrono */}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <FireTag />
+              <TimerTag />
+            </View>
+            {/* selector tab perso && global */}
+
+            <ScrollTabView
+              onChange={handleOnVisibleChildChange}
+              tabNames={tabNames}
+              color="#000000"
+            >
+              <ProgressCircle objectif={STEP_GOAL} progression={9000} />
+              {/* <ProgressCircle objectif={STEP_GOAL} progression={dailySteps} /> */}
+              <GlobalStats data={fakeData} flex />
+            </ScrollTabView>
+
+            <LittleWalkyMsg
+              message={
+                visibleChild === 1
+                  ? "Encore un petit effort, tu y es presque !"
+                  : "Voici tout ce que nous avons accompli ensemble !"
+              }
+            />
           </View>
-          {/* selector tab perso && global */}
 
-          <ScrollTabView
-            onChange={handleOnVisibleChildChange}
-            tabNames={tabNames}
-            color="#000000"
+          {/* FIn header blanc */}
+          <View
+            style={{
+              backgroundColor: Colors.colors.blue,
+              height: "100%",
+              zIndex: 0,
+              paddingVertical: aspectRatio(12),
+              paddingHorizontal: ResponsiveWidth(6.15),
+              flexDirection: "column",
+              gap: ResponsiveHeight(2.84),
+            }}
           >
-            <ProgressCircle objectif={STEP_GOAL} progression={dailySteps} />
-            <GlobalStats data={fakeData} flex />
-          </ScrollTabView>
-
-          <LittleWalkyMsg
-            message={
-              visibleChild === 1
-                ? "Encore un petit effort, tu y es presque !"
-                : "Voici tout ce que nous avons accompli ensemble !"
-            }
-          />
+            <LayoutHome value={visibleChild} />
+          </View>
         </View>
-
-        {/* FIn header blanc */}
-        <View
-          style={{
-            backgroundColor: Colors.colors.blue,
-            height: "100%",
-            zIndex: 0,
-            paddingVertical: aspectRatio(12),
-            paddingHorizontal: ResponsiveWidth(6.15),
-            flexDirection: "column",
-            gap: ResponsiveHeight(2.84),
-          }}
-        >
-          <LayoutHome value={visibleChild} />
-        </View>
-      </View>
-    </PlateformSafeView>
+      </PlateformSafeView>
+    </>
   );
 };
 

@@ -1,18 +1,52 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, Switch, Text } from "react-native";
 import Rive from "rive-react-native";
 import { Colors } from "../styles";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 import BubbleMessage from "./BubbleMessage";
 
-const Walky = ({ width, height, reverse }) => {
+const Walky = ({ width, height, reverse, mode }) => {
+  const [modeAnim, setModeAnim] = useState(undefined);
+
+  useEffect(() => {
+    let artboard;
+    let machineState;
+    // const artBoards = ["arm walky", "Idle Walky", "Walk Walky", "Dance walky"];
+
+    switch (mode) {
+      case "idle":
+        artboard = "Idle Walky";
+        machineState = "Idle";
+        break;
+      case "dance":
+        artboard = "Dance walky";
+        machineState = "State Machine 2";
+        break;
+      case "walk":
+        artboard = "Walk Walky 1";
+        machineState = "State Machine 1";
+        break;
+      default:
+        break;
+    }
+
+    setModeAnim({ artboard: artboard, machineState: machineState });
+  }, [mode]);
+
+  if (modeAnim === undefined || modeAnim.artboard === undefined) {
+    return null;
+  }
+
   return (
     <View style={styles.container}>
       <View>
         <Rive
-          resourceName="idle_walky1"
+          resourceName="walky_animation"
+          // resourceName="idle_walky1"
           // url={idleUrl}
-          stateMachineName="State Machine 1"
+          artboardName={modeAnim.artboard}
+          // stateMachineName="State Machine 1"
+          stateMachineName={modeAnim.machineState}
           // style={{ width: ResponsiveWidth(35.1), height: ResponsiveHeight(24.8) }}
           style={{
             width: width,
@@ -22,7 +56,8 @@ const Walky = ({ width, height, reverse }) => {
             transform: reverse != undefined ? "scaleX(-1)" : "",
             backgroundColor: "transparent",
           }}
-          fit="contain"
+          fit="scaleDown"
+          // fit="fill"
           alignment="center"
         />
       </View>

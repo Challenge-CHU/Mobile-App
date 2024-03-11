@@ -5,15 +5,15 @@ import Walky, { Walky2 } from "../components/Walky";
 import BubbleMessage from "../components/BubbleMessage";
 import Button from "../components/Button";
 import aspectRatio from "../tools/AspectRatio";
-import InputText from "../components/InputText";
+import InputText, { InputText3 } from "../components/InputText";
 import { useNavigation } from "@react-navigation/native";
 import IconProfil from "../components/IconProfil";
 import SplashScreen from "../components/SplashScreen";
-import cacheAssetsAsync from "../components/CacheAssetAsync";
 import { Asset, useAssets } from "expo-asset";
 import { useUserStore } from "../store/useUserStore";
 import { useImageStore } from "../store/useImageStore";
 import { ResponsiveHeight } from "../tools/ResponsiveHeight";
+import { useStepCountStore } from "../store/useStepCountStore";
 
 const fakedata = [
   { id: 1, url: require("../assets/iconfriend.png"), name: "image1" },
@@ -34,6 +34,13 @@ const AddPseudo = () => {
   const [assets, error] = useAssets([require("../assets/iconfriend.png")]);
   const { updateUsername } = useUserStore();
   const { getImageFromCache, fetched } = useImageStore();
+  const [onFocus, setOnFocus] = useState(false);
+
+  const { steps, allSteps, weekSteps } = useStepCountStore();
+
+  console.log("Daily: ", steps);
+  console.log("Weeks: ", weekSteps);
+  console.log("All: ", allSteps);
 
   const handleContinue = () => {
     updateUsername(pseudo);
@@ -79,13 +86,14 @@ const AddPseudo = () => {
           <View
             style={{
               position: "absolute",
-              top: ResponsiveHeight(1.4),
+              top: ResponsiveHeight(4),
               right: -ResponsiveHeight(7.7),
             }}
           >
             <Walky
-              width={ResponsiveHeight(35.5)}
-              height={ResponsiveHeight(44.1)}
+              width={ResponsiveHeight(30.5)}
+              height={ResponsiveHeight(40.1)}
+              mode="idle"
             />
           </View>
         </View>
@@ -97,6 +105,7 @@ const AddPseudo = () => {
           alignItems: "center",
           paddingHorizontal: ResponsiveHeight(4.7),
           flexDirection: "column",
+          zIndex: 3,
         }}
       >
         <View
@@ -104,12 +113,16 @@ const AddPseudo = () => {
             marginTop: ResponsiveHeight(3.7),
             marginBottom: ResponsiveHeight(4.7),
             width: "100%",
+            zIndex: 3,
           }}
         >
-          <InputText
+          <InputText3
             placeholder="Pseudo"
             translate={false}
             onChange={handleChangePseudo}
+            active={onFocus}
+            blur={() => setOnFocus(false)}
+            focus={(param) => setOnFocus(param)}
           />
         </View>
 
@@ -118,6 +131,7 @@ const AddPseudo = () => {
             width: "100%",
             marginBottom: ResponsiveHeight(3.5),
             gap: ResponsiveHeight(1.6),
+            zIndex: 1,
           }}
         >
           <Text style={styles.text}>Selectionne un Avatar</Text>
@@ -146,6 +160,18 @@ const AddPseudo = () => {
 
         <Button title="Se connecter" onPress={handleContinue} />
       </View>
+      {/* <View
+        pointerEvents="none"
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: "#000000",
+          opacity: onFocus ? 0.5 : 0,
+        }}
+      ></View> */}
     </View>
   );
 };

@@ -37,8 +37,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: -ResponsiveHeight(2.9),
     right: "50%",
-
-    // backgroundColor: "green",
   },
   text: {
     fontSize: ResponsiveHeight(2.1),

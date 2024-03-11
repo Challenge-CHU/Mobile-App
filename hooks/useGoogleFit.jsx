@@ -54,7 +54,7 @@ export const useGoogleFit = () => {
       (entry) => entry.source === "com.google.android.gms:estimated_steps"
     );
 
-    console.log("resulttttt: ", googleFitData.steps);
+    // console.log("resulttttt: ", googleFitData.steps);
 
     if (googleFitData.steps != undefined) {
       const totalSteps = googleFitData.steps.reduce(
@@ -69,8 +69,8 @@ export const useGoogleFit = () => {
   const handleGetAllStepsFromBeginning = async () => {
     let today = new Date();
     let firstDayChallenge = new Date(startDateChallenge);
-    console.log("start: ", firstDayChallenge.toISOString());
-    console.log("end: ", today.toISOString());
+    // console.log("start: ", firstDayChallenge.toISOString());
+    // console.log("end: ", today.toISOString());
 
     const options = {
       startDate: firstDayChallenge.toISOString(),
@@ -78,14 +78,14 @@ export const useGoogleFit = () => {
     };
 
     const dailySteps = await GoogleFit.getDailyStepCountSamples(options);
-    console.log("gg fit data all sources: ", dailySteps);
-    console.log("OOOMEGGAAAA: ", dailySteps);
+    // console.log("gg fit data all sources: ", dailySteps);
+    // console.log("OOOMEGGAAAA: ", dailySteps);
 
     const googleFitData = dailySteps.find(
       (entry) => entry.source === "com.google.android.gms:estimated_steps"
     );
 
-    console.log("gg fit data: ", googleFitData);
+    // console.log("gg fit data: ", googleFitData);
 
     return googleFitData.steps;
   };
@@ -116,8 +116,8 @@ export const useGoogleFit = () => {
         today.getDate() - 8
       );
 
-      console.log("Semaine dernière: ", lastWeekDate);
-      console.log("Aujourd'hui: ", today);
+      // console.log("Semaine dernière: ", lastWeekDate);
+      // console.log("Aujourd'hui: ", today);
 
       const options = {
         startDate: lastWeekDate.toISOString(),

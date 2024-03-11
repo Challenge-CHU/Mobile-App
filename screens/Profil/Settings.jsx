@@ -39,26 +39,7 @@ const Settings = ({ navigation }) => {
         height: "100%",
       }}
     >
-      {/* <CustomModal
-        text="Veuillez entrer votre nouveau pseudo."
-        placeholder="Pseudo"
-        onPress={handlePress}
-        modalVisible={modalVisible}
-        onChangeText={onChangeText}
-        BtnLabel="Changer"
-      /> */}
-      {/* <View
-        style={{ position: "absolute", top: 0, bottom: 0, left: 0, right: 0 }}
-      >
-        <ModalAnimated
-          text="Veuillez entrer votre nouveau pseudo."
-          placeholder="Pseudo"
-          onPress={handlePress}
-          modalVisible={modalVisible}
-          onChangeText={onChangeText}
-          BtnLabel="Changer"
-        />
-      </View> */}
+
 
       <View
         style={{

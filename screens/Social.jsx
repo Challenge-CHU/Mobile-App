@@ -121,8 +121,7 @@ const Social = () => {
       /> */}
 
       <ModalAnimated
-        // visible={modalVisible}
-        // onClose={() => setModalVisible((prev) => !prev)}
+        
         text="Veuillez entrer le pseudo de votre ami."
         placeholder="Pseudo"
         onPress={() => setModalVisible((prev) => !prev)}

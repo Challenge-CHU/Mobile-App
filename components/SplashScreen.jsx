@@ -8,7 +8,7 @@ import Walky from "./Walky";
 const SplashScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Walky width={400} height={400} />
+      <Walky width={500} height={500} mode="dance" />
     </View>
   );
 };
@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    // backgroundColor: "red",
     backgroundColor: Colors.colors.blue,
   },
 });

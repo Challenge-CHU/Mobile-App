@@ -79,7 +79,6 @@ const Profil = () => {
   const [usernameActive, setUsernameActive] = useState("");
   const { getImageFromCache, imageCache } = useImageStore();
 
-  const [modalVisible, setModalVisible] = useState(false);
   const { isModalSettingsOpen, updateModalSettings } = useModalStore();
   const [text, onChangeText] = useState("");
   const { updateUsername } = useUserStore();

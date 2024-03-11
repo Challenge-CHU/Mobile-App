@@ -80,8 +80,7 @@ const AllDaysLayout = () => {
       >
         <Text style={styles.text}>Depuis le début</Text>
       </View>
-      {/* <GlobalStats data={data} flex /> */}
-      {/* <GlobalStats data={fakeData} flex /> */}
+
       {data && <GlobalStats data={data} flex />}
     </>
   );
