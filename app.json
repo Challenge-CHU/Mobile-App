@@ -18,19 +18,23 @@
       "bundleIdentifier": "com.jordanbtrs.Walky",
       "infoPlist": {
         "UIBackgroundModes": ["fetch"]
-      }
+      },
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.jordanbtrs.Walky"
+      "package": "com.jordanbtrs.Walky",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
+      "@react-native-firebase/app",
+      "react-native-health",
       [
         "expo-build-properties",
         {
@@ -40,11 +44,11 @@
             "buildToolsVersion": "34.0.0"
           },
           "ios": {
-            "deploymentTarget": "14.0"
+            "deploymentTarget": "13.0",
+            "useFrameworks": "static"
           }
         }
-      ],
-      "react-native-health"
+      ]
     ],
     "extra": {
       "eas": {
