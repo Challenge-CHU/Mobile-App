@@ -13,12 +13,24 @@ const ProgressCircle = ({ objectif, progression }) => {
     new Animated.Value(0)
   );
 
+  const [progressPercentage, setProgressPercentage] = useState(0);
+  const [completed, setCompleted] = useState(false);
+
   const { getImageFromCache, imageCache } = useImageStore();
+  const handleDanceTransition = () => {
+    setCompleted(true);
+  };
 
   useEffect(() => {
     // Calculer le pourcentage d'avancement par rapport à l'objectif
-    const progressPercentage = (progression / objectif) * 100;
+    // const progressPercentage = (progression / objectif) * 100;
+    if (progression >= objectif) {
+      setTimeout(handleDanceTransition, 750);
+    } else {
+      setCompleted(false);
+    }
 
+    setProgressPercentage((progression / objectif) * 100);
     // Mettre à jour la valeur d'animation en fonction du pourcentage
     Animated.timing(animationProgress, {
       toValue: progressPercentage / 100,
@@ -27,11 +39,11 @@ const ProgressCircle = ({ objectif, progression }) => {
       // easing: Easing.linear,
       useNativeDriver: true, // Nécessaire pour les animations Lottie
     }).start();
-  }, [progression, objectif]);
+  }, [progression, objectif, progressPercentage]);
 
   return (
     <View style={styles.container}>
-      {progression >= objectif ? (
+      {completed ? (
         <Walky width={300} height={300} mode="dance" />
       ) : (
         <AnimatedLottieView
@@ -41,17 +53,6 @@ const ProgressCircle = ({ objectif, progression }) => {
           resizeMode="contain"
         />
       )}
-      {/* Essayer avec le progression sur 100, detecter avec un UseEffect le 100% et des que c'est atteint changer sur le RIve dance et esssayer de pas avoir le flicker */}
-      {/* {progression >= objectif ? (
-        <Walky width={300} height={300} mode="dance" />
-      ) : (
-        <AnimatedLottieView
-          source={require("../assets/arm-walky.json")}
-          progress={animationProgress ?? 0}
-          style={{ width: "100%", height: "100%" }}
-          resizeMode="contain"
-        />
-      )} */}
 
       <View
         style={{
