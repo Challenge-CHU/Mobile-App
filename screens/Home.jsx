@@ -59,6 +59,10 @@ const Home = () => {
     setSteps(dailySteps);
   }, [dailySteps]);
 
+  useEffect(() => {
+    console.log("Home start");
+  }, []);
+
   const tabNames = ["Perso", "Global"];
 
   return (
@@ -96,7 +100,7 @@ const Home = () => {
               tabNames={tabNames}
               color="#000000"
             >
-              {/* <ProgressCircle objectif={STEP_GOAL} progression={9000} /> */}
+              {/* <ProgressCircle objectif={STEP_GOAL} progression={10000} /> */}
               <ProgressCircle objectif={STEP_GOAL} progression={dailySteps} />
               <GlobalStats data={fakeData} flex />
             </ScrollTabView>

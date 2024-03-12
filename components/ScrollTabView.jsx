@@ -44,7 +44,6 @@ const ScrollTabView = ({ children, onChange, tabNames, color }) => {
       >
         <TabText
           name={tabNames[0]}
-          // name={"Perso"}
           onPressEvent={() => handleScrollToTab(0)}
           visibleChild={visibleChild}
           id={1}
@@ -100,17 +99,33 @@ const ScrollTabView = ({ children, onChange, tabNames, color }) => {
 
 const TabText = ({ name, onPressEvent, visibleChild, id, color }) => {
   return (
-    <TouchableOpacity onPress={onPressEvent}>
+    <TouchableOpacity style={{ position: "relative" }} onPress={onPressEvent}>
       <Text
         style={{
           color: color,
-          opacity: visibleChild === id ? 1 : 0.25,
+          opacity: visibleChild === id ? 1 : 0.4,
           fontFamily: "Inter-Regular",
           fontSize: ResponsiveHeight(1.6),
+          borderBottomWidth: 2,
+          borderBottomColor: "#000000",
         }}
       >
         {name}
       </Text>
+      {visibleChild === id ? (
+        <View
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 1,
+            backgroundColor: color,
+            opacity: 1,
+            borderRadius: 2,
+          }}
+        ></View>
+      ) : null}
     </TouchableOpacity>
   );
 };

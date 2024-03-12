@@ -17,7 +17,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.jordanbtrs.Walky",
       "infoPlist": {
-        "UIBackgroundModes": ["fetch"]
+        "UIBackgroundModes": ["location", "fetch", "remote-notification"]
       },
       "googleServicesFile": "./GoogleService-Info.plist"
     },
@@ -44,7 +44,7 @@
             "buildToolsVersion": "34.0.0"
           },
           "ios": {
-            "deploymentTarget": "13.0",
+            "deploymentTarget": "14.0",
             "useFrameworks": "static"
           }
         }

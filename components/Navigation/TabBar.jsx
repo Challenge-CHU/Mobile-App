@@ -80,7 +80,7 @@ function TabBar({ state, descriptors, navigation, route }) {
               style={{
                 justifyContent: "flex-start",
                 alignItems: "center",
-                opacity: isFocused ? 0.55 : 1,
+                opacity: isFocused ? 1 : 0.55,
                 gap: ResponsiveWidth(1.03),
               }}
               key={index}

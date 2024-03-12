@@ -27,9 +27,13 @@ import SignUp from "./screens/SignUp";
 import { useUserStore } from "./store/useUserStore";
 import AddPseudo from "./screens/ChangePseudo";
 import ImageLoader from "./components/ImageLoader";
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import messaging from "@react-native-firebase/messaging";
 import * as Notifications from "expo-notifications";
+import * as TaskManager from "expo-task-manager";
+import * as BackgroundFetch from "expo-background-fetch";
+import * as Device from "expo-device";
+import Constants from "expo-constants";
 
 const Tab = createBottomTabNavigator();
 
@@ -45,117 +49,159 @@ let customFonts = {
   "AlegreyaSansSC-Regular": require("./assets/fonts/AlegreyaSansSC-Regular.ttf"),
 };
 
+// const BACKGROUND_NOTIFICATION_TASK = "BACKGROUND-NOTIFICATION-TASK";
+
+// TaskManager.defineTask(
+//   BACKGROUND_NOTIFICATION_TASK,
+//   ({ data, error, executionInfo }) => {
+//     if (error) {
+//       console.log("error occurred");
+//     }
+//     if (data) {
+//       console.log("data-----", data);
+//     }
+//   }
+// );
+
+// Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
+
+// Notifications.setNotificationHandler({
+//   handleNotification: async () => ({
+//     shouldShowAlert: true,
+//     shouldPlaySound: false,
+//     shouldSetBadge: false,
+//   }),
+// });
+
+// Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
+
+const BACKGROUND_NOTIFICATION_TASK = "BACKGROUND-NOTIFICATION-TASK";
+// const BACKGROUND_NOTIFICATION_TASK = "background-notification-task";
+
+const BACKGROUND_NOTIFICATION_TASK2 = "BackgroundNotificationTask";
+
+TaskManager.defineTask(
+  BACKGROUND_NOTIFICATION_TASK,
+  ({ data, error, executionInfo }) => {
+    console.log("Received a notification in the background!");
+    // Do something with the notification data
+    if (error) {
+      console.log("error occurred");
+    }
+    if (data) {
+      console.log("data-----", data);
+    }
+  }
+);
+TaskManager.defineTask(
+  BACKGROUND_NOTIFICATION_TASK2,
+  ({ data, error, executionInfo }) => {
+    console.log("Received a notification in the background!");
+    // Do something with the notification data
+    if (error) {
+      console.log("error occurred");
+    }
+    if (data) {
+      console.log("data-----", data);
+    }
+  }
+);
+
+Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
+Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK2);
+
+async function registerForPushNotificationsAsync() {
+  let token;
+
+  if (Platform.OS === "android") {
+    Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+    });
+  }
+
+  if (Device.isDevice) {
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== "granted") {
+      alert("Failed to get push token for push notification!");
+      return;
+    }
+    token = await Notifications.getExpoPushTokenAsync({
+      projectId: Constants.expoConfig.extra.eas.projectId,
+    });
+    console.log(token);
+  } else {
+    alert("Must use physical device for Push Notifications");
+  }
+
+  return token.data;
+}
+
 export default function App() {
   const [isLoaded] = useFonts(customFonts);
   useStepCount();
 
-  const requestUserPermission = async () => {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  const [expoPushToken, setExpoPushToken] = useState("");
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
 
-    if (enabled) {
-      console.log("Authorization status:", authStatus);
-    }
-  };
+  // useEffect(() => {
+  //   registerForPushNotificationsAsync().then((token) =>
+  //     setExpoPushToken(token)
+  //   );
+
+  //   notificationListener.current =
+  //     Notifications.addNotificationReceivedListener((notification) => {
+  //       setNotification(notification);
+  //       console.log("BRRRRRR 1");
+  //     });
+
+  //   responseListener.current =
+  //     Notifications.addNotificationResponseReceivedListener((response) => {
+  //       console.log("BRRRRRR");
+  //       console.log(response);
+  //     });
+
+  //   return () => {
+  //     Notifications.removeNotificationSubscription(
+  //       notificationListener.current
+  //     );
+  //     Notifications.removeNotificationSubscription(responseListener.current);
+  //   };
+  // }, []);
 
   useEffect(() => {
-    if (requestUserPermission()) {
-      messaging()
-        .getToken()
-        .then((token) => console.log(token));
-    }
-    // }, []);
+    registerForPushNotificationsAsync().then((token) =>
+      setExpoPushToken(token)
+    );
 
-    // // Set up the notification handler for the app
-    Notifications.setNotificationHandler({
-      handleNotification: async () => ({
-        shouldShowAlert: true,
-        shouldPlaySound: true,
-        shouldSetBadge: false,
-      }),
-    });
-
-    // Handle user clicking on a notification and open the screen
-    const handleNotificationClick = async (response) => {
-      const screen = response?.notification?.request?.content?.data?.screen;
-      if (screen !== null) {
-        navigation.navigate(screen);
-      }
-    };
-
-    // Listen for user clicking on a notification
-    const notificationClickSubscription =
-      Notifications.addNotificationResponseReceivedListener(
-        handleNotificationClick
-      );
-
-    // Handle user opening the app from a notification (when the app is in the background)
-    messaging().onNotificationOpenedApp((remoteMessage) => {
-      console.log(
-        "Notification caused app to open from background state:",
-        remoteMessage.data.screen,
-        navigation
-      );
-      if (remoteMessage?.data?.screen) {
-        navigation.navigate(`${remoteMessage.data.screen}`);
-      }
-    });
-
-    // Check if the app was opened from a notification (when the app was completely quit)
-    messaging()
-      .getInitialNotification()
-      .then((remoteMessage) => {
-        if (remoteMessage) {
-          console.log(
-            "Notification caused app to open from quit state:",
-            remoteMessage.notification
-          );
-          if (remoteMessage?.data?.screen) {
-            navigation.navigate(`${remoteMessage.data.screen}`);
-          }
-        }
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        console.log("Received");
+        setNotification(notification);
       });
 
-    // Handle push notifications when the app is in the background
-    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-      console.log("Message handled in the background!", remoteMessage);
-      const notification = {
-        title: remoteMessage.notification.title,
-        body: remoteMessage.notification.body,
-        data: remoteMessage.data, // optional data payload
-      };
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log("Response");
 
-      // Schedule the notification with a null trigger to show immediately
-      await Notifications.scheduleNotificationAsync({
-        content: notification,
-        trigger: null,
+        console.log(response);
       });
-    });
 
-    // Handle push notifications when the app is in the foreground
-    const handlePushNotification = async (remoteMessage) => {
-      const notification = {
-        title: remoteMessage.notification.title,
-        body: remoteMessage.notification.body,
-        data: remoteMessage.data, // optional data payload
-      };
-
-      // Schedule the notification with a null trigger to show immediately
-      await Notifications.scheduleNotificationAsync({
-        content: notification,
-        trigger: null,
-      });
-    };
-
-    // Listen for push notifications when the app is in the foreground
-    const unsubscribe = messaging().onMessage(handlePushNotification);
-
-    // Clean up the event listeners
     return () => {
-      unsubscribe();
-      notificationClickSubscription.remove();
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
+      Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
 
@@ -211,8 +257,6 @@ function MyTabs() {
   );
 }
 
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -221,3 +265,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+

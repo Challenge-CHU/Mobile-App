@@ -40,7 +40,10 @@
     "react-native-svg": "^13.9.0",
     "rive-react-native": "^6.2.1",
     "zustand": "^4.4.7",
-    "expo-notifications": "~0.20.1"
+    "expo-notifications": "~0.20.1",
+    "expo-device": "~5.4.0",
+    "expo-constants": "~14.4.2",
+    "expo-location": "~16.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

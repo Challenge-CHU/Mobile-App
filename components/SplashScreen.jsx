@@ -8,7 +8,7 @@ import Walky from "./Walky";
 const SplashScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Walky width={500} height={500} mode="dance" />
+      <Walky width={500} height={500} mode="walk" />
     </View>
   );
 };

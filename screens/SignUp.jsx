@@ -11,6 +11,7 @@ import { useImageStore } from "../store/useImageStore";
 import FirstLoadingScreen from "./FirstLoadingScreen";
 import SplashScreen from "../components/SplashScreen";
 import { ResponsiveHeight } from "../tools/ResponsiveHeight";
+import { SvgUri } from "react-native-svg/src/xml";
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -54,13 +55,11 @@ const SignUp = () => {
               justifyContent: "center",
             }}
           >
-            <Image
-              source={{ uri: getImageFromCache("new-chu-blc") }}
-              style={{
-                objectFit: "contain",
-                width: "100%",
-                height: ResponsiveHeight(8.5),
-              }}
+            <SvgUri
+              width="100%"
+              height="100%"
+              uri={getImageFromCache("cesi")}
+              fill={"#ffffff"}
             />
           </View>
           <View
@@ -71,13 +70,11 @@ const SignUp = () => {
               justifyContent: "center",
             }}
           >
-            <Image
-              source={{ uri: getImageFromCache("new-cesi-blc") }}
-              style={{
-                objectFit: "contain",
-                width: "100%",
-                height: ResponsiveHeight(8.5),
-              }}
+            <SvgUri
+              width="100%"
+              height="100%"
+              uri={getImageFromCache("chu")}
+              fill={"#ffffff"}
             />
           </View>
         </View>

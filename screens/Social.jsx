@@ -111,17 +111,8 @@ const Social = () => {
       ) : (
         <FriendContent friends={friends} visibleChild={visibleChild} />
       )}
-      {/* <CustomModal
-        text="Veuillez entrer votre nouveau pseudo."
-        placeholder="Pseudo"
-        onPress={() => setModalVisible((prev) => !prev)}
-        modalVisible={modalVisible}
-        onChangeText={onChangeText}
-        BtnLabel="Changer"
-      /> */}
 
       <ModalAnimated
-        
         text="Veuillez entrer le pseudo de votre ami."
         placeholder="Pseudo"
         onPress={() => setModalVisible((prev) => !prev)}
@@ -191,7 +182,7 @@ const SocialCard = ({ name, steps, allSteps, showGlobal }) => {
             {name}
           </Text>
         </View>
-        <View>
+        <View style={{ alignItems: "flex-end" }}>
           <Text
             style={{
               fontSize: ResponsiveHeight(2.3),
@@ -206,6 +197,7 @@ const SocialCard = ({ name, steps, allSteps, showGlobal }) => {
               fontSize: ResponsiveHeight(1.4),
               fontWeight: "600",
               color: "#ffffff",
+              textAlign: "left",
             }}
           >
             pas

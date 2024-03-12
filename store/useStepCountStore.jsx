@@ -6,7 +6,7 @@ export const useStepCountStore = create((set, get) => ({
   endDateChallenge: new Date(2024, 10, 30),
   dailySteps: 0,
   weekSteps: [],
-  allStep: [],
+  allSteps: [],
   streak: 0,
   goal: 10000,
   updateStreak: (newStreakValue) => set({ streak: newStreakValue }),

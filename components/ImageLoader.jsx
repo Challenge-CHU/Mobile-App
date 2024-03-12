@@ -21,6 +21,13 @@ const ImageLoader = () => {
       try {
         const imageAssets = await cacheImages([
           require("../assets/iconfriend.png"),
+          require("../assets/avatar/lion.svg"),
+          require("../assets/avatar/cheval.svg"),
+          require("../assets/avatar/crocodile.svg"),
+          require("../assets/avatar/elan.svg"),
+          require("../assets/avatar/koala.svg"),
+          require("../assets/avatar/tigre.svg"),
+          require("../assets/avatar/pinguin.svg"),
           require("../assets/arrow-calendar.png"),
           require("../assets/backarrow.png"),
           require("../assets/cesi-blanc.png"),
@@ -40,6 +47,8 @@ const ImageLoader = () => {
           require("../assets/badges/silver.png"),
           require("../assets/badges/gold.png"),
           require("../assets/plus.png"),
+          require("../assets/chu.svg"),
+          require("../assets/cesi.svg"),
         ]);
         let result = await Promise.all([...imageAssets]);
 
