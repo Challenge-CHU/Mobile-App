@@ -17,7 +17,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.jordanbtrs.Walky",
       "infoPlist": {
-        "UIBackgroundModes": ["location", "fetch", "remote-notification"]
+        "UIBackgroundModes": ["fetch", "remote-notification"]
       },
       "googleServicesFile": "./GoogleService-Info.plist"
     },

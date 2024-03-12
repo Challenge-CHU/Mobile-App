@@ -1,11 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
+import { SvgCssUri } from "react-native-svg";
+import { useImageStore } from "../store/useImageStore";
+import useProfilIcon from "../hooks/useProfilIcon";
 
-const IconProfil = ({ url, onClick, name, selected, onLoad }) => {
+const IconProfil = ({
+  onClick,
+  id,
+  selected,
+  onLoad,
+  width,
+  height,
+  disabled,
+}) => {
+  const { getImageFromCache, fetched } = useImageStore();
+  const { profilIcons, getIconById } = useProfilIcon();
+  const [img, setImg] = useState(null);
+
   const handleClick = () => {
     if (onClick != undefined) {
-      onClick(name);
+      onClick(id);
     }
   };
 
@@ -15,14 +30,23 @@ const IconProfil = ({ url, onClick, name, selected, onLoad }) => {
     }
   };
 
+  useEffect(() => {
+    console.log("IMMGid: ", id);
+
+    const imgName = getIconById(id);
+    setImg(imgName);
+  }, [id]);
+
   return (
-    <TouchableOpacity onPress={handleClick}>
-      <Image
-        // source={url}
-        source={{ uri: url }}
+    <TouchableOpacity
+      onPress={handleClick}
+      disabled={!disabled || disabled === undefined ? false : true}
+    >
+      <SvgCssUri
+        uri={getImageFromCache(img)}
         style={{
-          width: ResponsiveHeight(6.9),
-          height: ResponsiveHeight(8.5),
+          width: width,
+          height: height,
           opacity: selected ? 0.5 : 1,
         }}
         resizeMode="contain"

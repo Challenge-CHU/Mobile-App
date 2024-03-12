@@ -24,12 +24,19 @@ const SignUp = () => {
   } = useImageStore();
 
   const [onFocus, setOnFocus] = useState(false);
+  const [displaySplash, setDisplaySplash] = useState(true);
 
   const handleConnect = () => {
     navigation.navigate("AddPseudo");
   };
 
-  if (!fetched) return <SplashScreen />;
+  useEffect(() => {
+    setTimeout(() => {
+      setDisplaySplash(false);
+    }, 2000);
+  }, []);
+
+  if (!fetched || displaySplash) return <SplashScreen />;
 
   return (
     <>

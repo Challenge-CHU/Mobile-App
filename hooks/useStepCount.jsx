@@ -30,6 +30,11 @@ const useStepCount = () => {
     allSteps,
   } = Platform.OS === "ios" ? useHealthKit(date) : useGoogleFit(date);
 
+  //Recupérer Challenge data
+  // useEffect(() => {
+  //   const data = fetch(process.env.DATABASE_URL)
+  // },[])
+
   useEffect(() => {
     if (steps != undefined) {
       setSteps(steps);

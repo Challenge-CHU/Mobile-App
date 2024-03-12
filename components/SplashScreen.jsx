@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { View, StyleSheet, Text } from "react-native";
-import Rive from "rive-react-native";
 import { Colors } from "../styles";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 import Walky from "./Walky";
@@ -8,7 +7,11 @@ import Walky from "./Walky";
 const SplashScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Walky width={500} height={500} mode="walk" />
+      <Walky
+        width={ResponsiveHeight(59)}
+        height={ResponsiveHeight(59)}
+        mode="walk"
+      />
     </View>
   );
 };
@@ -18,7 +21,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    // backgroundColor: "red",
     backgroundColor: Colors.colors.blue,
   },
 });

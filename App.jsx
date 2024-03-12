@@ -1,13 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Dimensions,
-  NativeEventEmitter,
-  NativeModules,
-} from "react-native";
+import { StyleSheet, Platform } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "./screens/Home";
@@ -19,19 +11,13 @@ import useStepCount from "./hooks/useStepCount";
 import { useFonts } from "expo-font";
 import SplashScreen from "./components/SplashScreen";
 import Historical from "./screens/Historical";
-import { createStackNavigator } from "@react-navigation/stack";
-import Settings from "./screens/Profil/Settings";
-import ProfilHome from "./screens/Profil/ProfilHome";
-import { colors } from "./styles/colors";
 import SignUp from "./screens/SignUp";
 import { useUserStore } from "./store/useUserStore";
 import AddPseudo from "./screens/ChangePseudo";
 import ImageLoader from "./components/ImageLoader";
 import React, { useEffect, useState, useRef } from "react";
-import messaging from "@react-native-firebase/messaging";
 import * as Notifications from "expo-notifications";
 import * as TaskManager from "expo-task-manager";
-import * as BackgroundFetch from "expo-background-fetch";
 import * as Device from "expo-device";
 import Constants from "expo-constants";
 
@@ -49,36 +35,16 @@ let customFonts = {
   "AlegreyaSansSC-Regular": require("./assets/fonts/AlegreyaSansSC-Regular.ttf"),
 };
 
-// const BACKGROUND_NOTIFICATION_TASK = "BACKGROUND-NOTIFICATION-TASK";
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
-// TaskManager.defineTask(
-//   BACKGROUND_NOTIFICATION_TASK,
-//   ({ data, error, executionInfo }) => {
-//     if (error) {
-//       console.log("error occurred");
-//     }
-//     if (data) {
-//       console.log("data-----", data);
-//     }
-//   }
-// );
-
-// Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
-
-// Notifications.setNotificationHandler({
-//   handleNotification: async () => ({
-//     shouldShowAlert: true,
-//     shouldPlaySound: false,
-//     shouldSetBadge: false,
-//   }),
-// });
-
-// Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
-
-const BACKGROUND_NOTIFICATION_TASK = "BACKGROUND-NOTIFICATION-TASK";
-// const BACKGROUND_NOTIFICATION_TASK = "background-notification-task";
-
-const BACKGROUND_NOTIFICATION_TASK2 = "BackgroundNotificationTask";
+const BACKGROUND_NOTIFICATION_TASK = "BACKGROUND_NOTIFICATION_TASK";
+//
 
 TaskManager.defineTask(
   BACKGROUND_NOTIFICATION_TASK,
@@ -93,22 +59,6 @@ TaskManager.defineTask(
     }
   }
 );
-TaskManager.defineTask(
-  BACKGROUND_NOTIFICATION_TASK2,
-  ({ data, error, executionInfo }) => {
-    console.log("Received a notification in the background!");
-    // Do something with the notification data
-    if (error) {
-      console.log("error occurred");
-    }
-    if (data) {
-      console.log("data-----", data);
-    }
-  }
-);
-
-Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
-Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK2);
 
 async function registerForPushNotificationsAsync() {
   let token;
@@ -154,32 +104,17 @@ export default function App() {
   const notificationListener = useRef();
   const responseListener = useRef();
 
-  // useEffect(() => {
-  //   registerForPushNotificationsAsync().then((token) =>
-  //     setExpoPushToken(token)
+  // const handleIt = async () => {
+  //   const isRegistered = await TaskManager.isTaskRegisteredAsync(
+  //     BACKGROUND_NOTIFICATION_TASK
   //   );
-
-  //   notificationListener.current =
-  //     Notifications.addNotificationReceivedListener((notification) => {
-  //       setNotification(notification);
-  //       console.log("BRRRRRR 1");
-  //     });
-
-  //   responseListener.current =
-  //     Notifications.addNotificationResponseReceivedListener((response) => {
-  //       console.log("BRRRRRR");
-  //       console.log(response);
-  //     });
-
-  //   return () => {
-  //     Notifications.removeNotificationSubscription(
-  //       notificationListener.current
-  //     );
-  //     Notifications.removeNotificationSubscription(responseListener.current);
-  //   };
-  // }, []);
+  //   console.log("[handle it]: ", isRegistered);
+  // };
 
   useEffect(() => {
+    // handleIt();
+    Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
+
     registerForPushNotificationsAsync().then((token) =>
       setExpoPushToken(token)
     );

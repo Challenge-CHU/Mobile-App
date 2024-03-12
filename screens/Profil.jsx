@@ -23,6 +23,7 @@ import SplashScreen from "../components/SplashScreen.jsx";
 import { useImageStore } from "../store/useImageStore.jsx";
 import ModalAnimated from "../components/ModalAnimated.jsx";
 import { useModalStore } from "../store/useModalStore.jsx";
+import IconProfil from "../components/IconProfil.jsx";
 
 const ProfilStack = createStackNavigator();
 
@@ -75,9 +76,11 @@ const ProfilStackNavigator = ({ handleVisibleModal }) => (
 
 const Profil = () => {
   const navigation = useNavigation();
-  const { username } = useUserStore();
+  const { username, profilIcon } = useUserStore();
   const [usernameActive, setUsernameActive] = useState("");
   const { getImageFromCache, imageCache } = useImageStore();
+
+  console.log("PROFIL ICON PROFIL: ", profilIcon);
 
   const { isModalSettingsOpen, updateModalSettings } = useModalStore();
   const [text, onChangeText] = useState("");
@@ -121,13 +124,12 @@ const Profil = () => {
             gap: ResponsiveHeight(2.84),
           }}
         >
-          <Image
-            source={{ uri: getImageFromCache("iconfriend") }}
-            style={{
-              width: ResponsiveWidth(19.2),
-              height: ResponsiveHeight(10.9),
-            }}
-            resizeMode="contain"
+          <IconProfil
+            disabled={true}
+            width={ResponsiveWidth(19.2)}
+            height={ResponsiveHeight(10.9)}
+            id={profilIcon}
+            selected={false}
           />
           <Text
             style={{

@@ -14,36 +14,69 @@ import { useUserStore } from "../store/useUserStore";
 import { useImageStore } from "../store/useImageStore";
 import { ResponsiveHeight } from "../tools/ResponsiveHeight";
 import { useStepCountStore } from "../store/useStepCountStore";
+import useProfilIcon from "../hooks/useProfilIcon";
 
 const fakedata = [
-  { id: 1, url: require("../assets/iconfriend.png"), name: "image1" },
-  { id: 2, url: require("../assets/iconfriend.png"), name: "image2" },
-  { id: 3, url: require("../assets/iconfriend.png"), name: "image3" },
-  { id: 4, url: require("../assets/iconfriend.png"), name: "image4" },
-  { id: 5, url: require("../assets/iconfriend.png"), name: "image5" },
-  { id: 6, url: require("../assets/iconfriend.png"), name: "imag6" },
-  { id: 7, url: require("../assets/iconfriend.png"), name: "image7" },
-  { id: 8, url: require("../assets/iconfriend.png"), name: "image8" },
+  { id: 1, url: "cheval", name: "cheval" },
+  { id: 2, url: "crocodile", name: "crocodile" },
+  { id: 3, url: "elan", name: "elan" },
+  { id: 4, url: "koala", name: "koala" },
+  { id: 5, url: "lapin", name: "lapin" },
+  { id: 6, url: "lion", name: "lion" },
+  { id: 7, url: "pinguin", name: "pinguin" },
+  { id: 8, url: "tigre", name: "tigre" },
 ];
 
 const AddPseudo = () => {
   const [selectedImg, setSelectedImg] = useState(null);
   const navigation = useNavigation();
+  const { profilIcons, getIconById } = useProfilIcon();
 
   const [pseudo, setPseudo] = useState("");
-  const [assets, error] = useAssets([require("../assets/iconfriend.png")]);
-  const { updateUsername } = useUserStore();
-  const { getImageFromCache, fetched } = useImageStore();
+  const { updateUsername, updateProfilIcon, profilIcon } = useUserStore();
+  const { fetched } = useImageStore();
   const [onFocus, setOnFocus] = useState(false);
+  const [imgError, setImgError] = useState(false);
+  const [pseudoError, setPseudoError] = useState(false);
+  const [walkyMsg, setWalkyMsg] = useState();
 
   const { steps, allSteps, weekSteps } = useStepCountStore();
 
-  console.log("Daily: ", steps);
-  console.log("Weeks: ", weekSteps);
-  console.log("All: ", allSteps);
+  useEffect(() => {
+    if (pseudoError && imgError)
+      setWalkyMsg("Ton Pseudo est invalide et tu n'as pas choisi d'avatar.");
+    if (pseudoError && !imgError) setWalkyMsg("Ton pseudo est invalide.");
+    if (!pseudoError && imgError) setWalkyMsg("Choisis un avatar.");
+    if (!pseudoError && !imgError)
+      setWalkyMsg("Je m’apelle Walky, et toi, comment dois-je t’appeler ?");
+  }, [imgError, pseudoError]);
 
   const handleContinue = () => {
+    let error = false;
+
+    if (selectedImg === null || selectedImg === undefined) {
+      console.log("err img man");
+      error = true;
+      setImgError(true);
+    }
+    if (pseudo.trim() === "" || pseudo === "" || null || undefined) {
+      console.log("error pseud man");
+
+      error = true;
+      setPseudoError(true);
+    }
+
+    updateProfilIcon(selectedImg);
     updateUsername(pseudo);
+    console.log(profilIcon, " iiicon");
+    if (!imgError && !pseudoError && !error) {
+      console.log("alors on a choisi qui bernard: ", selectedImg);
+
+      setTimeout(handleNavigate, 2000);
+    }
+  };
+
+  const handleNavigate = () => {
     navigation.navigate("Home");
   };
 
@@ -52,9 +85,16 @@ const AddPseudo = () => {
   };
 
   const handleChangePseudo = (pseudo) => {
+    setPseudoError(false);
     console.log("pseudo new: ", pseudo);
+
     //TODO regex vérifier si la string est vide et si le pseudo est conforme et dispo
     setPseudo(pseudo);
+  };
+
+  const handleChangeImg = (id) => {
+    setImgError(false);
+    setSelectedImg(id);
   };
 
   if (!fetched) {
@@ -80,9 +120,8 @@ const AddPseudo = () => {
             transform: `translateY(-${ResponsiveHeight(9.4)}px)`,
           }}
         >
-          <BubbleMessage
-            msg={"Je m’apelle Walky, et toi, comment dois-je t’appeler ?"}
-          />
+          <BubbleMessage msg={walkyMsg} />
+
           <View
             style={{
               position: "absolute",
@@ -143,15 +182,16 @@ const AddPseudo = () => {
               gap: ResponsiveHeight(2.3),
             }}
           >
-            {fakedata.map((item) => {
+            {profilIcons.map((item, idx) => {
               return (
                 <IconProfil
                   key={item.id}
-                  url={getImageFromCache("iconfriend")}
-                  name={item.name}
-                  selected={selectedImg === item.name ? true : false}
-                  onClick={(name) => setSelectedImg(name)}
+                  id={item.id}
+                  selected={selectedImg === item.id ? true : false}
+                  onClick={handleChangeImg}
                   onLoad={handleLoad}
+                  width={ResponsiveHeight(7)}
+                  height={ResponsiveHeight(7)}
                 />
               );
             })}
@@ -160,18 +200,6 @@ const AddPseudo = () => {
 
         <Button title="Se connecter" onPress={handleContinue} />
       </View>
-      {/* <View
-        pointerEvents="none"
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: "#000000",
-          opacity: onFocus ? 0.5 : 0,
-        }}
-      ></View> */}
     </View>
   );
 };

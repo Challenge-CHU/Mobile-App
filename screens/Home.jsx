@@ -19,19 +19,9 @@ import GlobalStats from "../components/GlobalStats";
 import FireTag from "../components/FireTag";
 import TimerTag from "../components/TimerTag";
 import LittleWalkyMsg from "../components/LittleWalkyMsg";
-import Card from "../components/Card";
-import Graph from "../components/Graph";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 import { LayoutHome, LayoutHomeGlobal } from "../components/LayoutHome";
 import { useStepCountStore } from "../store/useStepCountStore";
-import Walky from "../components/Walky";
-// import { useFonts } from "expo-font";
-// let customFonts = {
-//   // 'Poppins-Black': require('./assets/fonts/Poppins-Black.ttf')
-//   "Inter-Black": require("../assets/fonts/Inter-Black.ttf"),
-//   "Inter-Regular": require("../assets/fonts/Inter-Regular.ttf"),
-//   "AlegreyaSansSC-Bold": require("../assets/fonts/AlegreyaSansSC-Bold.ttf"),
-// };
 
 const fakeData = [
   { int: 187000, description: "Pas cumulés aujourd'hui" },
