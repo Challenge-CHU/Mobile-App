@@ -32,10 +32,6 @@ const fakeData = [
 
 const Home = () => {
   //Child fais référence a une tab View (le grpah ou les stats globals)
-  let date = new Date();
-
-  console.log("Date: ", date);
-  console.log("Date: ", date.toISOString());
 
   const { dailySteps } = useStepCountStore();
   const [steps, setSteps] = useState(dailySteps);

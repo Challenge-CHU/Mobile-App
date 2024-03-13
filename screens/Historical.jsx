@@ -29,11 +29,13 @@ const Historical = () => {
         <View>
           <LittleWalkyMsg message="Consulte ton historique et tes progrès." />
           <View>
-            <Calendar
-              rangeStartDate={rangeStartDate}
-              rangeEndDate={rangeEndDate}
-              isSelectedDay={(day) => setSelectedDay(day)}
-            />
+            {rangeEndDate != undefined && rangeStartDate != undefined ? (
+              <Calendar
+                rangeStartDate={rangeStartDate}
+                rangeEndDate={rangeEndDate}
+                isSelectedDay={(day) => setSelectedDay(day)}
+              />
+            ) : null}
           </View>
         </View>
       </PlateformSafeView>
@@ -58,6 +60,14 @@ const Historical = () => {
 const AllDaysLayout = () => {
   const [data, setData] = useState(null);
   const { computeAllDataFromBegining } = useStepCount();
+  // const { startDateChallenge, endDateChallenge } = useStepCountStore();
+  const {
+    updateDates,
+    startDateChallenge,
+    endDateChallenge,
+    updateStartDate,
+    updateEndDate,
+  } = useStepCountStore();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,8 +76,22 @@ const AllDaysLayout = () => {
       setData(stats);
     };
 
-    fetchData();
+    if (startDateChallenge != undefined && endDateChallenge != undefined) {
+      fetchData();
+    }
   }, []);
+  useEffect(() => {
+    console.log("start: ", startDateChallenge, " end: ", endDateChallenge);
+    const fetchData = async () => {
+      const stats = await computeAllDataFromBegining();
+
+      setData(stats);
+    };
+
+    if (startDateChallenge != undefined && endDateChallenge != undefined) {
+      fetchData();
+    }
+  }, [startDateChallenge, endDateChallenge]);
 
   return (
     <>

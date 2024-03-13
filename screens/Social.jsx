@@ -40,13 +40,13 @@ const Social = () => {
   };
 
   const friends = [
-    { id: 1, name: "Joselito", steps: 1000, allSteps: 100000 },
+    { id: 1, name: "Bernard", steps: 1000, allSteps: 100000 },
     { id: 2, name: "Karine", steps: 45000, allSteps: 35000 },
     { id: 3, name: "Bruno", steps: 200, allSteps: 100000 },
-    { id: 4, name: "Michel", steps: 500, allSteps: 15000 },
-    { id: 5, name: "Michel", steps: 500, allSteps: 15000 },
-    { id: 6, name: "Michel", steps: 500, allSteps: 15000 },
-    { id: 7, name: "Michel", steps: 500, allSteps: 15000 },
+    { id: 4, name: "Ophély", steps: 500, allSteps: 15000 },
+    { id: 5, name: "Thomas", steps: 500, allSteps: 15000 },
+    { id: 6, name: "Alexandre", steps: 500, allSteps: 15000 },
+    { id: 7, name: "Pauline", steps: 500, allSteps: 15000 },
     { id: 8, name: "Michel", steps: 500, allSteps: 15000 },
   ];
 
@@ -261,7 +261,6 @@ const FriendContent = ({ friends, visibleChild }) => {
         style={{
           width: "100%",
           marginTop: ResponsiveHeight(5),
-          // paddingVertical: ResponsiveHeight(5.2),
           paddingHorizontal: ResponsiveHeight(3.7),
         }}
         data={friends}

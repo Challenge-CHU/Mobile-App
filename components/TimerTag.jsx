@@ -19,16 +19,12 @@ const TimerTag = ({ datetime }) => {
   const handleDate = () => {
     const today = new Date();
     const endDate = new Date(endDateChallenge);
-    const remainingTime = new Date(
-      endDateChallenge.getTime() - today.getTime()
-    );
-    console.log("remainingMonths: ", remainingTime.getUTCMonth());
+    const remainingTime = new Date(endDate.getTime() - today.getTime());
     setMonthRemaining(remainingTime.getUTCMonth());
-    console.log("LA date de fin: ", endDateChallenge);
   };
 
   useEffect(() => {
-    handleDate();
+    if (endDateChallenge != undefined && endDateChallenge != null) handleDate();
   }, []);
 
   return (

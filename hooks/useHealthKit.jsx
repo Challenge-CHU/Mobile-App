@@ -54,6 +54,7 @@ export const useHealthKit = (date) => {
   };
 
   const handleGetAllStepsFromBeginning = () => {
+
     return new Promise((resolve, reject) => {
       let today = new Date();
       let firstDayChallenge = new Date(startDateChallenge);

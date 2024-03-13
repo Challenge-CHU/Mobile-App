@@ -12,6 +12,9 @@ import FirstLoadingScreen from "./FirstLoadingScreen";
 import SplashScreen from "../components/SplashScreen";
 import { ResponsiveHeight } from "../tools/ResponsiveHeight";
 import { SvgUri } from "react-native-svg/src/xml";
+import { AuthAPI } from "../utils/api";
+import { useStepCountStore } from "../store/useStepCountStore";
+import { useUserStore } from "../store/useUserStore";
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -25,12 +28,28 @@ const SignUp = () => {
 
   const [onFocus, setOnFocus] = useState(false);
   const [displaySplash, setDisplaySplash] = useState(true);
+  const [identifier, setIdentifier] = useState(undefined);
+  const [password, setPassword] = useState(undefined);
+  const { challengeId } = useStepCountStore();
+  const { notificationToken } = useUserStore();
 
-  const handleConnect = () => {
+  const handleConnect = async () => {
+    const creds = {
+      identifier: identifier,
+      challenge_id: challengeId,
+      firebase_device_token: notificationToken,
+    };
+
+    console.log("atat atat ata: ", creds);
+
+    // const response = AuthAPI.login()
+
     navigation.navigate("AddPseudo");
   };
 
   useEffect(() => {
+    //Ici tu check si ya pas de challenge bg
+
     setTimeout(() => {
       setDisplaySplash(false);
     }, 2000);
@@ -148,6 +167,7 @@ const SignUp = () => {
               focus={(param) => setOnFocus(param)}
               blur={() => setOnFocus(false)}
               active={onFocus}
+              onChange={(string) => setIdentifier(string)}
             />
             <InputText
               placeholder="Mot de passe"
@@ -155,6 +175,7 @@ const SignUp = () => {
               focus={(param) => setOnFocus(param)}
               blur={() => setOnFocus(false)}
               active={onFocus}
+              onChange={(string) => setPassword(string)}
             />
             <Text style={styles.text}>
               Ces informations vous ont été envoyées par le CHU à la suite de

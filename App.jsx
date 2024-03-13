@@ -20,6 +20,8 @@ import * as Notifications from "expo-notifications";
 import * as TaskManager from "expo-task-manager";
 import * as Device from "expo-device";
 import Constants from "expo-constants";
+import { ChallengesAPI } from "./utils/api";
+import { useStepCountStore } from "./store/useStepCountStore";
 
 const Tab = createBottomTabNavigator();
 
@@ -43,22 +45,22 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const BACKGROUND_NOTIFICATION_TASK = "BACKGROUND_NOTIFICATION_TASK";
-//
+// const BACKGROUND_NOTIFICATION_TASK = "BACKGROUND_NOTIFICATION_TASK";
+// //
 
-TaskManager.defineTask(
-  BACKGROUND_NOTIFICATION_TASK,
-  ({ data, error, executionInfo }) => {
-    console.log("Received a notification in the background!");
-    // Do something with the notification data
-    if (error) {
-      console.log("error occurred");
-    }
-    if (data) {
-      console.log("data-----", data);
-    }
-  }
-);
+// TaskManager.defineTask(
+//   BACKGROUND_NOTIFICATION_TASK,
+//   ({ data, error, executionInfo }) => {
+//     console.log("Received a notification in the background!");
+//     // Do something with the notification data
+//     if (error) {
+//       console.log("error occurred");
+//     }
+//     if (data) {
+//       console.log("data-----", data);
+//     }
+//   }
+// );
 
 async function registerForPushNotificationsAsync() {
   let token;
@@ -103,21 +105,44 @@ export default function App() {
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
+  const {
+    updateDates,
+    startDateChallenge,
+    endDateChallenge,
+    updateStartDate,
+    updateEndDate,
+    updateIdChall,
+  } = useStepCountStore();
 
-  // const handleIt = async () => {
-  //   const isRegistered = await TaskManager.isTaskRegisteredAsync(
-  //     BACKGROUND_NOTIFICATION_TASK
-  //   );
-  //   console.log("[handle it]: ", isRegistered);
-  // };
+  const { updateNotificationToken } = useUserStore();
+
+  const FetchChallenge = async () => {
+    const challengesDates = await ChallengesAPI.getActual();
+
+    if (challengesDates.status === 204) console.log("204");
+    if (challengesDates.status === 200) {
+      // updateDates(
+      //   challengesDates.data.data.start_date,
+      //   challengesDates.data.data.end_date
+      // );
+      updateStartDate(challengesDates.data.data.start_date);
+      updateEndDate(challengesDates.data.data.end_date);
+      updateIdChall(challengesDates.data.data.id);
+      console.log("200");
+    }
+
+    console.log("chall: ", challengesDates.data);
+    console.log("chall start: ", challengesDates.data.data.start_date);
+    console.log("chall end: ", challengesDates.data.data.end_date);
+  };
 
   useEffect(() => {
-    // handleIt();
-    Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
+    // Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
 
-    registerForPushNotificationsAsync().then((token) =>
-      setExpoPushToken(token)
-    );
+    registerForPushNotificationsAsync().then((token) => {
+      setExpoPushToken(token);
+      updateNotificationToken(token);
+    });
 
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
@@ -128,9 +153,10 @@ export default function App() {
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
         console.log("Response");
-
-        console.log(response);
       });
+
+    //getActual
+    FetchChallenge();
 
     return () => {
       Notifications.removeNotificationSubscription(
@@ -139,6 +165,15 @@ export default function App() {
       Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
+
+  // useEffect(() => {
+  //   console.log(
+  //     "changement de date: ",
+  //     startDateChallenge,
+  //     " end: ",
+  //     endDateChallenge
+  //   );
+  // }, [startDateChallenge, endDateChallenge]);
 
   return (
     <>

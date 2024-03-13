@@ -78,33 +78,37 @@ const useStepCount = () => {
       const result = await handleGetCountStepForADay(date);
       return result;
     } catch (error) {
-      console.error("Erreur lors de la récupération des pas :", error);
+      console.error("Erreur lors de la récupération des pas 1 :", error);
       return null;
     }
   };
 
   const computeAllDataFromBegining = async () => {
-    const stepsObj = await handleGetStepsFromBeginning();
+    try {
+      const stepsObj = await handleGetStepsFromBeginning();
 
-    if (stepsObj != undefined) {
-      const totalSteps = stepsObj.reduce((acc, obj) => acc + obj.value, 0);
-      const average = Math.round(totalSteps / stepsObj.length);
-      const km = Math.round(convertStepToKm(totalSteps));
+      if (stepsObj != undefined) {
+        const totalSteps = stepsObj.reduce((acc, obj) => acc + obj.value, 0);
+        const average = Math.round(totalSteps / stepsObj.length);
+        const km = Math.round(convertStepToKm(totalSteps));
 
-      const stats = [
-        { int: totalSteps || 0, description: "Pas cumulés" },
-        { int: km || 0, description: "Km cumulés" },
-        { int: average || 0, description: "Moy des pas par jour" },
-      ];
+        const stats = [
+          { int: totalSteps || 0, description: "Pas cumulés" },
+          { int: km || 0, description: "Km cumulés" },
+          { int: average || 0, description: "Moy des pas par jour" },
+        ];
 
-      return stats;
-    } else {
-      const stats = [
-        { int: 0, description: "Pas cumulés" },
-        { int: 0, description: "Km cumulés" },
-        { int: 0, description: "Moy des pas par jour" },
-      ];
-      return stats;
+        return stats;
+      } else {
+        const stats = [
+          { int: 0, description: "Pas cumulés" },
+          { int: 0, description: "Km cumulés" },
+          { int: 0, description: "Moy des pas par jour" },
+        ];
+        return stats;
+      }
+    } catch (e) {
+      console.log("Erreur compute All Data: ", e);
     }
   };
 
@@ -113,7 +117,7 @@ const useStepCount = () => {
       const result = await handleGetAllStepsFromBeginning();
       return result;
     } catch (error) {
-      console.error("Erreur lors de la récupération des pas :", error);
+      console.error("Erreur lors de la récupération des pas 2 :", error);
       return null;
     }
   };

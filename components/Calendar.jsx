@@ -34,9 +34,11 @@ import { useImageStore } from "../store/useImageStore";
 
 const Calendar = ({ rangeStartDate, rangeEndDate, isSelectedDay }) => {
   const [selectedDay, setSelectedDay] = useState(null);
-  const [selectedMonth, setSelectedMonth] = useState(rangeStartDate.getMonth());
+  const [selectedMonth, setSelectedMonth] = useState(
+    new Date(rangeStartDate).getMonth()
+  );
   const [selectedYear, setSelectedYear] = useState(
-    rangeStartDate.getFullYear()
+    new Date(rangeStartDate).getFullYear()
   );
 
   const [isNextMonthEnabled, setNextMonthEnabled] = useState(true);
@@ -167,6 +169,7 @@ const Calendar = ({ rangeStartDate, rangeEndDate, isSelectedDay }) => {
           style={{ opacity: isNextMonthEnabled ? 1 : 0.5 }}
         />
       </View>
+      {}
       <FlatList
         data={days.slice(0, getDaysInMonth(selectedYear, selectedMonth))}
         renderItem={renderDay}
