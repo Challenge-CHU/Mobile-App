@@ -32,6 +32,11 @@ const fakeData = [
 
 const Home = () => {
   //Child fais référence a une tab View (le grpah ou les stats globals)
+  let date = new Date();
+
+  console.log("Date: ", date);
+  console.log("Date: ", date.toISOString());
+
   const { dailySteps } = useStepCountStore();
   const [steps, setSteps] = useState(dailySteps);
 
@@ -98,9 +103,10 @@ const Home = () => {
             <LittleWalkyMsg
               message={
                 visibleChild === 1
-                  ? "Encore un petit effort, tu y es presque !"
-                  : "Voici tout ce que nous avons accompli ensemble !"
+                  ? "Swipe à droite pour découvrir ce que nous avons accompli ensemble !"
+                  : "Swipe à gauche et découvre tes résultats du jour"
               }
+              hideWalky={true}
             />
           </View>
 

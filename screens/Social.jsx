@@ -19,12 +19,18 @@ import { useImageStore } from "../store/useImageStore";
 import ScrollTabView from "../components/ScrollTabView";
 import CustomModal from "../components/Modal";
 import ModalAnimated from "../components/ModalAnimated";
+import { SvgCssUri } from "react-native-svg";
+import useProfilIcon from "../hooks/useProfilIcon";
+import IconProfil from "../components/IconProfil";
 
 const Social = () => {
   const { getImageFromCache, imageCache } = useImageStore();
+  const {} = useProfilIcon();
+
   const [visibleChild, setVisibleChild] = useState(1);
   const [modalVisible, setModalVisible] = useState(false);
   const [text, onChangeText] = useState("");
+
   const handleOnVisibleChildChange = useCallback((visibleInt) => {
     setVisibleChild(visibleInt);
   });
@@ -128,7 +134,7 @@ const styles = StyleSheet.create({});
 
 export default Social;
 
-const SocialCard = ({ name, steps, allSteps, showGlobal }) => {
+const SocialCard = ({ name, steps, allSteps, showGlobal, id }) => {
   const { getImageFromCache, imageCache } = useImageStore();
 
   return (
@@ -158,19 +164,24 @@ const SocialCard = ({ name, steps, allSteps, showGlobal }) => {
           flex: 1,
         }}
       >
-        <Image
-          src={getImageFromCache("iconfriend")}
+        <View
           style={{
             width: "20%",
-            // width: ResponsiveHeight(5.6),
             height: "130%",
-            // height: ResponsiveHeight(6.8),
             objectFit: "contain",
             position: "absolute",
             left: "-8%",
-            // left: -ResponsiveHeight(1.6),
           }}
-        />
+        >
+          <IconProfil
+            disabled={true}
+            selected={false}
+            id={id}
+            width={"100%"}
+            height={"100%"}
+          />
+        </View>
+
         <View>
           <Text
             style={{
@@ -249,13 +260,15 @@ const FriendContent = ({ friends, visibleChild }) => {
       <FlatList
         style={{
           width: "100%",
-          paddingVertical: ResponsiveHeight(5.2),
+          marginTop: ResponsiveHeight(5),
+          // paddingVertical: ResponsiveHeight(5.2),
           paddingHorizontal: ResponsiveHeight(3.7),
         }}
         data={friends}
         renderItem={({ item }) => (
           <SocialCard
             name={item.name}
+            id={item.id}
             steps={item.steps}
             allSteps={item.allSteps}
             showGlobal={visibleChild}

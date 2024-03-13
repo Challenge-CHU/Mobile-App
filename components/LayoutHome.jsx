@@ -7,6 +7,7 @@ import { gap, padding } from "../styles/spacing";
 import { Colors } from "../styles";
 import { useNavigation } from "@react-navigation/native";
 import { useImageStore } from "../store/useImageStore";
+import IconProfil from "./IconProfil";
 
 export const LayoutHome = React.memo(({ value }) => {
   if (value === 1) return <LayoutHomePerso />;
@@ -117,16 +118,14 @@ export const LayoutHomePerso = React.memo(() => {
             <View
               style={{
                 position: "absolute",
-                top: -ResponsiveHeight(1.42),
+                top: -ResponsiveHeight(2),
               }}
             >
-              <Image
-                source={{ uri: getImageFromCache("iconfriend") }}
-                style={{
-                  width: ResponsiveWidth(12.56),
-                  height: ResponsiveHeight(7.11),
-                  objectFit: "contain",
-                }}
+              <IconProfil
+                selected={false}
+                id={1}
+                width={ResponsiveWidth(12.56)}
+                height={ResponsiveHeight(7.11)}
               />
             </View>
             <View

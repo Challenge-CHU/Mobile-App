@@ -4,7 +4,8 @@ import aspectRatio from "../tools/AspectRatio";
 import { PercentageOf } from "../tools/Percentage";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 import { useImageStore } from "../store/useImageStore";
-const LittleWalkyMsg = ({ message }) => {
+
+const LittleWalkyMsg = ({ message, hideWalky }) => {
   const { getImageFromCache, imageCache } = useImageStore();
 
   return (
@@ -19,11 +20,17 @@ const LittleWalkyMsg = ({ message }) => {
         justifyContent: "center",
       }}
     >
-      <Image
-        source={{ uri: getImageFromCache("littlewalky") }}
-        style={{ width: ResponsiveWidth(7.4), height: ResponsiveHeight(5.32) }}
-        resizeMode="contain"
-      />
+      {hideWalky === true ? null : (
+        <Image
+          source={{ uri: getImageFromCache("littlewalky") }}
+          style={{
+            width: ResponsiveWidth(7.4),
+            height: ResponsiveHeight(5.32),
+          }}
+          resizeMode="contain"
+        />
+      )}
+
       <View
         style={{
           backgroundColor: "#FAFAFA",

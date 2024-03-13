@@ -39,6 +39,7 @@ const AddPseudo = () => {
   const [imgError, setImgError] = useState(false);
   const [pseudoError, setPseudoError] = useState(false);
   const [walkyMsg, setWalkyMsg] = useState();
+  const [displaySplash, setDisplaySplash] = useState();
 
   const { steps, allSteps, weekSteps } = useStepCountStore();
 
@@ -59,9 +60,9 @@ const AddPseudo = () => {
       error = true;
       setImgError(true);
     }
+
     if (pseudo.trim() === "" || pseudo === "" || null || undefined) {
       console.log("error pseud man");
-
       error = true;
       setPseudoError(true);
     }
@@ -71,7 +72,7 @@ const AddPseudo = () => {
     console.log(profilIcon, " iiicon");
     if (!imgError && !pseudoError && !error) {
       console.log("alors on a choisi qui bernard: ", selectedImg);
-
+      setDisplaySplash(true);
       setTimeout(handleNavigate, 2000);
     }
   };
@@ -97,7 +98,7 @@ const AddPseudo = () => {
     setSelectedImg(id);
   };
 
-  if (!fetched) {
+  if (!fetched || displaySplash) {
     return <SplashScreen />;
   }
 
