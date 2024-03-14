@@ -110,14 +110,14 @@ const Calendar = ({ rangeStartDate, rangeEndDate, isSelectedDay }) => {
     const dateButoir = new Date(rangeEndDate);
     const nextMonthDate = new Date(selectedYear, selectedMonth + 1, 1);
     const previousMonthDate = new Date(selectedYear, selectedMonth - 1, 1);
-    console.log(
-      "nextMonthDate: ",
-      nextMonthDate,
-      " dateButoir: ",
-      dateButoir,
-      " comapre: ",
-      nextMonthDate < dateButoir
-    );
+    // console.log(
+    //   "nextMonthDate: ",
+    //   nextMonthDate,
+    //   " dateButoir: ",
+    //   dateButoir,
+    //   " comapre: ",
+    //   nextMonthDate < dateButoir
+    // );
     setNextMonthEnabled(nextMonthDate < dateButoir);
     setPreviousMonthEnabled(previousMonthDate > startDate);
   }, [selectedYear, selectedMonth]);
