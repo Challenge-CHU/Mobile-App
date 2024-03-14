@@ -127,10 +127,6 @@ const AddPseudo = () => {
         firebase_device_token: notificationToken,
       };
 
-      // console.log("PutUser: ", user);
-      // console.log("PutUse IIIDr: ", userId);
-      // console.log("LE TOKENNNN: ", token);
-      // setAuthHeader(token);
 
       const response = await UserAPI.putUser(userId, user);
       return true;

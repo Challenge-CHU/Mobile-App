@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
+import { UserAPI } from "../utils/api.jsx";
 import { useAssets } from "expo-asset";
 import PlateformSafeView from "../components/PlateformSafeView";
 import { Colors } from "../styles";
@@ -83,13 +84,36 @@ const Profil = () => {
   const [icn, setIcn] = useState(1);
 
   const { isModalSettingsOpen, updateModalSettings } = useModalStore();
-  const [text, onChangeText] = useState("");
-  const { updateUsername } = useUserStore();
+  const [text, onChangeText] = useState(pseudo);
+  const { updateUsername, userId, pseudo } = useUserStore();
 
-  const handlePress = () => {
-    updateUsername(text);
-    updateModalSettings(false);
+  const handlePress = async () => {
+    try {
+      const res = await handlePutUser();
+      updateUsername(text);
+      updateModalSettings(false);
+    } catch (e) {
+      console.log("Error change pseudo");
+    }
+
     // setModalVisible((prev) => !prev);
+  };
+
+  const handlePutUser = async () => {
+    try {
+      let user = {
+        // avatar_id: `${selectedImg}`,
+        pseudo: text,
+        // identifier: identifier,
+        // firebase_device_token: notificationToken,
+      };
+
+      const response = await UserAPI.putUser(userId, user);
+      return true;
+    } catch (e) {
+      console.log("Error Put User: ", e);
+      return false;
+    }
   };
 
   const changeContent = () => {
@@ -104,7 +128,6 @@ const Profil = () => {
   }, [profilIcon]);
 
   useEffect(() => {}, [username]);
-
 
   return (
     <>
@@ -167,10 +190,11 @@ const Profil = () => {
       <ModalAnimated
         text="Veuillez entrer le pseudo de votre ami."
         placeholder="Pseudo"
-        onPress={handlePress}
+        onPress={() => updateModalSettings(false)}
         modalVisible={isModalSettingsOpen}
         onChangeText={onChangeText}
         BtnLabel="Changer"
+        onValidate={handlePress}
       />
     </>
   );

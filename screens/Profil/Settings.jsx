@@ -25,7 +25,7 @@ const Settings = ({ navigation }) => {
   const [isEnabled, setIsEnabled] = useState(false);
   const { updateModalSettings } = useModalStore();
   const { deconexionStepStore } = useStepCountStore();
-  const { deconnexionUserStore } = useUserStore();
+  const { deconnexionUserStore, userId } = useUserStore();
 
   const toggleSwitch = () => {
     setIsEnabled((prev) => setIsEnabled(!prev));
@@ -34,6 +34,8 @@ const Settings = ({ navigation }) => {
   const handlePress = () => {
     updateModalSettings(true);
   };
+
+
   const handleDeconnexion = () => {
     deconexionStepStore();
     deconnexionUserStore();
