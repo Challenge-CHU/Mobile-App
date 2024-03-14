@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    zIndex: 99,
+    zIndex: 99999999,
     height: "100%",
     width: "100%",
   },

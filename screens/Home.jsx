@@ -36,6 +36,7 @@ const Home = () => {
     totalSteps,
     averageStepsPerUser,
     todaySteps,
+    updateStats,
   } = useStepCountStore();
   const data = [
     { int: todaySteps, description: "Pas cumulés aujourd'hui" },
@@ -44,7 +45,7 @@ const Home = () => {
     { int: averageStepsPerUser, description: "Pas moyen par marcheur" },
   ];
 
-  const { updateBadges, updateFriends, updateStats } = useUserStore();
+  const { updateBadges, updateFriends } = useUserStore();
   const [steps, setSteps] = useState(dailySteps);
   const [fetched, setFetched] = useState(false);
 
@@ -76,7 +77,6 @@ const Home = () => {
       console.log("Badge response: ", responseFriends.data);
       updateBadges(responseBadges.data.data);
       updateFriends(responseFriends);
-      setFetched(true);
     } catch (e) {
       console.log("Error fetch Home Badges and friends");
     }
@@ -108,75 +108,79 @@ const Home = () => {
   const tabNames = ["Perso", "Global"];
 
   if (!fetched) return <SplashScreen />;
-
-  return (
-    <>
-      <PlateformSafeView styles={{ backgroundColor: "#ffffff" }}>
-        <View style={{ backgroundColor: Colors.colors.blue, display: "flex" }}>
+  else {
+    return (
+      <>
+        <PlateformSafeView styles={{ backgroundColor: "#ffffff" }}>
           <View
-            style={{
-              height: halfWindowsHeigth - ResponsiveHeight(1.4),
-              borderWidth: 1,
-              borderColor: "transparent",
-              borderBottomLeftRadius: 32,
-              borderBottomRightRadius: 32,
-              overflow: "hidden",
-              backgroundColor: "#ffffff",
-              zIndex: 1,
-              paddingTop: ResponsiveHeight(1.18),
-            }}
+            style={{ backgroundColor: Colors.colors.blue, display: "flex" }}
           >
-            {/* View lottie fire + chrono */}
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
+                height: halfWindowsHeigth - ResponsiveHeight(1.4),
+                borderWidth: 1,
+                borderColor: "transparent",
+                borderBottomLeftRadius: 32,
+                borderBottomRightRadius: 32,
+                overflow: "hidden",
+                backgroundColor: "#ffffff",
+                zIndex: 1,
+                paddingTop: ResponsiveHeight(1.18),
               }}
             >
-              <FireTag />
-              <TimerTag />
+              {/* View lottie fire + chrono */}
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <FireTag />
+                <TimerTag />
+              </View>
+              {/* selector tab perso && global */}
+
+              <ScrollTabView
+                onChange={handleOnVisibleChildChange}
+                tabNames={tabNames}
+                color="#000000"
+              >
+                {/* <ProgressCircle objectif={STEP_GOAL} progression={test} /> */}
+                <ProgressCircle objectif={STEP_GOAL} progression={dailySteps} />
+                <GlobalStats data={data} flex />
+              </ScrollTabView>
+
+              <LittleWalkyMsg
+                message={
+                  visibleChild === 1
+                    ? "Swipe à droite pour découvrir ce que nous avons accompli ensemble !"
+                    : "Swipe à gauche et découvre tes résultats du jour"
+                }
+                hideWalky={true}
+              />
             </View>
-            {/* selector tab perso && global */}
 
-            <ScrollTabView
-              onChange={handleOnVisibleChildChange}
-              tabNames={tabNames}
-              color="#000000"
+            {/* FIn header blanc */}
+            <View
+              style={{
+                backgroundColor: Colors.colors.blue,
+                height: "100%",
+                zIndex: 0,
+                paddingVertical: aspectRatio(12),
+                paddingHorizontal: ResponsiveWidth(6.15),
+                flexDirection: "column",
+                gap: ResponsiveHeight(2.84),
+              }}
             >
-              {/* <ProgressCircle objectif={STEP_GOAL} progression={test} /> */}
-              <ProgressCircle objectif={STEP_GOAL} progression={dailySteps} />
-              <GlobalStats data={data} flex />
-            </ScrollTabView>
-
-            <LittleWalkyMsg
-              message={
-                visibleChild === 1
-                  ? "Swipe à droite pour découvrir ce que nous avons accompli ensemble !"
-                  : "Swipe à gauche et découvre tes résultats du jour"
-              }
-              hideWalky={true}
-            />
+              <LayoutHome value={visibleChild} />
+            </View>
           </View>
+        </PlateformSafeView>
+      </>
+    );
+  }
 
-          {/* FIn header blanc */}
-          <View
-            style={{
-              backgroundColor: Colors.colors.blue,
-              height: "100%",
-              zIndex: 0,
-              paddingVertical: aspectRatio(12),
-              paddingHorizontal: ResponsiveWidth(6.15),
-              flexDirection: "column",
-              gap: ResponsiveHeight(2.84),
-            }}
-          >
-            <LayoutHome value={visibleChild} />
-          </View>
-        </View>
-      </PlateformSafeView>
-    </>
-  );
 };
 
 const styles = StyleSheet.create({
