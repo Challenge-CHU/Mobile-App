@@ -22,6 +22,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: Colors.colors.blue,
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 99,
+    height: "100%",
+    width: "100%",
   },
 });
 

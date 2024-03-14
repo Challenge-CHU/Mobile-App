@@ -22,19 +22,31 @@ import LittleWalkyMsg from "../components/LittleWalkyMsg";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 import { LayoutHome, LayoutHomeGlobal } from "../components/LayoutHome";
 import { useStepCountStore } from "../store/useStepCountStore";
-
-const fakeData = [
-  { int: 187000, description: "Pas cumulés aujourd'hui" },
-  { int: 1584, description: "Marcheurs" },
-  { int: 6000000, description: "Pas depuis le début" },
-  { int: 7576, description: "Pas moyen par marcheur" },
-];
+import SplashScreen from "../components/SplashScreen";
+import { ChallengesAPI, UserAPI } from "../utils/api";
+import { useUserStore } from "../store/useUserStore";
 
 const Home = () => {
   //Child fais référence a une tab View (le grpah ou les stats globals)
+  // const [test, setTest] = useState(500);
+  const {
+    dailySteps,
+    challengeId,
+    numberOfUsers,
+    totalSteps,
+    averageStepsPerUser,
+    todaySteps,
+  } = useStepCountStore();
+  const data = [
+    { int: todaySteps, description: "Pas cumulés aujourd'hui" },
+    { int: numberOfUsers, description: "Marcheurs" },
+    { int: totalSteps, description: "Pas depuis le début" },
+    { int: averageStepsPerUser, description: "Pas moyen par marcheur" },
+  ];
 
-  const { dailySteps } = useStepCountStore();
+  const { updateBadges, updateFriends, updateStats } = useUserStore();
   const [steps, setSteps] = useState(dailySteps);
+  const [fetched, setFetched] = useState(false);
 
   const [visibleChild, setVisibleChild] = useState(1);
   const scrollViewRef = useRef(null);
@@ -50,11 +62,52 @@ const Home = () => {
     setSteps(dailySteps);
   }, [dailySteps]);
 
+  const allFetch = async () => {
+    await FetchBadgesAndFriends();
+    await FetchStatsGlobal();
+    setFetched(true);
+  };
+
+  const FetchBadgesAndFriends = async () => {
+    try {
+      const responseBadges = await UserAPI.getBadges();
+      const responseFriends = await UserAPI.getFriends();
+
+      console.log("Badge response: ", responseFriends.data);
+      updateBadges(responseBadges.data.data);
+      updateFriends(responseFriends);
+      setFetched(true);
+    } catch (e) {
+      console.log("Error fetch Home Badges and friends");
+    }
+  };
+  const FetchStatsGlobal = async () => {
+    try {
+      const responseStats = await ChallengesAPI.getStats(challengeId);
+      let objResponse = { ...responseStats.data.data };
+      updateStats(
+        objResponse.numberOfUsers,
+        objResponse.totalSteps,
+        objResponse.averageStepsPerUser,
+        objResponse.todaySteps,
+        objResponse.totalDistanceInEarthCircumnavigations,
+        objResponse.totalCO2SavedInKg,
+        objResponse.totalDistanceInKilometers
+      );
+    } catch (e) {
+      console.log("Error fetch global stats: ", e);
+    }
+  };
+
   useEffect(() => {
-    console.log("Home start");
+    try {
+      allFetch();
+    } catch (e) {}
   }, []);
 
   const tabNames = ["Perso", "Global"];
+
+  if (!fetched) return <SplashScreen />;
 
   return (
     <>
@@ -91,9 +144,9 @@ const Home = () => {
               tabNames={tabNames}
               color="#000000"
             >
-              {/* <ProgressCircle objectif={STEP_GOAL} progression={10000} /> */}
+              {/* <ProgressCircle objectif={STEP_GOAL} progression={test} /> */}
               <ProgressCircle objectif={STEP_GOAL} progression={dailySteps} />
-              <GlobalStats data={fakeData} flex />
+              <GlobalStats data={data} flex />
             </ScrollTabView>
 
             <LittleWalkyMsg

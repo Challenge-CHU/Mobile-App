@@ -11,49 +11,62 @@ import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
 import aspectRatio from "../tools/AspectRatio";
 import { useNavigation } from "@react-navigation/native";
 import { useImageStore } from "../store/useImageStore";
-
-//En param un titre nullable + une liste de badge
-
-/**
- * Levels des badges
- *
- * 1: bronze
- * 2: Argent
- * 3: Gold
- *
- */
-
-let Unlockbadges = [
-  { id: 1, name: "Badge marcheur", level: 2, unlock: false },
-  { id: 2, name: "Badge streaker", level: 1, unlock: true },
-  { id: 3, name: "Badge beau gosse", level: 3, unlock: true },
-  { id: 4, name: "Badge Globe Trotteur", level: 1, unlock: false },
-  { id: 5, name: "Badge Globe Trotteur", level: 1, unlock: false },
-  { id: 6, name: "Badge Globe Trotteur", level: 1, unlock: false },
-];
-
-Unlockbadges.sort((a, b) => {
-  if (b.unlock !== a.unlock) {
-    return b.unlock - a.unlock;
-  }
-  return b.level - a.level;
-});
-
-let Allbadges = [
-  { id: 1, name: "Badge marcheur", level: 2, unlock: false },
-  { id: 1, name: "Badge streaker", level: 1, unlock: true },
-  { id: 1, name: "Badge beau gosse", level: 3, unlock: true },
-  { id: 0, name: "Badge Globe Trotteur", level: 1, unlock: false },
-  { id: 0, name: "Badge Globe Trotteur", level: 1, unlock: false },
-  { id: 0, name: "Badge Globe Trotteur", level: 1, unlock: false },
-];
+import { useUserStore } from "../store/useUserStore";
 
 const BadgeList = ({ titre }) => {
   const navigation = useNavigation();
+  const { badges } = useUserStore();
+
+  // const badgesGroupedByFamilyId = badges.reduce((acc, badge) => {
+  //   // Vérifier si la famille existe déjà dans l'accumulateur
+  //   if (acc.hasOwnProperty(badge.badge_family_id)) {
+  //     // Ajouter le badge à la famille existante
+  //     acc[badge.badge_family_id].push(badge);
+  //   } else {
+  //     // Créer un nouvel entrée pour la famille et y ajouter le badge
+  //     acc[badge.badge_family_id] = [badge];
+  //   }
+  //   return acc;
+  // }, {});
+
+  // Triez les badges par badge_family_id
+  badges.sort((a, b) => a.badge_family_id.localeCompare(b.badge_family_id));
+
+  // Créez un objet pour stocker les badges uniques par famille
+  const uniqueBadgesByFamily = {};
+
+  // Parcourez les badges triés
+  badges.forEach((badge) => {
+    if (!uniqueBadgesByFamily.hasOwnProperty(badge.badge_family_id)) {
+      // Si la famille n'existe pas encore, ajoutez le badge
+      uniqueBadgesByFamily[badge.badge_family_id] = badge;
+    } else {
+      // Si la famille existe déjà, vérifiez si le badge actuel est earned et a un rang plus élevé
+      const existingBadge = uniqueBadgesByFamily[badge.badge_family_id];
+      if (!existingBadge.earned && badge.earned) {
+        // Si le badge actuel est earned et a un rang plus élevé, remplacez le badge existant
+        uniqueBadgesByFamily[badge.badge_family_id] = badge;
+      } else if (
+        !existingBadge.earned &&
+        !badge.earned &&
+        badge.rank < existingBadge.rank
+      ) {
+        // Si aucun des deux badges n'est earned mais le badge actuel a un rang plus faible, remplacez le badge existant
+        uniqueBadgesByFamily[badge.badge_family_id] = badge;
+      }
+    }
+  });
+
+  // Convertissez l'objet en tableau
+  const uniqueBadges = Object.values(uniqueBadgesByFamily);
+
+  console.log(uniqueBadges);
+
+  const sortedBadges = badges.sort((a, b) => a.rank - b.rank);
 
   return (
     <View style={{ gap: ResponsiveHeight(3.7) }}>
-      {titre && (
+      {/* {titre && (
         <Text
           style={{
             fontSize: aspectRatio(ResponsiveHeight(2.3)),
@@ -62,8 +75,7 @@ const BadgeList = ({ titre }) => {
         >
           {titre}
         </Text>
-      )}
-
+      )} */}
 
       <View
         style={{
@@ -72,21 +84,23 @@ const BadgeList = ({ titre }) => {
           alignItems: "flex-start",
           justifyContent: "space-around",
           rowGap: ResponsiveHeight(4),
+          marginTop: ResponsiveHeight(1.8),
+          marginBottom: ResponsiveHeight(7),
         }}
       >
-        {Unlockbadges.map((badge) => {
+        {uniqueBadges.map((item) => {
           return (
             <TouchableOpacity
-              key={badge.id}
+              key={item.id}
               onPress={() =>
                 navigation.navigate("Badges", {
-                  id: badge.id,
-                  title: "bang",
-                  badge: badge,
+                  id: item.badge_family_id,
+                  title: item.BadgeFamily.name,
+                  badgeFamily: item.badge_family_id,
                 })
               }
             >
-              <Badges badge={badge} />
+              <Badges badge={item} />
             </TouchableOpacity>
           );
         })}
@@ -95,23 +109,18 @@ const BadgeList = ({ titre }) => {
   );
 };
 
-const Badges = ({ badge }) => {
+export const Badges = ({ badge }) => {
   const { getImageFromCache, imageCache } = useImageStore();
-  let levels = {
-    1: getImageFromCache("bronze"),
-    2: getImageFromCache("silver"),
-    3: getImageFromCache("gold"),
-  };
 
   return (
     <View>
       <Image
-        source={{ uri: levels[badge.level] }}
+        source={{ uri: getImageFromCache(badge.labelImage) }}
         style={{
           width: ResponsiveWidth(27.9),
           height: ResponsiveHeight(8.8),
           objectFit: "contain",
-          opacity: badge.unlock ? 1 : 0.25,
+          opacity: badge.earned ? 1 : 0.25,
         }}
         resizeMode="contain"
       />

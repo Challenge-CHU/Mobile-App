@@ -39,8 +39,6 @@ const Settings = ({ navigation }) => {
         height: "100%",
       }}
     >
-
-
       <View
         style={{
           gap: ResponsiveHeight(1.42),
@@ -50,7 +48,7 @@ const Settings = ({ navigation }) => {
         <CustomBtn title="Modifier pseudo" onPress={handlePress} />
         <CustomBtn title="CGU" />
       </View>
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+      {/* <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Text
           style={{
             fontSize: aspectRatio(ResponsiveHeight(2.3)),
@@ -66,7 +64,7 @@ const Settings = ({ navigation }) => {
           onValueChange={toggleSwitch}
           value={isEnabled}
         />
-      </View>
+      </View> */}
     </View>
   );
 };

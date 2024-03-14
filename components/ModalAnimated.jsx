@@ -72,18 +72,7 @@ const ModalAnimated = ({
   });
 
   return (
-    // <View>
     <>
-      {/* <View
-        pointerEvents="none"
-        style={{
-          position: "absolute",
-          top: 0,
-          height: height,
-          left: 0,
-          right: 0,
-        }}
-      > */}
       <Animated.View
         pointerEvents="none"
         style={[styles.outerContainer, { opacity: backgroundOpacity }]}

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, StyleSheet, Text, Image } from "react-native";
+import { View, StyleSheet, Text, Image, ScrollView } from "react-native";
 import {
   ResponsiveHeight,
   ResponsiveWidth,
@@ -17,10 +17,13 @@ const ProfilHome = ({ navigation }) => {
           position: "relative",
         }}
       >
-        <View>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <BadgeList titre="Badges" />
+        </ScrollView>
+        <View>
+          {/* <BadgeList titre="Badges" />
           <Divider />
-          <BadgeList titre="Badges collectifs" />
+          <BadgeList titre="Badges collectifs" /> */}
         </View>
       </View>
     </View>

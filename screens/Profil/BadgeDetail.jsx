@@ -1,45 +1,91 @@
-import React from "react";
-import { View, StyleSheet, Text, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, Text, Image, ScrollView } from "react-native";
 import {
   ResponsiveHeight,
   ResponsiveWidth,
 } from "../../tools/ResponsiveHeight";
 import aspectRatio from "../../tools/AspectRatio";
 import { useImageStore } from "../../store/useImageStore";
+import { useUserStore } from "../../store/useUserStore";
+import { Badges } from "../../components/BadgeList";
 
 const BadgeDetail = ({ navigation, route }) => {
-  /**
-   * TODO: Ajuster en fonction de la façon dont
-   * les données seront envoyés
-   */
-
+  const { badges } = useUserStore();
+  const [arrayFamilyBadge, setArrayFamilyBadge] = useState([]);
   const { params } = route;
+
+  console.log("params: ", params);
+
+  useEffect(() => {
+    const familyIdToSort = params.id; // L'ID de la famille de badges que vous souhaitez trier
+    console.log("id famille: ", familyIdToSort);
+    // Filtrer les badges pour ne garder que ceux de la famille spécifique
+    const badgesOfFamily = badges.filter(
+      (badge) => badge.badge_family_id === familyIdToSort
+    );
+    console.log("bagdes famille: ", badgesOfFamily);
+
+    // // Trier les badges de la famille spécifique par earned (les earned en premier) et ensuite par rank
+    // badgesOfFamily.sort((a, b) => {
+    //   if (a.earned && !b.earned) {
+    //     return -1; // a avant b (earned avant non earned)
+    //   } else if (!a.earned && b.earned) {
+    //     return 1; // b avant a (earned avant non earned)
+    //   } else {
+    //     return a.rank - b.rank; // Si les deux badges ont le même état earned, trie par rang
+    //   }
+    // });
+    setArrayFamilyBadge(badgesOfFamily);
+  }, [params]);
 
   return (
     <View
       style={{
         paddingHorizontal: ResponsiveHeight(2.8),
-        gap: ResponsiveHeight(3.7),
       }}
     >
       <View style={styles.titleContainer}>
-        <Text style={styles.titre}>{params.badge.name}</Text>
+        <Text style={styles.titre}>{params.title}</Text>
       </View>
-      <BadgeLevel
-        badge={params.badge}
-        level={3}
-        objectif="Marcher 1 000 000 pas"
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        // style={{ gap: ResponsiveHeight(3.7) }}
+        contentContainerStyle={{
+          gap: ResponsiveHeight(3.7),
+          paddingBottom: ResponsiveHeight(8),
+        }}
+      >
+        {arrayFamilyBadge.map((item) => {
+          return (
+            <>
+              <BadgesDetailed badge={item} />
+            </>
+          );
+        })}
+      </ScrollView>
+    </View>
+  );
+};
+export const BadgesDetailed = ({ badge }) => {
+  const { getImageFromCache, imageCache } = useImageStore();
+
+  return (
+    <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <Image
+        source={{ uri: getImageFromCache(badge.labelImage) }}
+        style={{
+          width: ResponsiveWidth(27.9),
+          height: ResponsiveHeight(8.8),
+          objectFit: "contain",
+          opacity: badge.earned ? 1 : 0.25,
+        }}
+        resizeMode="contain"
       />
-      <BadgeLevel
-        badge={params.badge}
-        level={2}
-        objectif="Marcher 500 000 pas"
-      />
-      <BadgeLevel
-        badge={params.badge}
-        level={1}
-        objectif="Marcher 100 000 pas"
-      />
+      <View>
+        <Text style={styles.text}>{badge.name}</Text>
+        {/* <Text>{badge.description}</Text> */}
+      </View>
     </View>
   );
 };
@@ -85,7 +131,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: ResponsiveHeight(2),
   },
   titleContainer: {
-    marginBottom: ResponsiveHeight(5.3),
+    marginBottom: ResponsiveHeight(4),
   },
 });
 

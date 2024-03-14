@@ -20,8 +20,9 @@ import * as Notifications from "expo-notifications";
 import * as TaskManager from "expo-task-manager";
 import * as Device from "expo-device";
 import Constants from "expo-constants";
-import { ChallengesAPI } from "./utils/api";
+import { ChallengesAPI, UserAPI, setAuthHeader } from "./utils/api";
 import { useStepCountStore } from "./store/useStepCountStore";
+import NoChallenge from "./screens/NoChallenge";
 
 const Tab = createBottomTabNavigator();
 
@@ -117,27 +118,35 @@ export default function App() {
   const { updateNotificationToken } = useUserStore();
 
   const FetchChallenge = async () => {
-    const challengesDates = await ChallengesAPI.getActual();
+    try {
+      const challengesDates = await ChallengesAPI.getActual();
 
-    if (challengesDates.status === 204) console.log("204");
-    if (challengesDates.status === 200) {
-      // updateDates(
-      //   challengesDates.data.data.start_date,
-      //   challengesDates.data.data.end_date
-      // );
+      if (challengesDates.status === 204) updateDates(null, null);
+
       updateStartDate(challengesDates.data.data.start_date);
       updateEndDate(challengesDates.data.data.end_date);
       updateIdChall(challengesDates.data.data.id);
-      console.log("200");
-    }
 
-    console.log("chall: ", challengesDates.data);
-    console.log("chall start: ", challengesDates.data.data.start_date);
-    console.log("chall end: ", challengesDates.data.data.end_date);
+      console.log("chall: ", challengesDates.data);
+      console.log("chall start: ", challengesDates.data.data.start_date);
+      console.log("chall end: ", challengesDates.data.data.end_date);
+    } catch (e) {
+      console.log("Error fetch challenges: ", e);
+    }
+  };
+
+  const FetchUserInfo = async () => {
+    //Si il y a un Token alors fetch dessus et skip les ecrans du début
+    // setAuthHeader()
+    try {
+      const response = await UserAPI.getMe();
+    } catch (e) {
+      console.log("Error Fetch user Root app: ", e);
+    }
   };
 
   useEffect(() => {
-    // Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
+    // FetchUserInfo();
 
     registerForPushNotificationsAsync().then((token) => {
       setExpoPushToken(token);
@@ -165,15 +174,6 @@ export default function App() {
       Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
-
-  // useEffect(() => {
-  //   console.log(
-  //     "changement de date: ",
-  //     startDateChallenge,
-  //     " end: ",
-  //     endDateChallenge
-  //   );
-  // }, [startDateChallenge, endDateChallenge]);
 
   return (
     <>
@@ -223,6 +223,7 @@ function MyTabs() {
       <Tab.Screen name="Profil" component={Profil} />
       <Tab.Screen name="Splash" component={SplashScreen} />
       <Tab.Screen name="Historical" component={Historical} />
+      <Tab.Screen name="NoChallenge" component={NoChallenge} />
     </Tab.Navigator>
   );
 }

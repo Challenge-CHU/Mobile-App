@@ -8,6 +8,9 @@ import { Colors } from "../styles";
 import { useNavigation } from "@react-navigation/native";
 import { useImageStore } from "../store/useImageStore";
 import IconProfil from "./IconProfil";
+import { useUserStore } from "../store/useUserStore";
+import Constants from "expo-constants";
+import { useStepCountStore } from "../store/useStepCountStore";
 
 export const LayoutHome = React.memo(({ value }) => {
   if (value === 1) return <LayoutHomePerso />;
@@ -16,8 +19,23 @@ export const LayoutHome = React.memo(({ value }) => {
 
 export const LayoutHomePerso = React.memo(() => {
   const { getImageFromCache, imageCache } = useImageStore();
+  const { badges } = useUserStore();
+  const [selectedBadge, setSelectedBadge] = useState(undefined);
 
+  console.log(
+    "hey oh: ",
+    `${process.env.EXPO_PUBLIC_DATABASE}${badges[0].image} `
+  );
   const navigation = useNavigation();
+
+  useEffect(() => {
+    if (badges != undefined && badges.length > 0) {
+      setSelectedBadge(badges[0]);
+    }
+  }, []);
+
+  if (selectedBadge === undefined) return null;
+
   return (
     <>
       {/* Card Statistique */}
@@ -72,10 +90,14 @@ export const LayoutHomePerso = React.memo(() => {
                 fontWeight: "700",
               }}
             >
-              Titre du badge
+              {selectedBadge.name}
             </Text>
             <Image
-              source={{ uri: getImageFromCache("gold") }}
+              source={{ uri: getImageFromCache(selectedBadge.labelImage) }}
+              // source={`${process.env.EXPO_PUBLIC_DATABASE}${selectedBadge.image} `}
+              // source={{
+              //   uri: `${process.env.EXPO_PUBLIC_DATABASE}${selectedBadge.image} `,
+              // }}
               style={{
                 width: ResponsiveWidth(27.95),
                 height: ResponsiveHeight(8.89),
@@ -83,6 +105,7 @@ export const LayoutHomePerso = React.memo(() => {
                 top: -12,
                 right: -40,
                 objectFit: "contain",
+                opacity: selectedBadge.earned ? 1 : 0.55,
               }}
             />
             <View
@@ -94,7 +117,7 @@ export const LayoutHomePerso = React.memo(() => {
               }}
             >
               <Text style={{ fontSize: ResponsiveHeight(1.9) }}>
-                1% Obtention
+                {selectedBadge.earned ? "Débloquer" : "Non débloquer"}
               </Text>
               <Text style={{ fontSize: ResponsiveHeight(1.9) }}>0/100</Text>
             </View>
@@ -155,20 +178,26 @@ export const LayoutHomePerso = React.memo(() => {
 
 export const LayoutHomeGlobal = React.memo(() => {
   const { getImageFromCache } = useImageStore();
+  const {
+    totalDistanceInEarthCircumnavigations,
+    totalCO2SavedInKg,
+    totalDistanceInKilometers,
+  } = useStepCountStore();
+
   return (
     <View style={{ flexGrow: 1, gap: ResponsiveHeight(1.42) }}>
       <GlobalStatsCard
-        stat="10"
+        stat={totalDistanceInEarthCircumnavigations}
         text="Tour(s) de la Terre parcourus ensemble"
         icon={getImageFromCache("earth")}
       />
       <GlobalStatsCard
-        stat="10"
+        stat={totalCO2SavedInKg}
         text="Kg de CO² économisé"
         icon={getImageFromCache("feuille")}
       />
       <GlobalStatsCard
-        stat="1,5Mi"
+        stat={totalDistanceInKilometers}
         text="Km parcourus"
         icon={getImageFromCache("green-character")}
       />

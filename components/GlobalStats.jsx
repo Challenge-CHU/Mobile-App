@@ -54,7 +54,7 @@ const Stats = ({ int, description }) => {
           textAlign: "right",
         }}
       >
-        {int.toLocaleString("fr-FR")}
+        {int != null ? int.toLocaleString("fr-FR") : 0}
       </Text>
 
       <Text

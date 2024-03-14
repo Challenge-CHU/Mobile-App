@@ -15,6 +15,7 @@ import { useImageStore } from "../store/useImageStore";
 import { ResponsiveHeight } from "../tools/ResponsiveHeight";
 import { useStepCountStore } from "../store/useStepCountStore";
 import useProfilIcon from "../hooks/useProfilIcon";
+import { UserAPI, setAuthHeader } from "../utils/api";
 
 const fakedata = [
   { id: 1, url: "cheval", name: "cheval" },
@@ -33,7 +34,17 @@ const AddPseudo = () => {
   const { profilIcons, getIconById } = useProfilIcon();
 
   const [pseudo, setPseudo] = useState("");
-  const { updateUsername, updateProfilIcon, profilIcon } = useUserStore();
+  const {
+    updateUsername,
+    updateProfilIcon,
+    profilIcon,
+    userId,
+    token,
+    notificationToken,
+    updateUserId,
+    identifier,
+    updateIdentifier,
+  } = useUserStore();
   const { fetched } = useImageStore();
   const [onFocus, setOnFocus] = useState(false);
   const [imgError, setImgError] = useState(false);
@@ -42,6 +53,24 @@ const AddPseudo = () => {
   const [displaySplash, setDisplaySplash] = useState();
 
   const { steps, allSteps, weekSteps } = useStepCountStore();
+
+  const FecthUserInfo = async () => {
+    try {
+      setAuthHeader(token);
+      console.log("toktoken: ", token);
+      const result = await UserAPI.getMe();
+
+      updateUserId(result.data.data.id);
+      updateIdentifier(result.data.data.identifier);
+      console.log("Resultat du me: ", result.data);
+    } catch (e) {
+      console.log("Error fetch user: ", e);
+    }
+  };
+
+  useEffect(() => {
+    FecthUserInfo();
+  }, []);
 
   useEffect(() => {
     if (pseudoError && imgError)
@@ -52,28 +81,51 @@ const AddPseudo = () => {
       setWalkyMsg("Je m’apelle Walky, et toi, comment dois-je t’appeler ?");
   }, [imgError, pseudoError]);
 
-  const handleContinue = () => {
-    let error = false;
+  const handleContinue = async () => {
+    try {
+      let error = false;
+      if (selectedImg === null || selectedImg === undefined) {
+        error = true;
+        setImgError(true);
+      }
+      if (pseudo.trim() === "" || pseudo === "" || null || undefined) {
+        console.log("error pseud man");
+        error = true;
+        setPseudoError(true);
+      }
 
-    if (selectedImg === null || selectedImg === undefined) {
-      console.log("err img man");
-      error = true;
-      setImgError(true);
+      const result = await handlePutUser();
+      console.log("Alors ce reuslt: ", result);
+      if (!result) error = true;
+
+      if (!imgError && !pseudoError && !error) {
+        updateProfilIcon(selectedImg);
+        updateUsername(pseudo);
+        console.log(profilIcon, " iiicon");
+        setDisplaySplash(true);
+        setTimeout(handleNavigate, 2000);
+      }
+    } catch (e) {
+      console.log("Error pseudo: ", e);
     }
+  };
 
-    if (pseudo.trim() === "" || pseudo === "" || null || undefined) {
-      console.log("error pseud man");
-      error = true;
-      setPseudoError(true);
-    }
+  const handlePutUser = async () => {
+    try {
+      let user = {
+        avatar_id: `${selectedImg}`,
+        pseudo: pseudo,
+        identifier: identifier,
+        firebase_device_token: notificationToken,
+      };
 
-    updateProfilIcon(selectedImg);
-    updateUsername(pseudo);
-    console.log(profilIcon, " iiicon");
-    if (!imgError && !pseudoError && !error) {
-      console.log("alors on a choisi qui bernard: ", selectedImg);
-      setDisplaySplash(true);
-      setTimeout(handleNavigate, 2000);
+      console.log("PutUser: ", user);
+
+      const response = await UserAPI.putUser(userId, user);
+      return true;
+    } catch (e) {
+      console.log("Error Put User: ", e);
+      return false;
     }
   };
 
@@ -88,8 +140,6 @@ const AddPseudo = () => {
   const handleChangePseudo = (pseudo) => {
     setPseudoError(false);
     console.log("pseudo new: ", pseudo);
-
-    //TODO regex vérifier si la string est vide et si le pseudo est conforme et dispo
     setPseudo(pseudo);
   };
 
@@ -98,110 +148,113 @@ const AddPseudo = () => {
     setSelectedImg(id);
   };
 
-  if (!fetched || displaySplash) {
+  if (!fetched) {
     return <SplashScreen />;
   }
 
   return (
-    <View>
-      <View
-        style={{
-          height: ResponsiveHeight(40.2),
-          alignItems: "center",
-          justifyContent: "center",
-          marginTop: ResponsiveHeight(5.5),
-        }}
-      >
+    <>
+      <View style={{ position: "relative" }}>
+        {displaySplash ? <SplashScreen /> : null}
         <View
           style={{
-            marginHorizontal: "10%",
-            justifyContent: "center",
+            height: ResponsiveHeight(40.2),
             alignItems: "center",
-            position: "relative",
-            transform: `translateY(-${ResponsiveHeight(9.4)}px)`,
+            justifyContent: "center",
+            marginTop: ResponsiveHeight(5.5),
           }}
         >
-          <BubbleMessage msg={walkyMsg} />
-
           <View
             style={{
-              position: "absolute",
-              top: ResponsiveHeight(4),
-              right: -ResponsiveHeight(7.7),
+              marginHorizontal: "10%",
+              justifyContent: "center",
+              alignItems: "center",
+              position: "relative",
+              transform: `translateY(-${ResponsiveHeight(9.4)}px)`,
             }}
           >
-            <Walky
-              width={ResponsiveHeight(30.5)}
-              height={ResponsiveHeight(40.1)}
-              mode="idle"
-            />
+            <BubbleMessage msg={walkyMsg} />
+
+            <View
+              style={{
+                position: "absolute",
+                top: ResponsiveHeight(4),
+                right: -ResponsiveHeight(7.7),
+              }}
+            >
+              <Walky
+                width={ResponsiveHeight(30.5)}
+                height={ResponsiveHeight(40.1)}
+                mode="idle"
+              />
+            </View>
           </View>
         </View>
-      </View>
 
-      <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          paddingHorizontal: ResponsiveHeight(4.7),
-          flexDirection: "column",
-          zIndex: 3,
-        }}
-      >
         <View
           style={{
-            marginTop: ResponsiveHeight(3.7),
-            marginBottom: ResponsiveHeight(4.7),
-            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+            paddingHorizontal: ResponsiveHeight(4.7),
+            flexDirection: "column",
             zIndex: 3,
           }}
         >
-          <InputText3
-            placeholder="Pseudo"
-            translate={false}
-            onChange={handleChangePseudo}
-            active={onFocus}
-            blur={() => setOnFocus(false)}
-            focus={(param) => setOnFocus(param)}
-          />
-        </View>
-
-        <View
-          style={{
-            width: "100%",
-            marginBottom: ResponsiveHeight(3.5),
-            gap: ResponsiveHeight(1.6),
-            zIndex: 1,
-          }}
-        >
-          <Text style={styles.text}>Selectionne un Avatar</Text>
           <View
             style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              flexWrap: "wrap",
-              gap: ResponsiveHeight(2.3),
+              marginTop: ResponsiveHeight(3.7),
+              marginBottom: ResponsiveHeight(4.7),
+              width: "100%",
+              zIndex: 3,
             }}
           >
-            {profilIcons.map((item, idx) => {
-              return (
-                <IconProfil
-                  key={item.id}
-                  id={item.id}
-                  selected={selectedImg === item.id ? true : false}
-                  onClick={handleChangeImg}
-                  onLoad={handleLoad}
-                  width={ResponsiveHeight(7)}
-                  height={ResponsiveHeight(7)}
-                />
-              );
-            })}
+            <InputText3
+              placeholder="Pseudo"
+              translate={false}
+              onChange={handleChangePseudo}
+              active={onFocus}
+              blur={() => setOnFocus(false)}
+              focus={(param) => setOnFocus(param)}
+            />
           </View>
-        </View>
 
-        <Button title="Se connecter" onPress={handleContinue} />
+          <View
+            style={{
+              width: "100%",
+              marginBottom: ResponsiveHeight(3.5),
+              gap: ResponsiveHeight(1.6),
+              zIndex: 1,
+            }}
+          >
+            <Text style={styles.text}>Selectionne un Avatar</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                flexWrap: "wrap",
+                gap: ResponsiveHeight(2.3),
+              }}
+            >
+              {profilIcons.map((item, idx) => {
+                return (
+                  <IconProfil
+                    key={item.id}
+                    id={item.id}
+                    selected={selectedImg === item.id ? true : false}
+                    onClick={handleChangeImg}
+                    onLoad={handleLoad}
+                    width={ResponsiveHeight(7)}
+                    height={ResponsiveHeight(7)}
+                  />
+                );
+              })}
+            </View>
+          </View>
+
+          <Button title="Se connecter" onPress={handleContinue} />
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 

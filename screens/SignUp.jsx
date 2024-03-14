@@ -12,7 +12,7 @@ import FirstLoadingScreen from "./FirstLoadingScreen";
 import SplashScreen from "../components/SplashScreen";
 import { ResponsiveHeight } from "../tools/ResponsiveHeight";
 import { SvgUri } from "react-native-svg/src/xml";
-import { AuthAPI } from "../utils/api";
+import { AuthAPI, setAuthHeader } from "../utils/api";
 import { useStepCountStore } from "../store/useStepCountStore";
 import { useUserStore } from "../store/useUserStore";
 
@@ -31,34 +31,96 @@ const SignUp = () => {
   const [identifier, setIdentifier] = useState(undefined);
   const [password, setPassword] = useState(undefined);
   const { challengeId } = useStepCountStore();
-  const { notificationToken } = useUserStore();
+  const { notificationToken, updateToken } = useUserStore();
+  const [credsError, setCredsError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [msg, setMessage] = useState("");
 
   const handleConnect = async () => {
-    const creds = {
-      identifier: identifier,
-      challenge_id: challengeId,
-      firebase_device_token: notificationToken,
-    };
+    try {
+      setDisplaySplash(true);
+      const creds = {
+        identifier: identifier,
+        challenge_id: challengeId,
+        firebase_device_token: notificationToken,
+        password: password,
+      };
 
-    console.log("atat atat ata: ", creds);
+      const response = await AuthAPI.login(creds);
 
-    // const response = AuthAPI.login()
+      updateToken(response.data.token);
+      setAuthHeader(response.data.token);
 
-    navigation.navigate("AddPseudo");
+      navigation.navigate("AddPseudo");
+    } catch (e) {
+      setDisplaySplash(false);
+      setCredsError(true);
+      console.log("Error login: ", e);
+    }
+  };
+
+  const handleChangeIdentifiant = (string) => {
+    setCredsError(false);
+    setIdentifier(string);
+  };
+  const handleChangePassword = (string) => {
+    setCredsError(false);
+    setPassword(string);
+  };
+
+  const FetchChallenge = async () => {
+    try {
+      const challengesDates = await ChallengesAPI.getActual();
+
+      if (challengesDates.status === 204) updateDates(null, null);
+
+      updateStartDate(challengesDates.data.data.start_date);
+      updateEndDate(challengesDates.data.data.end_date);
+      updateIdChall(challengesDates.data.data.id);
+
+      console.log("chall: ", challengesDates.data);
+      console.log("chall start: ", challengesDates.data.data.start_date);
+      console.log("chall end: ", challengesDates.data.data.end_date);
+      return true;
+    } catch (e) {
+      return false;
+      console.log("Error fetch challenges: ", e);
+    }
   };
 
   useEffect(() => {
-    //Ici tu check si ya pas de challenge bg
+    if (challengeId === undefined) {
+      setDisplaySplash(true);
+      const result = FetchChallenge();
 
+      if (!result) navigation.navigate("NoChallenge");
+    }
+    //TODO: Ici tu check si ya pas de challenge bg
+    if (!credsError)
+      setMessage(
+        "Bienvenue sur le challenge des 10 000 pas ! Connecte toi pour débuter l'aventure."
+      );
+    else setMessage("Vos identifiants sont incorrect.");
     setTimeout(() => {
       setDisplaySplash(false);
     }, 2000);
   }, []);
 
-  if (!fetched || displaySplash) return <SplashScreen />;
+  useEffect(() => {
+    //Ici tu check si ya pas de challenge bg
+    if (!credsError)
+      setMessage(
+        "Bienvenue sur le challenge des 10 000 pas ! Connecte toi pour débuter l'aventure."
+      );
+    else setMessage("Vos identifiants sont incorrect.");
+  }, [credsError]);
+
+  if (!fetched) return <SplashScreen />;
 
   return (
     <>
+      {displaySplash ? <SplashScreen /> : null}
+
       <PlateformSafeView>
         <View
           style={{
@@ -121,11 +183,7 @@ const SignUp = () => {
               transform: `translateY(-${ResponsiveHeight(9.2)}px)`,
             }}
           >
-            <BubbleMessage
-              msg={
-                "Bienvenue sur le challenge des 10 000 pas ! Connecte toi pour débuter l'aventure."
-              }
-            />
+            <BubbleMessage msg={msg} />
             <View
               style={{
                 position: "absolute",
@@ -167,7 +225,7 @@ const SignUp = () => {
               focus={(param) => setOnFocus(param)}
               blur={() => setOnFocus(false)}
               active={onFocus}
-              onChange={(string) => setIdentifier(string)}
+              onChange={handleChangeIdentifiant}
             />
             <InputText
               placeholder="Mot de passe"
@@ -175,7 +233,7 @@ const SignUp = () => {
               focus={(param) => setOnFocus(param)}
               blur={() => setOnFocus(false)}
               active={onFocus}
-              onChange={(string) => setPassword(string)}
+              onChange={handleChangePassword}
             />
             <Text style={styles.text}>
               Ces informations vous ont été envoyées par le CHU à la suite de

@@ -62,7 +62,7 @@ const ProfilNavigationHeader = ({ back, options, route, navigation }) => {
               fontWeight: "700",
             }}
           >
-            Badges Années
+            Badges
           </Text>
         </View>
       )}
