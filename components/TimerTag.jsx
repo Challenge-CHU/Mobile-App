@@ -57,7 +57,7 @@ const TimerTag = ({ datetime }) => {
           }}
         >
           {monthRemaining > 1 && monthRemaining != undefined
-            ? monthRemaining + " mois restant"
+            ? monthRemaining + " mois restants"
             : ""}
           {monthRemaining <= 1 && monthRemaining != undefined
             ? "Dernier mois"

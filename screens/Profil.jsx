@@ -80,7 +80,7 @@ const Profil = () => {
   const [usernameActive, setUsernameActive] = useState("");
   const { getImageFromCache, imageCache } = useImageStore();
 
-  console.log("PROFIL ICON PROFIL: ", profilIcon);
+  const [icn, setIcn] = useState(1);
 
   const { isModalSettingsOpen, updateModalSettings } = useModalStore();
   const [text, onChangeText] = useState("");
@@ -99,10 +99,12 @@ const Profil = () => {
   useEffect(() => {
     navigation.navigate("ProfilHome");
   }, []);
-
   useEffect(() => {
-    console.log("il a chnager gros: ", username);
-  }, [username]);
+    setIcn(profilIcon);
+  }, [profilIcon]);
+
+  useEffect(() => {}, [username]);
+
 
   return (
     <>

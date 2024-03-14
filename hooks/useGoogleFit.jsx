@@ -5,8 +5,9 @@ import { useStepCountStore } from "../store/useStepCountStore";
 const permissions = {
   scopes: [
     Scopes.FITNESS_ACTIVITY_READ,
-    Scopes.FITNESS_BODY_READ,
     Scopes.FITNESS_ACTIVITY_WRITE,
+    Scopes.FITNESS_BODY_READ,
+    Scopes.FITNESS_BODY_WRITE,
   ],
 };
 
@@ -14,7 +15,6 @@ export const useGoogleFit = () => {
   const [hasPermissions, setHasPermissions] = useState(false);
   const [steps, setSteps] = useState(0);
   const { startDateChallenge } = useStepCountStore();
-
 
   const handleGetCountStepForADay = async (date) => {
     let selectDate = new Date(date);
@@ -80,6 +80,7 @@ export const useGoogleFit = () => {
     const dailySteps = await GoogleFit.getDailyStepCountSamples(options);
     // console.log("gg fit data all sources: ", dailySteps);
     // console.log("OOOMEGGAAAA: ", dailySteps);
+    console.log("stttteeep: ", dailySteps);
 
     const googleFitData = dailySteps.find(
       (entry) => entry.source === "com.google.android.gms:estimated_steps"
@@ -156,6 +157,12 @@ export const useGoogleFit = () => {
 
       if (authorized) {
         setHasPermissions(true);
+        GoogleFit.startRecording(
+          (callback) => {
+            console.log("callback gfit");
+          },
+          ["step"]
+        );
         console.log("[Permissons déjà accordé]");
         return;
       } else {

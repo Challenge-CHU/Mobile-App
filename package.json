@@ -9,6 +9,7 @@
     "ios:device": "expo run:ios --device 'RoiduHarem'",
     "android:find": "expo run:android",
     "android:device": "expo run:android --device 'SM_J510FN'",
+    "android:device2": "expo run:android --device 'RZ8W3056ZRK'",
     "web": "expo start --web",
     "reset:watchman": "watchman watch-del-all"
   },
@@ -20,6 +21,7 @@
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/stack": "^6.3.20",
     "axios": "^1.6.7",
+    "eas": "^0.1.0",
     "expo": "~49.0.15",
     "expo-asset": "~8.10.1",
     "expo-background-fetch": "~11.3.0",

@@ -31,8 +31,6 @@ const IconProfil = ({
   };
 
   useEffect(() => {
-    console.log("IMMGid: ", id);
-
     const imgName = getIconById(id);
     setImg(imgName);
   }, [id]);

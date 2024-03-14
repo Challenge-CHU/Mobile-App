@@ -155,6 +155,7 @@ const useStepCount = () => {
     calculateStatsForDate,
     computeAllDataFromBegining,
     handleGetStepsFromBeginning,
+    handleGetCountStepForADay,
   };
 };
 

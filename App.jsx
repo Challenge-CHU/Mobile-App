@@ -101,6 +101,7 @@ async function registerForPushNotificationsAsync() {
 export default function App() {
   const [isLoaded] = useFonts(customFonts);
   useStepCount();
+  const [isChall, setIsChall] = useState(true);
 
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
@@ -121,8 +122,13 @@ export default function App() {
     try {
       const challengesDates = await ChallengesAPI.getActual();
 
-      if (challengesDates.status === 204) updateDates(null, null);
+      if (challengesDates.status === 204) {
+        updateDates(null, null);
+        setIsChall(true);
+      }
 
+      setIsChall(true);
+      console.log("Repsnse challenge: ", challengesDates.status);
       updateStartDate(challengesDates.data.data.start_date);
       updateEndDate(challengesDates.data.data.end_date);
       updateIdChall(challengesDates.data.data.id);
@@ -185,15 +191,25 @@ export default function App() {
         }}
       >
         <ImageLoader />
-        <MyTabs />
+        <MyTabs isChall={isChall} />
       </NavigationContainer>
       <StatusBar style="auto" />
     </>
   );
 }
 
-function MyTabs() {
+function MyTabs({ isChall }) {
   const { username } = useUserStore();
+
+  const [isChallenge, setIsChallenge] = useState(false);
+
+  useEffect(() => {
+    setIsChallenge(isChall);
+  }, [isChall]);
+
+  useEffect(() => {
+    setIsChallenge(isChall);
+  }, []);
 
   return (
     <Tab.Navigator
@@ -213,7 +229,8 @@ function MyTabs() {
           justifyContent: "center",
         },
       }}
-      initialRouteName={username != null ? "Home" : "SignUp"}
+      initialRouteName={isChallenge ? "SignUp" : "NoChallenge"}
+      // initialRouteName={username != null ? "Home" : "SignUp"}
       // initialRouteName="Splash"
     >
       <Tab.Screen name="SignUp" component={SignUp} />

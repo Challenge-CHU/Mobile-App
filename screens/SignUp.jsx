@@ -15,6 +15,7 @@ import { SvgUri } from "react-native-svg/src/xml";
 import { AuthAPI, setAuthHeader } from "../utils/api";
 import { useStepCountStore } from "../store/useStepCountStore";
 import { useUserStore } from "../store/useUserStore";
+import { ChallengesAPI, UserAPI } from "../utils/api";
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -30,8 +31,17 @@ const SignUp = () => {
   const [displaySplash, setDisplaySplash] = useState(true);
   const [identifier, setIdentifier] = useState(undefined);
   const [password, setPassword] = useState(undefined);
-  const { challengeId } = useStepCountStore();
-  const { notificationToken, updateToken } = useUserStore();
+
+  const { challengeId, updateStreak } = useStepCountStore();
+  const {
+    notificationToken,
+    updateToken,
+    token,
+    updateUserId,
+    updateIdentifier,
+    updateUsername,
+    updateProfilIcon,
+  } = useUserStore();
   const [credsError, setCredsError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [msg, setMessage] = useState("");
@@ -47,11 +57,14 @@ const SignUp = () => {
       };
 
       const response = await AuthAPI.login(creds);
-
+      console.log("Debut login");
       updateToken(response.data.token);
       setAuthHeader(response.data.token);
-
-      navigation.navigate("AddPseudo");
+      console.log("Reponse Login: ", response.data.token);
+      if (response.status === 200) {
+        navigation.navigate("AddPseudo");
+      }
+      console.log("Fin login: , ", response);
     } catch (e) {
       setDisplaySplash(false);
       setCredsError(true);
@@ -83,12 +96,39 @@ const SignUp = () => {
       console.log("chall end: ", challengesDates.data.data.end_date);
       return true;
     } catch (e) {
-      return false;
       console.log("Error fetch challenges: ", e);
+      return false;
+    }
+  };
+
+  const FetchUserInfo = async () => {
+    try {
+      console.log("Debut fetch user info?");
+      if (token != null) {
+        setAuthHeader(token);
+        const result = await UserAPI.getMe();
+        console.log("Resultttt?: ", result.status);
+        if (result.status === 200) {
+          console.log("c'est bien 200");
+          updateUserId(result.data.data.id);
+          updateIdentifier(result.data.data.identifier);
+          updateUsername(result.data.data.pseudo);
+          updateStreak(result.data.data.streak);
+          updateProfilIcon(result.data.data.avatar_id);
+          console.log("C B2O: ", result.data);
+          navigation.navigate("Home");
+        }
+        console.log("Fin fetch user info");
+      }
+    } catch (e) {
+      console.log("Error fetch me detection Token: ", e);
     }
   };
 
   useEffect(() => {
+    if (token != undefined) {
+      FetchUserInfo();
+    }
     if (challengeId === undefined) {
       setDisplaySplash(true);
       const result = FetchChallenge();

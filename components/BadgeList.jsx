@@ -60,7 +60,7 @@ const BadgeList = ({ titre }) => {
   // Convertissez l'objet en tableau
   const uniqueBadges = Object.values(uniqueBadgesByFamily);
 
-  console.log(uniqueBadges);
+  // console.log(uniqueBadges);
 
   const sortedBadges = badges.sort((a, b) => a.rank - b.rank);
 

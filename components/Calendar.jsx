@@ -169,7 +169,7 @@ const Calendar = ({ rangeStartDate, rangeEndDate, isSelectedDay }) => {
           style={{ opacity: isNextMonthEnabled ? 1 : 0.5 }}
         />
       </View>
-      {}
+      
       <FlatList
         data={days.slice(0, getDaysInMonth(selectedYear, selectedMonth))}
         renderItem={renderDay}

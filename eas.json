@@ -13,11 +13,16 @@
       }
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
     },
     "production": {
       "env": {
-        "ANDROID_SDK_ROOT": "/Users/jordanboutrois/Library/Android/Sdk"
+        "ANDROID_SDK_ROOT": "/Users/jordanboutrois/Library/Android/Sdk",
+        "EXPO_PUBLIC_DATABASE_URL": "https://alan-courtois.fr/api",
+        "EXPO_PUBLIC_DATABASE": "https://alan-courtois.fr/"
       }
     }
   },

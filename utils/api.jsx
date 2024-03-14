@@ -3,10 +3,11 @@ import axios from "axios";
 // const API_BASE_URL = process.env.DATABASE_URL;
 // const API_BASE_URL = "https://backend-ic9i.onrender.com/api";
 const API_BASE_URL = process.env.EXPO_PUBLIC_DATABASE_URL;
+// const API_BASE_URL = "https://backend-ic9i.onrender.com/api";
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 10000, // Spécifiez le délai d'attente pour toutes les requêtes
+  timeout: 30000, // Spécifiez le délai d'attente pour toutes les requêtes
 });
 
 export const setAuthHeader = (token) => {
@@ -52,7 +53,13 @@ export const UserAPI = {
     return apiClient.get(`/users/${id}/badges`);
   },
   getFriends: (id) => {
-    return apiClient.get(`/friends-request`);
+    return apiClient.get(`/users/${id}/friends`);
+  },
+  putSteps: (id, steps) => {
+    return apiClient.put(`/users/${id}/steps`, steps);
+  },
+  getSteps: (id) => {
+    return apiClient.get(`/users/${id}/steps`);
   },
 };
 
@@ -63,8 +70,8 @@ export const StepsAPI = {
 };
 
 export const ChallengesAPI = {
-  getChallenges: () => {
-    return apiClient.get("/challenges");
+  getActual: () => {
+    return apiClient.get("/challenges/actual");
   },
   getStats: (id) => {
     return apiClient.get(`/challenges/${id}/stats`);

@@ -56,21 +56,26 @@ const AddPseudo = () => {
 
   const FecthUserInfo = async () => {
     try {
+      // setAuthHeader(token);
+      // console.log("Debut fetch user: ", token);
       setAuthHeader(token);
-      console.log("toktoken: ", token);
       const result = await UserAPI.getMe();
 
+      // console.log("Resultat du me: ", result.data);
       updateUserId(result.data.data.id);
       updateIdentifier(result.data.data.identifier);
-      console.log("Resultat du me: ", result.data);
     } catch (e) {
-      console.log("Error fetch user: ", e);
+      console.log("Error fetch user 1: ", e);
     }
   };
 
   useEffect(() => {
     FecthUserInfo();
   }, []);
+
+  useEffect(() => {
+    FecthUserInfo();
+  }, [token]);
 
   useEffect(() => {
     if (pseudoError && imgError)
@@ -95,13 +100,13 @@ const AddPseudo = () => {
       }
 
       const result = await handlePutUser();
-      console.log("Alors ce reuslt: ", result);
+      // console.log("Alors ce reuslt: ", result);
       if (!result) error = true;
 
       if (!imgError && !pseudoError && !error) {
         updateProfilIcon(selectedImg);
         updateUsername(pseudo);
-        console.log(profilIcon, " iiicon");
+        // console.log(profilIcon, " iiicon");
         setDisplaySplash(true);
         setTimeout(handleNavigate, 2000);
       }
@@ -119,7 +124,10 @@ const AddPseudo = () => {
         firebase_device_token: notificationToken,
       };
 
-      console.log("PutUser: ", user);
+      // console.log("PutUser: ", user);
+      // console.log("PutUse IIIDr: ", userId);
+      // console.log("LE TOKENNNN: ", token);
+      // setAuthHeader(token);
 
       const response = await UserAPI.putUser(userId, user);
       return true;
@@ -139,7 +147,7 @@ const AddPseudo = () => {
 
   const handleChangePseudo = (pseudo) => {
     setPseudoError(false);
-    console.log("pseudo new: ", pseudo);
+    // console.log("pseudo new: ", pseudo);
     setPseudo(pseudo);
   };
 

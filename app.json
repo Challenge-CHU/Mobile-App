@@ -18,22 +18,19 @@
       "bundleIdentifier": "com.jordanbtrs.Walky",
       "infoPlist": {
         "UIBackgroundModes": ["fetch", "remote-notification"]
-      },
-      "googleServicesFile": "./GoogleService-Info.plist"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.jordanbtrs.Walky",
-      "googleServicesFile": "./google-services.json"
+      "package": "com.jordanbtrs.Walky"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "@react-native-firebase/app",
       "react-native-health",
       [
         "expo-build-properties",

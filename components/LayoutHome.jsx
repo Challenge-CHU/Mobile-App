@@ -21,11 +21,6 @@ export const LayoutHomePerso = React.memo(() => {
   const { getImageFromCache, imageCache } = useImageStore();
   const { badges } = useUserStore();
   const [selectedBadge, setSelectedBadge] = useState(undefined);
-
-  console.log(
-    "hey oh: ",
-    `${process.env.EXPO_PUBLIC_DATABASE}${badges[0].image} `
-  );
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -94,10 +89,6 @@ export const LayoutHomePerso = React.memo(() => {
             </Text>
             <Image
               source={{ uri: getImageFromCache(selectedBadge.labelImage) }}
-              // source={`${process.env.EXPO_PUBLIC_DATABASE}${selectedBadge.image} `}
-              // source={{
-              //   uri: `${process.env.EXPO_PUBLIC_DATABASE}${selectedBadge.image} `,
-              // }}
               style={{
                 width: ResponsiveWidth(27.95),
                 height: ResponsiveHeight(8.89),
@@ -105,7 +96,6 @@ export const LayoutHomePerso = React.memo(() => {
                 top: -12,
                 right: -40,
                 objectFit: "contain",
-                opacity: selectedBadge.earned ? 1 : 0.55,
               }}
             />
             <View
@@ -117,7 +107,7 @@ export const LayoutHomePerso = React.memo(() => {
               }}
             >
               <Text style={{ fontSize: ResponsiveHeight(1.9) }}>
-                {selectedBadge.earned ? "Débloquer" : "Non débloquer"}
+                {selectedBadge.earned ? "Débloquer" : "Non débloqué"}
               </Text>
               <Text style={{ fontSize: ResponsiveHeight(1.9) }}>0/100</Text>
             </View>

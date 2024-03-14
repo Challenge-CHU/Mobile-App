@@ -14,16 +14,16 @@ const BadgeDetail = ({ navigation, route }) => {
   const [arrayFamilyBadge, setArrayFamilyBadge] = useState([]);
   const { params } = route;
 
-  console.log("params: ", params);
+  // console.log("params: ", params);
 
   useEffect(() => {
     const familyIdToSort = params.id; // L'ID de la famille de badges que vous souhaitez trier
-    console.log("id famille: ", familyIdToSort);
+    // console.log("id famille: ", familyIdToSort);
     // Filtrer les badges pour ne garder que ceux de la famille spécifique
     const badgesOfFamily = badges.filter(
       (badge) => badge.badge_family_id === familyIdToSort
     );
-    console.log("bagdes famille: ", badgesOfFamily);
+    // console.log("bagdes famille: ", badgesOfFamily);
 
     // // Trier les badges de la famille spécifique par earned (les earned en premier) et ensuite par rank
     // badgesOfFamily.sort((a, b) => {
@@ -56,10 +56,10 @@ const BadgeDetail = ({ navigation, route }) => {
           paddingBottom: ResponsiveHeight(8),
         }}
       >
-        {arrayFamilyBadge.map((item) => {
+        {arrayFamilyBadge.map((item, idx) => {
           return (
             <>
-              <BadgesDetailed badge={item} />
+              <BadgesDetailed key={idx} badge={item} />
             </>
           );
         })}
