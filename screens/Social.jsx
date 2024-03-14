@@ -38,6 +38,9 @@ const Social = () => {
     setVisibleChild(visibleInt);
   });
 
+  const [allTodaySteps, setAllTodaySteps] = useState();
+  const [allBeginSteps, setAllBeginSteps] = useState();
+
   const handlePressModal = () => {
     setModalVisible(true);
   };
@@ -50,11 +53,16 @@ const Social = () => {
 
       console.log("ayo: ", friend, userId);
       const response = await UserAPI.postFriend(userId, friend);
-
+      fetchFriends();
+      setModalVisible(false);
       console.log("friends res: ", response);
     } catch (error) {
       console.log("Error post friend: ", error);
     }
+  };
+
+  const calculSomme = (tableau, cle) => {
+    return tableau.reduce((total, objet) => total + objet[cle], 0);
   };
 
   const fetchFriends = async () => {
@@ -67,21 +75,18 @@ const Social = () => {
     }
   };
 
-  // const friends = [
-  //   { id: 1, name: "Bernard", steps: 1000, allSteps: 100000 },
-  //   { id: 2, name: "Karine", steps: 45000, allSteps: 35000 },
-  //   { id: 3, name: "Bruno", steps: 200, allSteps: 100000 },
-  //   { id: 4, name: "Ophély", steps: 500, allSteps: 15000 },
-  //   { id: 5, name: "Thomas", steps: 500, allSteps: 15000 },
-  //   { id: 6, name: "Alexandre", steps: 500, allSteps: 15000 },
-  //   { id: 7, name: "Pauline", steps: 500, allSteps: 15000 },
-  //   { id: 8, name: "Michel", steps: 500, allSteps: 15000 },
-  // ];
-
   const tabNames = ["Aujourd'hui", "Depuis le début"];
+
   useEffect(() => {
     fetchFriends();
+    setAllTodaySteps(calculSomme(dataFriends, "stepToday"));
+    setAllBeginSteps(calculSomme(dataFriends, "stepsTotal"));
   }, []);
+
+  useEffect(() => {
+    setAllBeginSteps(calculSomme(dataFriends, "stepsTotal"));
+    setAllTodaySteps(calculSomme(dataFriends, "stepToday"));
+  }, [dataFriends]);
 
   return (
     <>
@@ -138,6 +143,8 @@ const Social = () => {
           <FriendsScrollData
             handleOnVisibleChildChange={handleOnVisibleChildChange}
             tabNames={tabNames}
+            todaySteps={allTodaySteps}
+            beginSteps={allBeginSteps}
           />
         ) : (
           ""
@@ -166,7 +173,7 @@ const styles = StyleSheet.create({});
 
 export default Social;
 
-const SocialCard = ({ name, steps, allSteps, showGlobal, id }) => {
+const SocialCard = ({ name, steps, allSteps, showGlobal, id, avatar }) => {
   const { getImageFromCache, imageCache } = useImageStore();
 
   return (
@@ -208,7 +215,7 @@ const SocialCard = ({ name, steps, allSteps, showGlobal, id }) => {
           <IconProfil
             disabled={true}
             selected={false}
-            id={id}
+            id={avatar}
             width={"100%"}
             height={"100%"}
           />
@@ -305,10 +312,11 @@ const FriendContent = ({ friends, visibleChild }) => {
         data={friends}
         renderItem={({ item }) => (
           <SocialCard
-            name={item.name}
+            name={item.pseudo}
+            avatar={parseInt(item.avatar_id)}
             id={item.id}
-            steps={item.steps}
-            allSteps={item.allSteps}
+            steps={item.stepToday}
+            allSteps={item.stepsTotal}
             showGlobal={visibleChild}
           />
         )}
@@ -328,7 +336,20 @@ const FriendContent = ({ friends, visibleChild }) => {
   );
 };
 
-const FriendsScrollData = ({ handleOnVisibleChildChange, tabNames }) => {
+const FriendsScrollData = ({
+  handleOnVisibleChildChange,
+  tabNames,
+  todaySteps,
+  beginSteps,
+}) => {
+  const [begin, setBegin] = useState();
+  const [today, setToday] = useState();
+
+  useEffect(() => {
+    setBegin(beginSteps);
+    setToday(todaySteps);
+    console.log("begin, ", begin);
+  }, [begin, today]);
   return (
     <View
       style={{
@@ -367,7 +388,7 @@ const FriendsScrollData = ({ handleOnVisibleChildChange, tabNames }) => {
               color: "#ffffff",
             }}
           >
-            25 000 pas aujourd'hui
+            {today} pas aujourd'hui
           </Text>
         </View>
         <View
@@ -396,7 +417,7 @@ const FriendsScrollData = ({ handleOnVisibleChildChange, tabNames }) => {
               color: "#ffffff",
             }}
           >
-            25 000 pas depuis le début
+            {begin} pas depuis le début
           </Text>
         </View>
       </ScrollTabView>

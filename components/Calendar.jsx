@@ -37,11 +37,13 @@ const Calendar = ({ rangeStartDate, rangeEndDate, isSelectedDay }) => {
   const [selectedMonth, setSelectedMonth] = useState(
     new Date(rangeStartDate).getMonth()
   );
+
   const [selectedYear, setSelectedYear] = useState(
     new Date(rangeStartDate).getFullYear()
   );
 
   const [isNextMonthEnabled, setNextMonthEnabled] = useState(true);
+  const [isPreviousMonthEnabled, setPreviousMonthEnabled] = useState(true);
 
   const months = [
     "Janvier",
@@ -74,8 +76,10 @@ const Calendar = ({ rangeStartDate, rangeEndDate, isSelectedDay }) => {
 
   const handleMonthChange = (isNext) => {
     //Vérifier si le mois d'après
+
     setSelectedMonth((prevMonth) => {
       //Récupère le mis d'après ou précédent avec l'année en cours
+      console.log("prev: ", prevMonth - 1, "next: ", prevMonth + 1);
       let newMonth = isNext ? prevMonth + 1 : prevMonth - 1;
       let newYear = selectedYear;
 
@@ -103,10 +107,20 @@ const Calendar = ({ rangeStartDate, rangeEndDate, isSelectedDay }) => {
 
   useEffect(() => {
     const currentDate = new Date();
-    const dateButoir = rangeEndDate;
+    const startDate = new Date(rangeStartDate);
+    const dateButoir = new Date(rangeEndDate);
     const nextMonthDate = new Date(selectedYear, selectedMonth + 1, 1);
-
+    const previousMonthDate = new Date(selectedYear, selectedMonth - 1, 1);
+    console.log(
+      "nextMonthDate: ",
+      nextMonthDate,
+      " dateButoir: ",
+      dateButoir,
+      " comapre: ",
+      nextMonthDate < dateButoir
+    );
     setNextMonthEnabled(nextMonthDate < dateButoir);
+    setPreviousMonthEnabled(previousMonthDate > startDate);
   }, [selectedYear, selectedMonth]);
 
   useEffect(() => {
@@ -159,7 +173,12 @@ const Calendar = ({ rangeStartDate, rangeEndDate, isSelectedDay }) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerCalendar}>
-        <ArrowButton left={true} onPress={() => handleMonthChange(false)} />
+        <ArrowButton
+          left={true}
+          onPress={() => handleMonthChange(false)}
+          disabled={!isPreviousMonthEnabled}
+          style={{ opacity: isPreviousMonthEnabled ? 1 : 0.5 }}
+        />
         <Text style={styles.monthText}>
           {months[selectedMonth]} - {selectedYear}
         </Text>
@@ -169,7 +188,7 @@ const Calendar = ({ rangeStartDate, rangeEndDate, isSelectedDay }) => {
           style={{ opacity: isNextMonthEnabled ? 1 : 0.5 }}
         />
       </View>
-      
+
       <FlatList
         data={days.slice(0, getDaysInMonth(selectedYear, selectedMonth))}
         renderItem={renderDay}
@@ -182,7 +201,7 @@ const Calendar = ({ rangeStartDate, rangeEndDate, isSelectedDay }) => {
   );
 };
 
-const ArrowButton = ({ left, onPress, disabled }) => {
+const ArrowButton = ({ left, onPress, disabled, style }) => {
   const { getImageFromCache, imageCache } = useImageStore();
 
   return (
@@ -193,12 +212,15 @@ const ArrowButton = ({ left, onPress, disabled }) => {
     >
       <Image
         source={{ uri: getImageFromCache("arrow-calendar") }}
-        style={{
-          objectFit: "contain",
-          width: ResponsiveHeight(2.8),
-          height: ResponsiveHeight(2.8),
-          transform: [{ scaleX: left ? -1 : 1 }],
-        }}
+        style={[
+          {
+            objectFit: "contain",
+            width: ResponsiveHeight(2.8),
+            height: ResponsiveHeight(2.8),
+            transform: [{ scaleX: left ? -1 : 1 }],
+          },
+          { ...style },
+        ]}
       />
     </TouchableOpacity>
   );

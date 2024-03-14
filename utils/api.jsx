@@ -1,9 +1,6 @@
 import axios from "axios";
 
-// const API_BASE_URL = process.env.DATABASE_URL;
-// const API_BASE_URL = "https://backend-ic9i.onrender.com/api";
 const API_BASE_URL = process.env.EXPO_PUBLIC_DATABASE_URL;
-// const API_BASE_URL = "https://backend-ic9i.onrender.com/api";
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,

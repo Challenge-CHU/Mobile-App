@@ -21,8 +21,8 @@
     "production": {
       "env": {
         "ANDROID_SDK_ROOT": "/Users/jordanboutrois/Library/Android/Sdk",
-        "EXPO_PUBLIC_DATABASE_URL": "https://alan-courtois.fr/api",
-        "EXPO_PUBLIC_DATABASE": "https://alan-courtois.fr/"
+        "EXPO_PUBLIC_DATABASE_URL": "https://chu-dev.alan-courtois.fr/api",
+        "EXPO_PUBLIC_DATABASE": "https://chu-dev.alan-courtois.fr/"
       }
     }
   },
