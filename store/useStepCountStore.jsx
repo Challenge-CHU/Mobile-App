@@ -51,7 +51,7 @@ export const useStepCountStore = create(
           totalCO2SavedInKg: newTotalCO2SavedInKg,
           totalDistanceInKilometers: newTotalDistanceInKilometers,
         }),
-      deconnection: () =>
+      deconexionStepStore: () =>
         set({ startDateChallenge: null, endDateChallenge: null }),
     }),
     {

@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "1002568745485",
+    "project_id": "walky-406613",
+    "storage_bucket": "walky-406613.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1002568745485:android:fcc37cba7941b475810b44",
+        "android_client_info": {
+          "package_name": "com.jordanbtrs.Walky"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1002568745485-vls2cdc8h9jce0r879bq8e2e642kac9j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jordanbtrs.Walky",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGwFWXgKMpOhDqY25aZjRa8aYW32O5y8s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

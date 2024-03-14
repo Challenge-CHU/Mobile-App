@@ -79,7 +79,6 @@ const Calendar = ({ rangeStartDate, rangeEndDate, isSelectedDay }) => {
 
     setSelectedMonth((prevMonth) => {
       //Récupère le mis d'après ou précédent avec l'année en cours
-      console.log("prev: ", prevMonth - 1, "next: ", prevMonth + 1);
       let newMonth = isNext ? prevMonth + 1 : prevMonth - 1;
       let newYear = selectedYear;
 

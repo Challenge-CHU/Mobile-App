@@ -116,7 +116,6 @@ const SignUp = () => {
           updateStreak(result.data.data.streak);
           updateProfilIcon(parseInt(result.data.data.avatar_id));
           console.log("C B2O: ", result.data);
-          navigation.navigate("Home");
         }
         console.log("Fin fetch user info");
       }
@@ -147,6 +146,21 @@ const SignUp = () => {
   }, []);
   useEffect(() => {
     FetchUserInfo();
+    if (challengeId === undefined) {
+      setDisplaySplash(true);
+      const result = FetchChallenge();
+
+      if (!result) navigation.navigate("NoChallenge");
+    }
+    //TODO: Ici tu check si ya pas de challenge bg
+    if (!credsError)
+      setMessage(
+        "Bienvenue sur le challenge des 10 000 pas ! Connecte toi pour débuter l'aventure."
+      );
+    else setMessage("Vos identifiants sont incorrect.");
+    setTimeout(() => {
+      setDisplaySplash(false);
+    }, 2000);
   }, [token]);
 
   useEffect(() => {

@@ -46,22 +46,7 @@ Notifications.setNotificationHandler({
   }),
 });
 
-// const BACKGROUND_NOTIFICATION_TASK = "BACKGROUND_NOTIFICATION_TASK";
-// //
 
-// TaskManager.defineTask(
-//   BACKGROUND_NOTIFICATION_TASK,
-//   ({ data, error, executionInfo }) => {
-//     console.log("Received a notification in the background!");
-//     // Do something with the notification data
-//     if (error) {
-//       console.log("error occurred");
-//     }
-//     if (data) {
-//       console.log("data-----", data);
-//     }
-//   }
-// );
 
 async function registerForPushNotificationsAsync() {
   let token;
@@ -90,7 +75,6 @@ async function registerForPushNotificationsAsync() {
     token = await Notifications.getExpoPushTokenAsync({
       projectId: Constants.expoConfig.extra.eas.projectId,
     });
-    console.log(token);
   } else {
     alert("Must use physical device for Push Notifications");
   }
@@ -116,7 +100,7 @@ export default function App() {
     updateIdChall,
   } = useStepCountStore();
 
-  const { updateNotificationToken } = useUserStore();
+  const { updateNotificationToken, token } = useUserStore();
 
   const FetchChallenge = async () => {
     try {
@@ -128,14 +112,13 @@ export default function App() {
       }
 
       setIsChall(true);
-      console.log("Repsnse challenge: ", challengesDates.status);
       updateStartDate(challengesDates.data.data.start_date);
       updateEndDate(challengesDates.data.data.end_date);
       updateIdChall(challengesDates.data.data.id);
 
-      console.log("chall: ", challengesDates.data);
-      console.log("chall start: ", challengesDates.data.data.start_date);
-      console.log("chall end: ", challengesDates.data.data.end_date);
+      // console.log("chall: ", challengesDates.data);
+      // console.log("chall start: ", challengesDates.data.data.start_date);
+      // console.log("chall end: ", challengesDates.data.data.end_date);
     } catch (e) {
       console.log("Error fetch challenges: ", e);
     }
@@ -157,17 +140,18 @@ export default function App() {
     registerForPushNotificationsAsync().then((token) => {
       setExpoPushToken(token);
       updateNotificationToken(token);
+      console.log("tokennotif: ", token);
     });
 
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
-        console.log("Received");
+        // console.log("Received");
         setNotification(notification);
       });
 
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log("Response");
+        // console.log("Response");
       });
 
     //getActual
@@ -180,6 +164,10 @@ export default function App() {
       Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
+
+  useEffect(() => {
+    FetchChallenge();
+  }, [token]);
 
   return (
     <>

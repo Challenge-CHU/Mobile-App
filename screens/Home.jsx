@@ -27,8 +27,6 @@ import { ChallengesAPI, UserAPI } from "../utils/api";
 import { useUserStore } from "../store/useUserStore";
 
 const Home = () => {
-  //Child fais référence a une tab View (le grpah ou les stats globals)
-  // const [test, setTest] = useState(500);
   const {
     startDateChallenge,
     endDateChallenge,
@@ -41,8 +39,10 @@ const Home = () => {
     updateStats,
     allSteps,
   } = useStepCountStore();
+
   const { handleGetStepsFromBeginning, handleGetCountStepForADay } =
     useStepCount();
+
   const data = [
     { int: todaySteps, description: "Pas cumulés aujourd'hui" },
     { int: numberOfUsers, description: "Marcheurs" },
@@ -50,7 +50,7 @@ const Home = () => {
     { int: averageStepsPerUser, description: "Pas moyen par marcheur" },
   ];
 
-  const { updateBadges, updateFriends, userId } = useUserStore();
+  const { updateBadges, updateFriends, userId, token } = useUserStore();
   const [steps, setSteps] = useState(dailySteps);
   const [fetched, setFetched] = useState(false);
 
@@ -74,18 +74,20 @@ const Home = () => {
     setFetched(true);
   };
 
+  /**
+   * Synchronise les pas en bdd
+   *
+   * Si il y a une date avec des pas Alors on envoie la différence entre la date et la date du jour
+   * Si il n'y a rien on envoi toutes les entrée depuis le début du challenge
+   */
   const syncSteps = async () => {
     try {
       console.log("debut sync");
       //Récupère la dernière entré des pas
       const responseSteps = await UserAPI.getSteps(userId);
-      // console.log("suite sync pt1: ", responseSteps.data);
 
       if (responseSteps.data.data.length > 0) {
         const allStepss = await handleGetStepsFromBeginning();
-
-        // console.log("step if date: ", responseSteps.data);
-        // console.log("ALl UP STEPS [] : ", allStepss);
 
         const transformedData = allStepss.map((item) => ({
           date: item.endDate,
@@ -102,13 +104,7 @@ const Home = () => {
           return itemDate >= startDate && itemDate <= endDate;
         });
 
-        // console.log("Oh tu deocnne fraté: ", transformedData);
-        // console.log("Oh tu deocnne fraté filtered: ", filteredData);
-        // console.log("usr id: ", userId);
         const response = UserAPI.putSteps(userId, filteredData);
-
-        //Envoi tout
-        const result = allSteps;
       } else {
         let date = new Date();
         const stepsToday = await handleGetCountStepForADay(date);
@@ -125,14 +121,11 @@ const Home = () => {
         const response = await UserAPI.putSteps(userId, dataSteps);
         console.log("Réusssiiii: ", response.status);
       }
-
-      //Si rien alors on envoies tout les pas depuis de la date de début
-
-      //Si une date alors on envoie tout depuis cette date
     } catch (e) {
       console.log("Error sync steps: ", e);
     }
   };
+
   const FetchBadgesAndFriends = async () => {
     try {
       const responseBadges = await UserAPI.getBadges();
@@ -170,6 +163,15 @@ const Home = () => {
       console.log("error useEffect fetch home: ", e);
     }
   }, []);
+
+  useEffect(() => {
+    try {
+      allFetch();
+      syncSteps();
+    } catch (e) {
+      console.log("error useEffect fetch home: ", e);
+    }
+  }, [token, userId]);
 
   const tabNames = ["Perso", "Global"];
 

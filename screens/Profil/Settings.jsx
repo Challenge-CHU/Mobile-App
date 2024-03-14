@@ -19,10 +19,13 @@ import { useUserStore } from "../../store/useUserStore";
 import ModalAnimated from "../../components/ModalAnimated";
 import CustomModal from "../../components/Modal";
 import { useModalStore } from "../../store/useModalStore";
+import { useStepCountStore } from "../../store/useStepCountStore";
 
 const Settings = ({ navigation }) => {
   const [isEnabled, setIsEnabled] = useState(false);
   const { updateModalSettings } = useModalStore();
+  const { deconexionStepStore } = useStepCountStore();
+  const { deconnexionUserStore } = useUserStore();
 
   const toggleSwitch = () => {
     setIsEnabled((prev) => setIsEnabled(!prev));
@@ -30,6 +33,11 @@ const Settings = ({ navigation }) => {
 
   const handlePress = () => {
     updateModalSettings(true);
+  };
+  const handleDeconnexion = () => {
+    deconexionStepStore();
+    deconnexionUserStore();
+    navigation.navigate("SignUp");
   };
 
   return (
@@ -47,32 +55,20 @@ const Settings = ({ navigation }) => {
       >
         <CustomBtn title="Modifier pseudo" onPress={handlePress} />
         <CustomBtn title="CGU" />
-      </View>
-      {/* <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <Text
-          style={{
-            fontSize: aspectRatio(ResponsiveHeight(2.3)),
-            fontWeight: "700",
-          }}
-        >
-          Notifications
-        </Text>
-        <Switch
-          trackColor={{ false: "#767577", true: "#81b0ff" }}
-          thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleSwitch}
-          value={isEnabled}
+        <CustomBtn
+          title="Se Déconnecter"
+          style={{ backgroundColor: "red" }}
+          onPress={handleDeconnexion}
         />
-      </View> */}
+      </View>
     </View>
   );
 };
 
-const CustomBtn = ({ title, onPress }) => {
+const CustomBtn = ({ title, onPress, style }) => {
   return (
     <>
-      <TouchableOpacity style={styles.button} onPress={onPress}>
+      <TouchableOpacity style={[styles.button, { ...style }]} onPress={onPress}>
         <Text
           style={{
             fontSize: aspectRatio(ResponsiveHeight(2.3)),

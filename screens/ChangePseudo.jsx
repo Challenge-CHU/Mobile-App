@@ -64,6 +64,8 @@ const AddPseudo = () => {
       // console.log("Resultat du me: ", result.data);
       updateUserId(result.data.data.id);
       updateIdentifier(result.data.data.identifier);
+      if (result.data.data.identifier != result.data.data.pseudo)
+        navigation.navigate("Home");
     } catch (e) {
       console.log("Error fetch user 1: ", e);
     }
@@ -89,6 +91,7 @@ const AddPseudo = () => {
   const handleContinue = async () => {
     try {
       let error = false;
+      console.log("passe dans continue");
       if (selectedImg === null || selectedImg === undefined) {
         error = true;
         setImgError(true);
@@ -108,7 +111,7 @@ const AddPseudo = () => {
         updateUsername(pseudo);
         // console.log(profilIcon, " iiicon");
         setDisplaySplash(true);
-        setTimeout(handleNavigate, 2000);
+        // setTimeout(handleNavigate, 2000);
       }
     } catch (e) {
       console.log("Error pseudo: ", e);

@@ -30,7 +30,6 @@ export const useGoogleFit = () => {
         }
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log("You can use the camera");
       } else {
         console.log("Camera permission denied");
       }

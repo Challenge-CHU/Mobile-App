@@ -71,6 +71,15 @@ export const useUserStore = create(
       updateUserId: (newId) => set({ userId: newId }),
       updateBadges: (newBadges) => set({ badges: newBadges }),
       updateFriends: (newFriends) => set({ friends: newFriends }),
+      deconnexionUserStore: () =>
+        set({
+          token: null,
+          identifier: null,
+          username: null,
+          profilIcon: null,
+          badges: [],
+          userId: null,
+        }),
     }),
     {
       name: "user", // name of the item in the storage (must be unique)

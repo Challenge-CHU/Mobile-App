@@ -139,7 +139,7 @@ const Social = () => {
             </Text>
           </TouchableOpacity>
         </View>
-        {dataFriends != undefined || dataFriends.length > 0 ? (
+        {dataFriends.length > 0 ? (
           <FriendsScrollData
             handleOnVisibleChildChange={handleOnVisibleChildChange}
             tabNames={tabNames}
@@ -151,7 +151,7 @@ const Social = () => {
         )}
       </PlateformSafeView>
       {dataFriends === undefined || dataFriends.length <= 0 ? (
-        <NoFriendContent />
+        <NoFriendContent onPress={() => setModalVisible(true)} />
       ) : (
         <FriendContent friends={dataFriends} visibleChild={visibleChild} />
       )}
@@ -258,7 +258,7 @@ const SocialCard = ({ name, steps, allSteps, showGlobal, id, avatar }) => {
   );
 };
 
-const NoFriendContent = () => {
+const NoFriendContent = ({ onPress }) => {
   return (
     <BottomSheet styles={{ height: ResponsiveHeight(70), padding: 0 }}>
       <View
@@ -283,7 +283,7 @@ const NoFriendContent = () => {
             mode={"idle"}
           />
         </View>
-        <GreyCard />
+        <GreyCard onPress={onPress} />
       </View>
     </BottomSheet>
   );
