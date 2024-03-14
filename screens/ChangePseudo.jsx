@@ -111,7 +111,7 @@ const AddPseudo = () => {
         updateUsername(pseudo);
         // console.log(profilIcon, " iiicon");
         setDisplaySplash(true);
-        // setTimeout(handleNavigate, 2000);
+        setTimeout(handleNavigate, 2000);
       }
     } catch (e) {
       console.log("Error pseudo: ", e);
