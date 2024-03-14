@@ -20,14 +20,31 @@ export const LayoutHome = React.memo(({ value }) => {
 export const LayoutHomePerso = React.memo(() => {
   const { getImageFromCache, imageCache } = useImageStore();
   const { badges } = useUserStore();
+  const [dataBadges, setDataBadges] = useState();
+  const [count, setCount] = useState();
   const [selectedBadge, setSelectedBadge] = useState(undefined);
   const navigation = useNavigation();
 
+  const handlecount = badges.reduce((acc, obj) => {
+    if (obj.earned) {
+      return acc + 1;
+    } else {
+      return acc;
+    }
+  }, 0);
+
   useEffect(() => {
     if (badges != undefined && badges.length > 0) {
-      setSelectedBadge(badges[0]);
+      const random = Math.floor(Math.random() * badges.length);
+      setSelectedBadge(badges[random]);
+      setDataBadges(badges);
     }
   }, []);
+
+  useEffect(() => {
+    setDataBadges(badges);
+    setCount(handlecount);
+  }, [badges]);
 
   if (selectedBadge === undefined) return null;
 
@@ -109,7 +126,9 @@ export const LayoutHomePerso = React.memo(() => {
               <Text style={{ fontSize: ResponsiveHeight(1.9) }}>
                 {selectedBadge.earned ? "Débloquer" : "Non débloqué"}
               </Text>
-              <Text style={{ fontSize: ResponsiveHeight(1.9) }}>0/100</Text>
+              <Text style={{ fontSize: ResponsiveHeight(1.9) }}>
+                {count}/{badges.length}
+              </Text>
             </View>
           </Card>
         </TouchableOpacity>

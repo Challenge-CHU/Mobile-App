@@ -1,8 +1,9 @@
 import { useEffect, useState, useMemo } from "react";
+import { PermissionsAndroid } from "react-native";
 import GoogleFit, { Scopes } from "react-native-google-fit";
 import { useStepCountStore } from "../store/useStepCountStore";
 
-const permissions = {
+const permissionss = {
   scopes: [
     Scopes.FITNESS_ACTIVITY_READ,
     Scopes.FITNESS_ACTIVITY_WRITE,
@@ -15,6 +16,28 @@ export const useGoogleFit = () => {
   const [hasPermissions, setHasPermissions] = useState(false);
   const [steps, setSteps] = useState(0);
   const { startDateChallenge } = useStepCountStore();
+
+  const requestActivityPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACTIVITY_RECOGNITION,
+        {
+          title: "Permissions",
+          message: "Besoin de ta permission pour traquer tes pas.",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK",
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("You can use the camera");
+      } else {
+        console.log("Camera permission denied");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
 
   const handleGetCountStepForADay = async (date) => {
     let selectDate = new Date(date);
@@ -93,7 +116,7 @@ export const useGoogleFit = () => {
 
   //Demande d'authorisation API Google
   const hanldeGetAuth = () => {
-    GoogleFit.authorize(permissions)
+    GoogleFit.authorize(permissionss)
       .then((authResult) => {
         if (authResult.success) {
           setHasPermissions(true);
@@ -150,6 +173,7 @@ export const useGoogleFit = () => {
 
   //Au Lancement, Vérifie les authorisations
   useEffect(() => {
+    requestActivityPermission();
     GoogleFit.checkIsAuthorized().then(() => {
       var authorized = GoogleFit.isAuthorized;
 

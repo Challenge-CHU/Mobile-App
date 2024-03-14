@@ -79,7 +79,7 @@ const Home = () => {
       console.log("debut sync");
       //Récupère la dernière entré des pas
       const responseSteps = await UserAPI.getSteps(userId);
-      console.log("suite sync pt1: ", responseSteps.data);
+      // console.log("suite sync pt1: ", responseSteps.data);
 
       if (responseSteps.data.data.length > 0) {
         const allStepss = await handleGetStepsFromBeginning();

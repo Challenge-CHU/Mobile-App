@@ -22,15 +22,18 @@ import ModalAnimated from "../components/ModalAnimated";
 import { SvgCssUri } from "react-native-svg";
 import useProfilIcon from "../hooks/useProfilIcon";
 import IconProfil from "../components/IconProfil";
+import { UserAPI } from "../utils/api";
+import { useUserStore } from "../store/useUserStore";
 
 const Social = () => {
   const { getImageFromCache, imageCache } = useImageStore();
   const {} = useProfilIcon();
+  const { userId } = useUserStore();
 
   const [visibleChild, setVisibleChild] = useState(1);
   const [modalVisible, setModalVisible] = useState(false);
   const [text, onChangeText] = useState("");
-
+  const [dataFriends, setDataFriends] = useState([]);
   const handleOnVisibleChildChange = useCallback((visibleInt) => {
     setVisibleChild(visibleInt);
   });
@@ -39,18 +42,46 @@ const Social = () => {
     setModalVisible(true);
   };
 
-  const friends = [
-    { id: 1, name: "Bernard", steps: 1000, allSteps: 100000 },
-    { id: 2, name: "Karine", steps: 45000, allSteps: 35000 },
-    { id: 3, name: "Bruno", steps: 200, allSteps: 100000 },
-    { id: 4, name: "Ophély", steps: 500, allSteps: 15000 },
-    { id: 5, name: "Thomas", steps: 500, allSteps: 15000 },
-    { id: 6, name: "Alexandre", steps: 500, allSteps: 15000 },
-    { id: 7, name: "Pauline", steps: 500, allSteps: 15000 },
-    { id: 8, name: "Michel", steps: 500, allSteps: 15000 },
-  ];
+  const handleValidate = async () => {
+    try {
+      const friend = {
+        friend_pseudo: text,
+      };
+
+      console.log("ayo: ", friend, userId);
+      const response = await UserAPI.postFriend(userId, friend);
+
+      console.log("friends res: ", response);
+    } catch (error) {
+      console.log("Error post friend: ", error);
+    }
+  };
+
+  const fetchFriends = async () => {
+    try {
+      const result = await UserAPI.getFriends(userId);
+      setDataFriends(result.data.data);
+      console.log("fetch les friends: ", result.data);
+    } catch (error) {
+      console.log("Error fetch friends: ", error);
+    }
+  };
+
+  // const friends = [
+  //   { id: 1, name: "Bernard", steps: 1000, allSteps: 100000 },
+  //   { id: 2, name: "Karine", steps: 45000, allSteps: 35000 },
+  //   { id: 3, name: "Bruno", steps: 200, allSteps: 100000 },
+  //   { id: 4, name: "Ophély", steps: 500, allSteps: 15000 },
+  //   { id: 5, name: "Thomas", steps: 500, allSteps: 15000 },
+  //   { id: 6, name: "Alexandre", steps: 500, allSteps: 15000 },
+  //   { id: 7, name: "Pauline", steps: 500, allSteps: 15000 },
+  //   { id: 8, name: "Michel", steps: 500, allSteps: 15000 },
+  // ];
 
   const tabNames = ["Aujourd'hui", "Depuis le début"];
+  useEffect(() => {
+    fetchFriends();
+  }, []);
 
   return (
     <>
@@ -103,7 +134,7 @@ const Social = () => {
             </Text>
           </TouchableOpacity>
         </View>
-        {friends != undefined || friends.length > 0 ? (
+        {dataFriends != undefined || dataFriends.length > 0 ? (
           <FriendsScrollData
             handleOnVisibleChildChange={handleOnVisibleChildChange}
             tabNames={tabNames}
@@ -112,10 +143,10 @@ const Social = () => {
           ""
         )}
       </PlateformSafeView>
-      {friends === undefined || friends.length <= 0 ? (
+      {dataFriends === undefined || dataFriends.length <= 0 ? (
         <NoFriendContent />
       ) : (
-        <FriendContent friends={friends} visibleChild={visibleChild} />
+        <FriendContent friends={dataFriends} visibleChild={visibleChild} />
       )}
 
       <ModalAnimated
@@ -125,6 +156,7 @@ const Social = () => {
         modalVisible={modalVisible}
         onChangeText={onChangeText}
         BtnLabel="Changer"
+        onValidate={handleValidate}
       />
     </>
   );
@@ -241,6 +273,7 @@ const NoFriendContent = () => {
             width={ResponsiveHeight(35.5)}
             height={ResponsiveHeight(44.1)}
             reverse
+            mode={"idle"}
           />
         </View>
         <GreyCard />
@@ -250,6 +283,12 @@ const NoFriendContent = () => {
 };
 
 const FriendContent = ({ friends, visibleChild }) => {
+  const [data, setData] = useState(undefined);
+
+  useEffect(() => {
+    setData(friends);
+  }, [friends]);
+
   return (
     <BottomSheet
       styles={{

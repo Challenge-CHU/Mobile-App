@@ -64,7 +64,6 @@ const SignUp = () => {
       if (response.status === 200) {
         navigation.navigate("AddPseudo");
       }
-      console.log("Fin login: , ", response);
     } catch (e) {
       setDisplaySplash(false);
       setCredsError(true);
@@ -104,6 +103,7 @@ const SignUp = () => {
   const FetchUserInfo = async () => {
     try {
       console.log("Debut fetch user info?");
+
       if (token != null) {
         setAuthHeader(token);
         const result = await UserAPI.getMe();
@@ -114,7 +114,7 @@ const SignUp = () => {
           updateIdentifier(result.data.data.identifier);
           updateUsername(result.data.data.pseudo);
           updateStreak(result.data.data.streak);
-          updateProfilIcon(result.data.data.avatar_id);
+          updateProfilIcon(parseInt(result.data.data.avatar_id));
           console.log("C B2O: ", result.data);
           navigation.navigate("Home");
         }
@@ -126,9 +126,9 @@ const SignUp = () => {
   };
 
   useEffect(() => {
-    if (token != undefined) {
-      FetchUserInfo();
-    }
+    // if (token != undefined) {
+    FetchUserInfo();
+    // }
     if (challengeId === undefined) {
       setDisplaySplash(true);
       const result = FetchChallenge();
@@ -145,6 +145,9 @@ const SignUp = () => {
       setDisplaySplash(false);
     }, 2000);
   }, []);
+  useEffect(() => {
+    FetchUserInfo();
+  }, [token]);
 
   useEffect(() => {
     //Ici tu check si ya pas de challenge bg

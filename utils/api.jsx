@@ -58,6 +58,12 @@ export const UserAPI = {
   putSteps: (id, steps) => {
     return apiClient.put(`/users/${id}/steps`, steps);
   },
+  postFriend: (id, friend) => {
+    return apiClient.post(`/users/${id}/friends`, friend);
+  },
+  getFriends: (id) => {
+    return apiClient.get(`/users/${id}/friends`);
+  },
   getSteps: (id) => {
     return apiClient.get(`/users/${id}/steps`);
   },

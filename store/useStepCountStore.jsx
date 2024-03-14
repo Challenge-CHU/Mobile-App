@@ -21,16 +21,6 @@ export const useStepCountStore = create(
       totalDistanceInEarthCircumnavigations: "0.000",
       totalCO2SavedInKg: "0.0",
       totalDistanceInKilometers: "0",
-      // averageStepsPerDayAndPerUser: null,
-      // last7daysSteps: 0,
-      // challengesWeeks: [
-      //     {
-      //         "week": 1,
-      //         "weekStartDate": "2024-03-13",
-      //         "weekEndDate": "2024-03-19",
-      //         "weekSteps": null
-      //     }
-      // ],
 
       updateStreak: (newStreakValue) => set({ streak: newStreakValue }),
       updateSteps: (newStepsValue) => set({ dailySteps: newStepsValue }),
@@ -61,6 +51,8 @@ export const useStepCountStore = create(
           totalCO2SavedInKg: newTotalCO2SavedInKg,
           totalDistanceInKilometers: newTotalDistanceInKilometers,
         }),
+      deconnection: () =>
+        set({ startDateChallenge: null, endDateChallenge: null }),
     }),
     {
       name: "steps", // name of the item in the storage (must be unique)

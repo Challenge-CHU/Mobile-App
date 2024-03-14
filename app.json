@@ -21,6 +21,7 @@
       }
     },
     "android": {
+      "permissions": ["android.permission.ACTIVITY_RECOGNITION"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -44,6 +45,13 @@
             "deploymentTarget": "14.0",
             "useFrameworks": "static"
           }
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/app-icon.png",
+          "color": "#ffffff"
         }
       ]
     ],

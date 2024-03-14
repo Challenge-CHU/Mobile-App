@@ -41,12 +41,16 @@ const ModalAnimated = ({
   onPress,
   onChangeText,
   BtnLabel,
+  onValidate,
 }) => {
   const { height } = Dimensions.get("screen");
   const transY = useRef(new Animated.Value(height));
 
   const handleOnPress = () => {
     onPress();
+  };
+  const handleOnValidate = () => {
+    onValidate();
   };
   useEffect(() => {
     if (modalVisible) {
@@ -102,7 +106,7 @@ const ModalAnimated = ({
             >
               <Pressable
                 style={[styles.button2, styles.buttonClose]}
-                onPress={handleOnPress}
+                onPress={handleOnValidate}
               >
                 <Text style={styles.textStyle}>{BtnLabel}</Text>
               </Pressable>

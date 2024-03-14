@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, Dimensions } from "react-native";
 import { Colors, Spacing, Typography } from "../styles";
 import LottieView from "lottie-react-native";
 import aspectRatio from "../tools/AspectRatio";
 import { PercentageOf } from "../tools/Percentage";
 import { ResponsiveHeight, ResponsiveWidth } from "../tools/ResponsiveHeight";
+import { useStepCountStore } from "../store/useStepCountStore";
 
-const FireTag = ({ streak }) => {
-  //Gérer la streak en temps ici
+const FireTag = () => {
+  const { streak, dailySteps, goal } = useStepCountStore();
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    setData(streak);
+    if (dailySteps >= goal) {
+      setData(streak + 1);
+    }
+  }, [streak, dailySteps]);
+
   return (
     <View
       style={{
@@ -55,7 +65,7 @@ const FireTag = ({ streak }) => {
             fontSize: ResponsiveHeight(1.4),
           }}
         >
-          3 jours
+          {data} jours
         </Text>
       </View>
     </View>
